@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "until_eternity:monsters_scythe"
+    },
+    "title": {
+      "translate": "advancements.until_eternity.netherite_monstrosity_fury.title"
+    },
+    "description": {
+      "translate": "advancements.until_eternity.netherite_monstrosity_fury.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "parent": "until_eternity:root",
+  "criteria": {
+    "has_monsters_scythe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["until_eternity:monsters_scythe"]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["has_monsters_scythe"]
+  ]
+}

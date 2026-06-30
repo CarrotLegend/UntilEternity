@@ -1,0 +1,6 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "until_eternity:item/calamity_dagger"
+    }
+}

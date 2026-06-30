@@ -1,0 +1,6 @@
+{
+  "effects": "freezing",
+  "exhaustion": 0.2,
+  "message_id": "untilEternity.frostBitten",
+  "scaling": "when_caused_by_living_non_player"
+}

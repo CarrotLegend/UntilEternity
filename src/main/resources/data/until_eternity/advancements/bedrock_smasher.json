@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "until_eternity:final_ingot_pickaxe"
+    },
+    "title": {
+      "translate": "advancements.until_eternity.bedrock_smasher.title"
+    },
+    "description": {
+      "translate": "advancements.until_eternity.bedrock_smasher.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "parent": "until_eternity:world_apex",
+  "criteria": {
+    "has_final_ingot_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["until_eternity:final_ingot_pickaxe"]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["has_final_ingot_pickaxe"]
+  ]
+}

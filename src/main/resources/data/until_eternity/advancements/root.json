@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "until_eternity:finalite_ingot"
+    },
+    "title": {
+      "translate": "advancements.until_eternity.root.title"
+    },
+    "description": {
+      "translate": "advancements.until_eternity.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  },
+  "requirements": [
+    ["tick"]
+  ]
+}

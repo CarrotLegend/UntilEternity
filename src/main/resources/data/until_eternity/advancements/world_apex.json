@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "until_eternity:inert_finalite_ingot"
+    },
+    "title": {
+      "translate": "advancements.until_eternity.world_apex.title"
+    },
+    "description": {
+      "translate": "advancements.until_eternity.world_apex.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "parent": "until_eternity:root",
+  "criteria": {
+    "has_inert_finalite_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["until_eternity:inert_finalite_ingot"]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["has_inert_finalite_ingot"]
+  ]
+}

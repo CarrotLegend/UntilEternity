@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "until_eternity:saturated_gold_particle"
+    },
+    {
+      "item": "until_eternity:saturated_wood_particle"
+    },
+    {
+      "item": "until_eternity:saturated_water_particle"
+    },
+    {
+      "item": "until_eternity:saturated_fire_particle"
+    },
+    {
+      "item": "until_eternity:saturated_earth_particle"
+    }
+  ],
+  "result": {
+    "item": "until_eternity:elemental_core"
+  }
+}
