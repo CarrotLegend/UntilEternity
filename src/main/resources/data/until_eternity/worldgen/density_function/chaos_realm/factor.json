@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:mul",
+    "argument1": {
+      "type": "minecraft:add",
+      "argument1": {
+        "type": "minecraft:add",
+        "argument1": {
+          "type": "minecraft:mul",
+          "argument1": "until_eternity:chaos_realm/continents",
+          "argument2": 0.5
+        },
+        "argument2": -0.45
+      },
+      "argument2": {
+        "type": "minecraft:mul",
+        "argument1": "until_eternity:chaos_realm/erosion",
+        "argument2": 0.15
+      }
+    },
+    "argument2": {
+      "type": "minecraft:add",
+      "argument1": 0.5,
+      "argument2": {
+        "type": "minecraft:mul",
+        "argument1": {
+          "type": "minecraft:add",
+          "argument1": "minecraft:overworld/ridges_folded",
+          "argument2": {
+            "type": "minecraft:mul",
+            "argument1": "until_eternity:chaos_realm/erosion",
+            "argument2": -0.2
+          }
+        },
+        "argument2": 0.75
+      }
+    }
+  },
+  "argument2": 0.1
+}

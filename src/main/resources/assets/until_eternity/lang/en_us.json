@@ -61,5 +61,7 @@
   "death.attack.untilEternity.frostBitten": "%1$s was frozen into an ice sculpture",
   "death.attack.untilEternity.frostBitten.player": "%1$s was frozen into an ice sculpture by %2$s",
 
-  "biome.until_eternity.chaos_plains": "Chaos Plains"
+  "biome.until_eternity.chaos_plains": "Chaos Plains",
+  "biome.until_eternity.chaos_river": "Chaos River",
+  "block.until_eternity.chaos_portal": "Chaos Portal"
 }

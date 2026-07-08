@@ -61,6 +61,8 @@
 
   "death.attack.untilEternity.frostBitten": "%1$s 被冻成了冰雕",
   "death.attack.untilEternity.frostBitten.player": "%1$s 被 %2$s 冻成了冰雕",
-  
-  "biome.until_eternity.chaos_plains": "混沌领域"
+
+  "biome.until_eternity.chaos_plains": "混沌平原",
+  "biome.until_eternity.chaos_river": "混沌河流",
+  "block.until_eternity.chaos_portal": "混沌传送门"
 }

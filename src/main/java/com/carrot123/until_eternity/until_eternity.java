@@ -2,11 +2,13 @@ package com.carrot123.until_eternity;
 
 import org.slf4j.Logger;
 
+import com.carrot123.until_eternity.block.ModBlocks;
 import com.carrot123.until_eternity.enchantment.ModEnchantments;
 import com.carrot123.until_eternity.event.CurioEventHandler;
 import com.carrot123.until_eternity.event.EnchantmentEventHandler;
 import com.carrot123.until_eternity.item.ModCreativeModeTabs;
 import com.carrot123.until_eternity.item.ModItems;
+import com.carrot123.until_eternity.worldgen.ModFeatures;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
@@ -42,6 +44,9 @@ public class until_eternity
         ModItems.register(modEventBus);
         ModEnchantments.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
+        ModBlocks.register(modEventBus);
+        ModBlocks.ModBlocksItems.register(modEventBus);
+        ModFeatures.register(modEventBus);
 
 
         // Register ourselves for server and other game events we are interested in
