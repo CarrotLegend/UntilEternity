@@ -17,7 +17,9 @@
       "offset": 2.0
     }
   },
-  "carvers": [],
+  "carvers": {
+    "air": []
+  },
   "features": [
     [],
     [],
