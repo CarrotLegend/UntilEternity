@@ -64,9 +64,8 @@ public class ChaosPortalBlock extends Block {
 
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        // Teleport is handled entirely by ChaosPortalEvents.onPlayerTick.
-        // Do NOT call entity.handleInsidePortal(pos) — that triggers
-        // vanilla Entity.handleNetherPortal() which sends to the Nether.
+        // Teleport is handled entirely by ChaosPortalEvents — see that class
+        // for the full vanilla handleInsidePortal + handleNetherPortal logic.
     }
 
     @Override

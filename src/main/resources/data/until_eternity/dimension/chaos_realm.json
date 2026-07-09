@@ -4,38 +4,8 @@
     "type": "minecraft:noise",
     "settings": "until_eternity:chaos_realm",
     "biome_source": {
-<<<<<<< HEAD
       "type": "minecraft:fixed",
       "biome": "until_eternity:chaos_plains"
-=======
-      "type": "minecraft:multi_noise",
-      "biomes": [
-        {
-          "biome": "until_eternity:chaos_river",
-          "parameters": {
-            "temperature": [-1.0, 1.0],
-            "humidity": [-1.0, 1.0],
-            "continentalness": [-1.0, 0.0],
-            "erosion": [-1.0, 1.0],
-            "depth": [-1.0, 1.0],
-            "weirdness": [-0.3, 0.3],
-            "offset": 0.0
-          }
-        },
-        {
-          "biome": "until_eternity:chaos_plains",
-          "parameters": {
-            "temperature": [-1.0, 1.0],
-            "humidity": [-1.0, 1.0],
-            "continentalness": [-0.3, 1.0],
-            "erosion": [-1.0, 1.0],
-            "depth": [-1.0, 1.0],
-            "weirdness": [-1.0, 1.0],
-            "offset": 0.0
-          }
-        }
-      ]
->>>>>>> 1c9c06834353399a3e1c2da334da5b0e243b0b64
     }
   }
 }
