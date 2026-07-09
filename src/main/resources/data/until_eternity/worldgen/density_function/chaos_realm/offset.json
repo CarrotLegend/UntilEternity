@@ -1,0 +1,44 @@
+{
+  "type": "minecraft:flat_cache",
+  "argument": {
+    "type": "minecraft:cache_2d",
+    "argument": {
+      "type": "minecraft:spline",
+      "spline": {
+        "coordinate": "until_eternity:chaos_realm/continents",
+        "points": [
+          {
+            "derivative": 0.0,
+            "location": -1.0,
+            "value": -0.42
+          },
+          {
+            "derivative": 0.0,
+            "location": -0.3,
+            "value": -0.38
+          },
+          {
+            "derivative": 0.0,
+            "location": -0.1,
+            "value": -0.34
+          },
+          {
+            "derivative": 0.0,
+            "location": 0.1,
+            "value": -0.28
+          },
+          {
+            "derivative": 0.0,
+            "location": 0.3,
+            "value": -0.22
+          },
+          {
+            "derivative": 0.0,
+            "location": 1.0,
+            "value": -0.18
+          }
+        ]
+      }
+    }
+  }
+}

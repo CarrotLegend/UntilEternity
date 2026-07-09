@@ -42,6 +42,8 @@
   "item.until_eternity.empty_pottery_shard": "空纹样陶片",
   "item.until_eternity.inert_finalite_ingot": "惰性终式合金锭",
   "item.until_eternity.ominous_totem": "恶兆图腾",
+  "item.until_eternity.chaos_elixir": "南瓜混沌元剂",
+  "block.until_eternity.chaos_portal": "混沌传送门",
 
   "enchantment.until_eternity.power": "力量",
   "enchantment.until_eternity.curse_of_hunger": "饥饿诅咒",
@@ -62,5 +64,6 @@
   "death.attack.untilEternity.frostBitten": "%1$s 被冻成了冰雕",
   "death.attack.untilEternity.frostBitten.player": "%1$s 被 %2$s 冻成了冰雕",
   
-  "biome.until_eternity.chaos_plains": "混沌领域"
+  "biome.until_eternity.chaos_plains": "混沌平原",
+  "biome.until_eternity.chaos_river": "混沌河流"
 }

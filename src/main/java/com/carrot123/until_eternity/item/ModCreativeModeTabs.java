@@ -60,6 +60,7 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.GODS_RECOGNITION.get());
                 output.accept(ModItems.INERT_FINALITE_INGOT.get());
                 output.accept(ModItems.OMINOUS_TOTEM.get());
+                output.accept(ModItems.CHAOS_ELIXIR.get());
             }).build());
 
     public static void register(IEventBus eventBus) {

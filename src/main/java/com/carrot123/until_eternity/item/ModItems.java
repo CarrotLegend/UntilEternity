@@ -57,6 +57,8 @@ public class ModItems {
     public static final RegistryObject<Item> GODS_RECOGNITION = ITEMS.register("gods_recognition", () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> INERT_FINALITE_INGOT = ITEMS.register("inert_finalite_ingot", () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> OMINOUS_TOTEM = ITEMS.register("ominous_totem", () -> new OminousTotem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> CHAOS_ELIXIR = ITEMS.register("chaos_elixir",
+            () -> new ChaosElixirItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

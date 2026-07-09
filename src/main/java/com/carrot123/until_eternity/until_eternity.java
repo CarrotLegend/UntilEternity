@@ -2,14 +2,18 @@ package com.carrot123.until_eternity;
 
 import org.slf4j.Logger;
 
+import com.carrot123.until_eternity.block.ModBlocks;
 import com.carrot123.until_eternity.enchantment.ModEnchantments;
 import com.carrot123.until_eternity.event.CurioEventHandler;
 import com.carrot123.until_eternity.event.EnchantmentEventHandler;
 import com.carrot123.until_eternity.item.ModCreativeModeTabs;
 import com.carrot123.until_eternity.item.ModItems;
+import com.carrot123.until_eternity.particle.ModParticles;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,8 +43,10 @@ public class until_eternity
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
+        ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
         ModEnchantments.register(modEventBus);
+        ModParticles.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
 
 
@@ -93,6 +99,8 @@ public class until_eternity
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            // Chaos portal translucent rendering
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.CHAOS_PORTAL.get(), RenderType.translucent());
         }
     }
 }

@@ -1,0 +1,11 @@
+{
+  "type": "until_eternity:chaos_realm",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "until_eternity:chaos_realm",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "until_eternity:chaos_plains"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:mul",
+    "argument1": 4.0,
+    "argument2": {
+      "type": "minecraft:quarter_negative",
+      "argument": {
+        "type": "minecraft:mul",
+        "argument1": "until_eternity:chaos_realm/factor",
+        "argument2": {
+          "type": "minecraft:add",
+          "argument1": "until_eternity:chaos_realm/depth",
+          "argument2": {
+            "type": "minecraft:mul",
+            "argument1": "until_eternity:chaos_realm/jaggedness",
+            "argument2": {
+              "type": "minecraft:noise",
+              "noise": "minecraft:jagged",
+              "xz_scale": 1500.0,
+              "y_scale": 0.0
+            }
+          }
+        }
+      }
+    }
+  },
+  "argument2": "until_eternity:chaos_realm/depth"
+}
