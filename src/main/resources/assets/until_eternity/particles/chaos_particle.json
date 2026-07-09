@@ -1,5 +1,12 @@
 {
   "textures": [
-    "until_eternity:chaos_particle"
+    "until_eternity:portal_0",
+    "until_eternity:portal_1",
+    "until_eternity:portal_2",
+    "until_eternity:portal_3",
+    "until_eternity:portal_4",
+    "until_eternity:portal_5",
+    "until_eternity:portal_6",
+    "until_eternity:portal_7"
   ]
 }

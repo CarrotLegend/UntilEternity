@@ -46,10 +46,13 @@ public class ChaosParticle extends TextureSheetParticle {
         if (this.age++ >= this.lifetime) {
             this.remove();
         } else {
-            float progress = (float)this.age / this.lifetime;
-            this.x += this.xd * progress;
-            this.y += this.yd * progress;
-            this.z += this.zd * progress;
+            // Constant drift — no acceleration (vanilla PortalParticle drifts at steady speed)
+            this.xd *= 0.98;
+            this.yd *= 0.98;
+            this.zd *= 0.98;
+            this.x += this.xd;
+            this.y += this.yd;
+            this.z += this.zd;
         }
     }
 

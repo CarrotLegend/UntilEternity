@@ -1,17 +1,8 @@
 {
-  "parent": "minecraft:block/block",
+  "parent": "minecraft:block/nether_portal_ns",
+  "render_type": "minecraft:translucent",
   "textures": {
     "particle": "until_eternity:block/chaos_portal",
     "portal": "until_eternity:block/chaos_portal"
-  },
-  "elements": [
-    {
-      "from": [0, 0, 6],
-      "to": [16, 16, 10],
-      "faces": {
-        "east": {"uv": [0, 0, 4, 16], "texture": "#portal"},
-        "west": {"uv": [0, 0, 4, 16], "texture": "#portal"}
-      }
-    }
-  ]
+  }
 }
