@@ -64,9 +64,9 @@ public class ChaosPortalBlock extends Block {
 
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        // Portal teleport is handled by ChaosPortalEvents.onPlayerTick
-        // Do NOT call entity.handleInsidePortal(pos) — that would trigger
-        // the vanilla Nether portal system and send the player to the Nether.
+        // Teleport is handled entirely by ChaosPortalEvents.onPlayerTick.
+        // Do NOT call entity.handleInsidePortal(pos) — that triggers
+        // vanilla Entity.handleNetherPortal() which sends to the Nether.
     }
 
     @Override
@@ -87,10 +87,10 @@ public class ChaosPortalBlock extends Block {
             int sign = random.nextInt(2) * 2 - 1;
             if (!level.getBlockState(pos.west()).is(this) && !level.getBlockState(pos.east()).is(this)) {
                 x = pos.getX() + 0.5 + 0.25 * sign;
-                dx = random.nextFloat() * 0.5F * sign;
+                dx = random.nextFloat() * 2.0F * sign;
             } else {
                 z = pos.getZ() + 0.5 + 0.25 * sign;
-                dz = random.nextFloat() * 0.5F * sign;
+                dz = random.nextFloat() * 2.0F * sign;
             }
             level.addParticle(ModParticles.CHAOS_PARTICLE.get(), x, y, z, dx, dy, dz);
         }

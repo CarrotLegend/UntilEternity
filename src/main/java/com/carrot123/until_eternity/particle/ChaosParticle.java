@@ -13,10 +13,18 @@ import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/**
+ * Direct port of vanilla PortalParticle with gray tint.
+ * Uses the same quadratic-drift-from-start-position formula.
+ * xd/yd/zd are TOTAL displacement, not per-tick velocity.
+ */
 public class ChaosParticle extends TextureSheetParticle {
+    private final double xStart;
+    private final double yStart;
+    private final double zStart;
 
     protected ChaosParticle(ClientLevel level, double x, double y, double z,
-                            double dx, double dy, double dz) {
+                             double dx, double dy, double dz) {
         super(level, x, y, z);
         this.xd = dx;
         this.yd = dy;
@@ -24,36 +32,21 @@ public class ChaosParticle extends TextureSheetParticle {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.xStart = x;
+        this.yStart = y;
+        this.zStart = z;
+        this.quadSize = 0.1F * (this.random.nextFloat() * 0.2F + 0.5F);
+        // Gray tint instead of purple
+        float gray = this.random.nextFloat() * 0.4F + 0.4F;
+        this.rCol = gray;
+        this.gCol = gray;
+        this.bCol = gray;
         this.lifetime = (int)(Math.random() * 10.0) + 40;
-        this.hasPhysics = false;
-        // Gray-tinted portal particle
-        this.rCol = 0.5F;
-        this.gCol = 0.5F;
-        this.bCol = 0.5F;
-        this.quadSize = 0.2F;
     }
 
     @Override
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
-    }
-
-    @Override
-    public void tick() {
-        this.xo = this.x;
-        this.yo = this.y;
-        this.zo = this.z;
-        if (this.age++ >= this.lifetime) {
-            this.remove();
-        } else {
-            // Constant drift — no acceleration (vanilla PortalParticle drifts at steady speed)
-            this.xd *= 0.98;
-            this.yd *= 0.98;
-            this.zd *= 0.98;
-            this.x += this.xd;
-            this.y += this.yd;
-            this.z += this.zd;
-        }
+        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
     @Override
@@ -64,13 +57,44 @@ public class ChaosParticle extends TextureSheetParticle {
 
     @Override
     public float getQuadSize(float partialTick) {
-        float progress = (this.age + partialTick) / this.lifetime;
-        return this.quadSize * (1.0F - progress * progress * 0.5F);
+        float f = ((float)this.age + partialTick) / (float)this.lifetime;
+        f = 1.0F - f;
+        f *= f;
+        f = 1.0F - f;
+        return this.quadSize * f;
     }
 
     @Override
     public int getLightColor(float partialTick) {
-        return 15728880;
+        int i = super.getLightColor(partialTick);
+        float f = (float)this.age / (float)this.lifetime;
+        f *= f;
+        f *= f;
+        int j = i & 0xFF;
+        int k = i >> 16 & 0xFF;
+        k += (int)(f * 15.0F * 16.0F);
+        if (k > 240) {
+            k = 240;
+        }
+        return j | k << 16;
+    }
+
+    @Override
+    public void tick() {
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
+        if (this.age++ >= this.lifetime) {
+            this.remove();
+        } else {
+            float f = (float)this.age / (float)this.lifetime;
+            float f1 = -f + f * f * 2.0F;
+            float f2 = 1.0F - f1;
+            // Quadratic drift: particles drift out then sink back toward origin
+            this.x = this.xStart + this.xd * f2;
+            this.y = this.yStart + this.yd * f2 + (double)(1.0F - f);
+            this.z = this.zStart + this.zd * f2;
+        }
     }
 
     @Mod.EventBusSubscriber(modid = until_eternity.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

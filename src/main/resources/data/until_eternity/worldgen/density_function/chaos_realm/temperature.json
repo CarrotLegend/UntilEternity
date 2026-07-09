@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "type": "minecraft:flat_cache",
   "argument": {
     "type": "minecraft:shifted_noise",
@@ -9,4 +10,13 @@
     "xz_scale": 0.25,
     "y_scale": 0.0
   }
+=======
+  "type": "minecraft:shifted_noise",
+  "noise": "minecraft:temperature",
+  "shift_x": "minecraft:shift_x",
+  "shift_y": 0.0,
+  "shift_z": "minecraft:shift_z",
+  "xz_scale": 0.25,
+  "y_scale": 0.0
+>>>>>>> 1c9c06834353399a3e1c2da334da5b0e243b0b64
 }

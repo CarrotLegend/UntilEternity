@@ -42,12 +42,19 @@ public class PortalForcer {
 
     /**
      * Search for an existing chaos portal near pos.
-     * Uses the NETHER_PORTAL poi as a tag — chaos_portal blocks
-     * are looked up by scanning for portal blocks directly.
+     * Pre-loads chunks before scanning to find portals in unloaded areas.
      */
     public Optional<BlockUtil.FoundRectangle> findPortalAround(BlockPos pos, WorldBorder border) {
         int searchRadius = 128;
-        // Scan in a spiral for existing chaos_portal blocks
+        // Pre-load chunks in the search area so getBlockState returns real data
+        int cr = (searchRadius >> 4) + 1;
+        ChunkPos centerCp = new ChunkPos(pos);
+        for (int dx = -cr; dx <= cr; dx++) {
+            for (int dz = -cr; dz <= cr; dz++) {
+                this.level.getChunk(centerCp.x + dx, centerCp.z + dz);
+            }
+        }
+        // Scan for chaos_portal blocks
         for (BlockPos.MutableBlockPos candidate : BlockPos.spiralAround(pos, searchRadius, Direction.EAST, Direction.SOUTH)) {
             if (!border.isWithinBounds(candidate)) continue;
             BlockState state = this.level.getBlockState(candidate);
