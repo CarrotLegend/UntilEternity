@@ -12,19 +12,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.ai.village.poi.PoiManager;
-import net.minecraft.world.entity.ai.village.poi.PoiRecord;
-import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.border.WorldBorder;
+import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 import javax.annotation.Nullable;
-import java.util.Comparator;
 import java.util.Optional;
 
 public class PortalForcer {
@@ -42,31 +39,54 @@ public class PortalForcer {
 
     /**
      * Search for an existing chaos portal near pos.
-     * Pre-loads chunks before scanning to find portals in unloaded areas.
+     * Synchronously loads chunks then does a 3D scan (XZ spiral, Y outward from center).
      */
     public Optional<BlockUtil.FoundRectangle> findPortalAround(BlockPos pos, WorldBorder border) {
         int searchRadius = 128;
-        // Pre-load chunks in the search area so getBlockState returns real data
+        // 同步加载 chunk（强制等待 FULL 状态）
         int cr = (searchRadius >> 4) + 1;
         ChunkPos centerCp = new ChunkPos(pos);
         for (int dx = -cr; dx <= cr; dx++) {
             for (int dz = -cr; dz <= cr; dz++) {
-                this.level.getChunk(centerCp.x + dx, centerCp.z + dz);
+                this.level.getChunkSource().getChunk(
+                        centerCp.x + dx, centerCp.z + dz, ChunkStatus.FULL, true);
             }
         }
-        // Scan for chaos_portal blocks
-        for (BlockPos.MutableBlockPos candidate : BlockPos.spiralAround(pos, searchRadius, Direction.EAST, Direction.SOUTH)) {
-            if (!border.isWithinBounds(candidate)) continue;
-            BlockState state = this.level.getBlockState(candidate);
-            if (state.is(ModBlocks.CHAOS_PORTAL.get()) && state.hasProperty(BlockStateProperties.HORIZONTAL_AXIS)) {
-                this.level.getChunkSource().addRegionTicket(
-                        TicketType.PORTAL, new ChunkPos(candidate), TICKET_RADIUS, candidate);
-                return Optional.of(BlockUtil.getLargestRectangleAround(
-                        candidate,
-                        state.getValue(BlockStateProperties.HORIZONTAL_AXIS),
-                        21, Direction.Axis.Y, 21,
-                        p -> this.level.getBlockState(p) == state));
+        // 3D 搜索：XZ 螺旋，每处 Y 从中心向外扩展
+        int yCenter = pos.getY();
+        int yMin = Math.max(this.level.getMinBuildHeight(), yCenter - 64);
+        int yMax = Math.min(this.level.getMaxBuildHeight() - 1, yCenter + 64);
+        int yRange = Math.min(64, Math.max(yCenter - yMin, yMax - yCenter));
+        BlockPos.MutableBlockPos mut = new BlockPos.MutableBlockPos();
+        for (BlockPos.MutableBlockPos xz : BlockPos.spiralAround(
+                new BlockPos(pos.getX(), yCenter, pos.getZ()),
+                searchRadius, Direction.EAST, Direction.SOUTH)) {
+            if (!border.isWithinBounds(xz)) continue;
+            // Y 从中心向外搜索（dy=0, -1, +1, -2, +2, ...）
+            for (int dy = 0; dy <= yRange; dy++) {
+                for (int sign = -1; sign <= 1; sign += 2) {
+                    int y = yCenter + dy * sign;
+                    if (dy == 0 && sign == 1) continue; // dy=0 只检查一次
+                    if (y < yMin || y > yMax) continue;
+                    mut.set(xz.getX(), y, xz.getZ());
+                    Optional<BlockUtil.FoundRectangle> found = tryExpandPortal(mut);
+                    if (found.isPresent()) return found;
+                }
             }
+        }
+        return Optional.empty();
+    }
+
+    private Optional<BlockUtil.FoundRectangle> tryExpandPortal(BlockPos.MutableBlockPos pos) {
+        BlockState state = this.level.getBlockState(pos);
+        if (state.is(ModBlocks.CHAOS_PORTAL.get()) && state.hasProperty(BlockStateProperties.HORIZONTAL_AXIS)) {
+            this.level.getChunkSource().addRegionTicket(
+                    TicketType.PORTAL, new ChunkPos(pos), TICKET_RADIUS, pos);
+            return Optional.of(BlockUtil.getLargestRectangleAround(
+                    pos.immutable(),
+                    state.getValue(BlockStateProperties.HORIZONTAL_AXIS),
+                    21, Direction.Axis.Y, 21,
+                    p -> this.level.getBlockState(p) == state));
         }
         return Optional.empty();
     }
