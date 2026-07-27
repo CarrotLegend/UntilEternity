@@ -61,6 +61,10 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.INERT_FINALITE_INGOT.get());
                 output.accept(ModItems.OMINOUS_TOTEM.get());
                 output.accept(ModItems.CHAOS_ELIXIR.get());
+                output.accept(ModItems.SPAWNER_FRAGMENT.get());
+                output.accept(ModItems.DARK_CAGE.get());
+                output.accept(ModItems.MITHRIL_GLOVES.get());
+                output.accept(ModItems.ROCK.get());
             }).build());
 
     public static void register(IEventBus eventBus) {

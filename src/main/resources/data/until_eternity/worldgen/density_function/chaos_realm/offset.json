@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "type": "minecraft:flat_cache",
   "argument": {
     "type": "minecraft:cache_2d",
@@ -41,68 +40,5 @@
         ]
       }
     }
-=======
-  "type": "minecraft:add",
-  "argument1": {
-    "type": "minecraft:mul",
-    "argument1": {
-      "type": "minecraft:add",
-      "argument1": {
-        "type": "minecraft:add",
-        "argument1": {
-          "type": "minecraft:mul",
-          "argument1": "until_eternity:chaos_realm/continents",
-          "argument2": -0.15
-        },
-        "argument2": 1.0
-      },
-      "argument2": {
-        "type": "minecraft:mul",
-        "argument1": {
-          "type": "minecraft:add",
-          "argument1": 0.05,
-          "argument2": {
-            "type": "minecraft:mul",
-            "argument1": "until_eternity:chaos_realm/erosion",
-            "argument2": 0.1
-          }
-        },
-        "argument2": {
-          "type": "minecraft:add",
-          "argument1": 0.05,
-          "argument2": {
-            "type": "minecraft:mul",
-            "argument1": "minecraft:overworld/ridges_folded",
-            "argument2": 0.15
-          }
-        }
-      }
-    },
-    "argument2": {
-      "type": "minecraft:add",
-      "argument1": {
-        "type": "minecraft:add",
-        "argument1": "until_eternity:chaos_realm/continents",
-        "argument2": {
-          "type": "minecraft:mul",
-          "argument1": "minecraft:overworld/ridges_folded",
-          "argument2": 0.15
-        }
-      },
-      "argument2": {
-        "type": "minecraft:mul",
-        "argument1": "until_eternity:chaos_realm/erosion",
-        "argument2": 0.25
-      }
-    }
-  },
-  "argument2": {
-    "type": "minecraft:range_choice",
-    "input": "until_eternity:chaos_realm/continents",
-    "min_inclusive": -1.0,
-    "max_exclusive": -0.8,
-    "when_in_range": 1.0,
-    "when_out_of_range": 0.0
->>>>>>> 1c9c06834353399a3e1c2da334da5b0e243b0b64
   }
 }

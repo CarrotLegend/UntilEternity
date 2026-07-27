@@ -1,7 +1,10 @@
 package com.carrot123.until_eternity.item;
 
+import com.carrot123.until_eternity.item.curio.DarkCageItem;
 import com.carrot123.until_eternity.item.curio.ImmuneCurioItem;
 import com.carrot123.until_eternity.item.curio.LifeCapItem;
+import com.carrot123.until_eternity.item.curio.MithrilGlovesItem;
+import com.carrot123.until_eternity.item.AncientRockItem;
 import com.carrot123.until_eternity.until_eternity;
 
 import net.minecraft.world.item.Item;
@@ -59,6 +62,11 @@ public class ModItems {
     public static final RegistryObject<Item> OMINOUS_TOTEM = ITEMS.register("ominous_totem", () -> new OminousTotem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> CHAOS_ELIXIR = ITEMS.register("chaos_elixir",
             () -> new ChaosElixirItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    public static final RegistryObject<Item> DARK_CAGE = ITEMS.register("dark_cage", DarkCageItem::new);
+    public static final RegistryObject<Item> SPAWNER_FRAGMENT = ITEMS.register("spawner_fragment",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> MITHRIL_GLOVES = ITEMS.register("mithril_gloves", MithrilGlovesItem::new);
+    public static final RegistryObject<Item> ROCK = ITEMS.register("rock", AncientRockItem::new);
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

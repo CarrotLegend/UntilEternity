@@ -70,6 +70,15 @@ description='''${mod_description}'''
     versionRange="[5.14.1+1.20.1]"
     ordering = "NONE"   
     side = "BOTH"
+
+[[dependencies.until_eternity]]
+    modId="legendary_monsters"
+    mandatory=true
+    # The official 2.1.22 JAR incorrectly declares its mod version as 1.20.1.
+    # Gradle pins CurseForge file 8444425, while this range matches its runtime metadata.
+    versionRange="[1.20.1]"
+    ordering="AFTER"
+    side="BOTH"
     
 # Here's another dependency
 [[dependencies.${mod_id}]]

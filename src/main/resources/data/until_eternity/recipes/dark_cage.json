@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "III",
+        "IFI",
+        "III"
+    ],
+    "key": {
+        "I": {
+            "item": "goety:dark_metal_ingot"
+        },
+        "F": {
+            "item": "until_eternity:spawner_fragment"
+        }
+    },
+    "result": {
+        "item": "until_eternity:dark_cage",
+        "count": 1
+    }
+}

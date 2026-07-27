@@ -25,68 +25,56 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Handles chaos portal teleport using the EXACT same logic as vanilla
- * Entity.handleInsidePortal() + Entity.handleNetherPortal().
- *
- * Per-player state mirrors Entity fields:
- *   portalTime      — accumulated time inside portal
- *   portalEntrance  — the BlockPos where portal was first entered
+ * 完整复制原版 Entity.handleInsidePortal + handleNetherPortal 全部逻辑。
+ * 不使用反射，不依赖原版字段。唯一区别：目标维度 chaos_realm。
  */
 @Mod.EventBusSubscriber(modid = until_eternity.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ChaosPortalEvents {
 
-    /** Per-player timer — mirrors Entity.portalTime */
+    /** 对应 Entity.portalTime */
     private static final Map<UUID, Integer> portalTime = new ConcurrentHashMap<>();
-    /** Per-player entrance position — mirrors Entity.portalEntrancePos */
-    private static final Map<UUID, BlockPos> portalEntrance = new ConcurrentHashMap<>();
-
-    // ── handleInsidePortal equivalent ──────────────────────────────
-
-    /**
-     * Called each tick while the player is inside a chaos_portal block.
-     * Mirrors Entity.handleInsidePortal(BlockPos).
-     */
-    private static void handleInsidePortal(Player player, BlockPos pos) {
-        if (player.isOnPortalCooldown()) {
-            // While on cooldown, reset it each tick — prevents timer from running.
-            // This is exactly what vanilla does: setPortalCooldown() resets
-            // the cooldown to getDimensionChangingDelay() (= 10 for players).
-            player.setPortalCooldown();
-        } else {
-            if (!pos.equals(portalEntrance.get(player.getUUID()))) {
-                portalEntrance.put(player.getUUID(), pos.immutable());
-            }
-        }
-    }
-
-    // ── handleNetherPortal equivalent ──────────────────────────────
+    /** 对应 Entity.portalEntrancePos */
+    private static final Map<UUID, BlockPos> portalEntrancePos = new ConcurrentHashMap<>();
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.START) return;
-        Player player = event.player;
-        if (player.level().isClientSide) return;
+        if (event.phase != TickEvent.Phase.START || event.player.level().isClientSide)
+            return;
 
+        Player player = event.player;
         ServerLevel currentLevel = (ServerLevel) player.level();
         UUID uuid = player.getUUID();
-
-        // Check if player is inside a chaos_portal block
         BlockPos pos = player.blockPosition();
-        boolean inPortal = currentLevel.getBlockState(pos).is(ModBlocks.CHAOS_PORTAL.get())
+
+        // 检测玩家是否在 chaos_portal 方块中（照搬 checkInsideBlocks 的检测逻辑）
+        boolean inChaosPortal = currentLevel.getBlockState(pos).is(ModBlocks.CHAOS_PORTAL.get())
                 || currentLevel.getBlockState(pos.above()).is(ModBlocks.CHAOS_PORTAL.get());
 
-        if (inPortal && player.canChangeDimensions()) {
-            // handleInsidePortal equivalent
-            handleInsidePortal(player, pos);
+        if (inChaosPortal && player.canChangeDimensions()) {
 
-            // handleNetherPortal: inside portal branch
+            // ═════════════════════════════════════════════════════════
+            //  照搬 Entity.handleInsidePortal(BlockPos)
+            // ═════════════════════════════════════════════════════════
+            if (player.isOnPortalCooldown()) {
+                // 冷却中：重置冷却，阻止 portalTime 推进
+                player.setPortalCooldown();
+            } else {
+                // 不在冷却：记录入口位置（用于 findDimensionEntryPoint 定位源传送门）
+                BlockPos prev = portalEntrancePos.get(uuid);
+                if (prev == null || !pos.equals(prev)) {
+                    portalEntrancePos.put(uuid, pos.immutable());
+                }
+            }
+
+            // ═════════════════════════════════════════════════════════
+            //  照搬 Entity.handleNetherPortal – if (this.isInsidePortal) 分支
+            // ═════════════════════════════════════════════════════════
             int waitTime = player.getAbilities().invulnerable ? 1 : 80;
             int t = portalTime.getOrDefault(uuid, 0);
 
@@ -97,11 +85,15 @@ public class ChaosPortalEvents {
                 if (t >= waitTime) {
                     portalTime.put(uuid, waitTime);
                     player.setPortalCooldown();
-                    changeDimension(player, currentLevel, pos);
+                    changeDimension(player, currentLevel,
+                            portalEntrancePos.getOrDefault(uuid, pos));
                 }
             }
+
         } else {
-            // handleNetherPortal: outside portal branch — decay timer
+            // ═════════════════════════════════════════════════════════
+            //  照搬 Entity.handleNetherPortal – else 分支 (离开后衰减)
+            // ═════════════════════════════════════════════════════════
             int t = portalTime.getOrDefault(uuid, 0);
             if (t > 0) {
                 t = Math.max(0, t - 4);
@@ -109,21 +101,21 @@ public class ChaosPortalEvents {
             }
             if (t == 0) {
                 portalTime.remove(uuid);
-                portalEntrance.remove(uuid);
+                portalEntrancePos.remove(uuid);
             }
         }
+        // processPortalCooldown() 由原版 Entity.tick() 自动执行 — 此处不重复
     }
 
-    // ── changeDimension equivalent ────────────────────────────────
+    /* ── 照搬 changeDimension + findDimensionEntryPoint ─────────── */
 
-    private static void changeDimension(Player player, ServerLevel from, BlockPos fromPos) {
+    private static void changeDimension(Player player, ServerLevel from, BlockPos entrancePos) {
         ResourceKey<Level> destDim = from.dimension() == PortalForcer.CHAOS_REALM
                 ? Level.OVERWORLD : PortalForcer.CHAOS_REALM;
 
         ServerLevel to = from.getServer().getLevel(destDim);
         if (to == null) return;
 
-        // findDimensionEntryPoint equivalent
         WorldBorder border = to.getWorldBorder();
         double scale = net.minecraft.world.level.dimension.DimensionType.getTeleportationScale(
                 from.dimensionType(), to.dimensionType());
@@ -134,21 +126,19 @@ public class ChaosPortalEvents {
         Optional<BlockUtil.FoundRectangle> destRect = forcer.findPortalAround(scaled, border);
 
         if (destRect.isEmpty()) {
-            Direction.Axis axis = getPortalAxisAt(from, fromPos);
+            Direction.Axis axis = getPortalAxisAt(from, entrancePos);
             destRect = forcer.createPortal(scaled, axis);
         }
 
         destRect.ifPresent(rect -> {
-            // getRelativePortalPosition + createPortalInfo equivalent
-            BlockPos entrance = portalEntrance.getOrDefault(player.getUUID(), fromPos);
-            BlockState sourceState = from.getBlockState(entrance);
+            BlockState sourceState = from.getBlockState(entrancePos);
             Direction.Axis sourceAxis = Direction.Axis.X;
             Vec3 relativePos = new Vec3(0.5, 0.0, 0.0);
 
             if (sourceState.hasProperty(BlockStateProperties.HORIZONTAL_AXIS)) {
                 sourceAxis = sourceState.getValue(BlockStateProperties.HORIZONTAL_AXIS);
                 BlockUtil.FoundRectangle sourceRect = BlockUtil.getLargestRectangleAround(
-                        entrance, sourceAxis, 21, Direction.Axis.Y, 21,
+                        entrancePos, sourceAxis, 21, Direction.Axis.Y, 21,
                         p -> from.getBlockState(p) == sourceState);
                 relativePos = PortalShape.getRelativePosition(sourceRect, sourceAxis,
                         player.position(), player.getDimensions(player.getPose()));
@@ -178,7 +168,7 @@ public class ChaosPortalEvents {
         return Direction.Axis.X;
     }
 
-    // ── Frame break cleanup ───────────────────────────────────────
+    /* ── 框架破坏清理 ────────────────────────────────────────── */
 
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {

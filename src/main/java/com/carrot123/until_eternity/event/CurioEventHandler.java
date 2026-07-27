@@ -18,18 +18,25 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
+
+import com.carrot123.until_eternity.item.ModItems;
 
 
 public class CurioEventHandler {
@@ -133,6 +140,41 @@ public void onLivingDeath(LivingDeathEvent event) {
         // 清除负面效果（免疫饰品）
         if (hasAnyImmuneCurio(player)) {
             clearExistingImmuneEffects(player);
+        }
+    }
+
+    /**
+     * 普通镐子挖掘刷怪笼时掉落 1-2 个刷怪笼碎片。
+     */
+    @SubscribeEvent
+    public void onBlockBreak(BlockEvent.BreakEvent event) {
+        if (event.getState().is(Blocks.SPAWNER)
+                && event.getPlayer() != null
+                && event.getPlayer().getMainHandItem().getItem() instanceof PickaxeItem) {
+            Player player = event.getPlayer();
+            // 不掉落经验
+            event.setExpToDrop(0);
+            // 额外掉落 1-2 个刷怪笼碎片
+            int count = player.level().random.nextInt(2) + 1;
+            ItemEntity itemEntity = new ItemEntity(
+                    player.level(),
+                    event.getPos().getX() + 0.5,
+                    event.getPos().getY() + 0.5,
+                    event.getPos().getZ() + 0.5,
+                    new ItemStack(ModItems.SPAWNER_FRAGMENT.get(), count));
+            player.level().addFreshEntity(itemEntity);
+        }
+    }
+
+    /**
+     * 古恒石抗雷：雷击含有古恒石的掉落物时不销毁。
+     */
+    @SubscribeEvent
+    public void onLightningStrike(net.minecraftforge.event.entity.EntityStruckByLightningEvent event) {
+        if (event.getEntity() instanceof net.minecraft.world.entity.item.ItemEntity itemEntity) {
+            if (itemEntity.getItem().is(ModItems.ROCK.get())) {
+                event.setCanceled(true);
+            }
         }
     }
 

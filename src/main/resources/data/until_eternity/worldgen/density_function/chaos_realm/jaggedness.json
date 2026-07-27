@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "type": "minecraft:flat_cache",
   "argument": {
     "type": "minecraft:cache_2d",
@@ -130,13 +129,4 @@
       }
     }
   }
-=======
-  "type": "minecraft:shifted_noise",
-  "noise": "minecraft:jagged",
-  "shift_x": "minecraft:shift_x",
-  "shift_y": 0.0,
-  "shift_z": "minecraft:shift_z",
-  "xz_scale": 0.5,
-  "y_scale": 0.0
->>>>>>> 1c9c06834353399a3e1c2da334da5b0e243b0b64
 }

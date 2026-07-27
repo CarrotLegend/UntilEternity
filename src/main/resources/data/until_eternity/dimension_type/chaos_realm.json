@@ -8,17 +8,12 @@
   "has_skylight": true,
   "has_ceiling": false,
   "coordinate_scale": 1.0,
-<<<<<<< HEAD
   "ambient_light": 0.0,
-=======
-  "ambient_light": 0.1,
->>>>>>> 1c9c06834353399a3e1c2da334da5b0e243b0b64
   "fixed_time": 18000,
   "monster_spawn_light_level": {
     "type": "minecraft:uniform",
     "value": {
       "min_inclusive": 0,
-<<<<<<< HEAD
       "max_inclusive": 7
     }
   },
@@ -26,15 +21,6 @@
   "logical_height": 384,
   "min_y": -64,
   "height": 384,
-=======
-      "max_inclusive": 0
-    }
-  },
-  "monster_spawn_block_light_limit": 0,
-  "logical_height": 256,
-  "min_y": -64,
-  "height": 256,
->>>>>>> 1c9c06834353399a3e1c2da334da5b0e243b0b64
   "infiniburn": "#minecraft:infiniburn_overworld",
   "effects": "until_eternity:chaos_realm"
 }

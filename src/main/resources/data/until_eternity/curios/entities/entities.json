@@ -4,6 +4,8 @@
     ],
     "slots": [
         "back",
-        "necklace"
+        "necklace",
+        "chest",
+        "magic_ring"
     ]
 }

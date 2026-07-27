@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.carrot123.until_eternity.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "until_eternity.refmap.json",
+  "mixins": [
+    "SoulGreatSwordItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
