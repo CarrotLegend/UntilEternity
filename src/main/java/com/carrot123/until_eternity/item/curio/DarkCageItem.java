@@ -23,8 +23,8 @@ import java.util.UUID;
 
 public class DarkCageItem extends Item implements ICurioItem {
 
-    private static final UUID SPELL_POTENCY_UUID = UUID.fromString("f1a2b3c4-5d6e-7f80-1234-567890abcdef");
-    private static final UUID MAGIC_DAMAGE_UUID = UUID.fromString("a2b3c4d5-6e7f-8a90-2345-678901bcdef0");
+    private static final UUID SPELL_POWER_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef0123456701");
+    private static final UUID SPELL_POTENCY_UUID = UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f01234567802");
 
     public DarkCageItem() {
         super(new Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant());
@@ -35,24 +35,24 @@ public class DarkCageItem extends Item implements ICurioItem {
         Multimap<Attribute, AttributeModifier> modifiers = ArrayListMultimap.create();
 
         // +1 胸饰栏位
-        CuriosApi.addSlotModifier(modifiers, "chest", uuid, 1, AttributeModifier.Operation.ADDITION);
+        CuriosApi.addSlotModifier(modifiers, "body", uuid, 1, AttributeModifier.Operation.ADDITION);
 
-        // +1 巫法强度
+        // +1 巫法强度 (Goety Revelation)
+        Attribute spellPower = ForgeRegistries.ATTRIBUTES.getValue(
+                new ResourceLocation("goety_revelation", "spell_power"));
+        if (spellPower != null) {
+            modifiers.put(spellPower, new AttributeModifier(
+                    SPELL_POWER_UUID, "Dark cage spell power",
+                    1.0, AttributeModifier.Operation.ADDITION));
+        }
+
+        // +15% 法术强效 (Goety)
         Attribute spellPotency = ForgeRegistries.ATTRIBUTES.getValue(
                 new ResourceLocation("goety", "spell_potency"));
         if (spellPotency != null) {
             modifiers.put(spellPotency, new AttributeModifier(
                     SPELL_POTENCY_UUID, "Dark cage spell potency",
-                    1.0, AttributeModifier.Operation.ADDITION));
-        }
-
-        // +5% 魔法伤害
-        Attribute magicDamage = ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("goety", "spell_potency"));
-        if (magicDamage != null) {
-            modifiers.put(magicDamage, new AttributeModifier(
-                    MAGIC_DAMAGE_UUID, "Dark cage magic damage",
-                    0.05, AttributeModifier.Operation.MULTIPLY_BASE));
+                    0.15, AttributeModifier.Operation.MULTIPLY_BASE));
         }
 
         return modifiers;
