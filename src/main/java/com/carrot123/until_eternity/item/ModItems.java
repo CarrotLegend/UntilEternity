@@ -1,12 +1,19 @@
 package com.carrot123.until_eternity.item;
 
+import java.util.UUID;
+
 import com.carrot123.until_eternity.item.curio.DarkCageItem;
+import com.carrot123.until_eternity.item.curio.AttributeCurioItem;
+import com.carrot123.until_eternity.item.curio.CurioAttributeProfile;
 import com.carrot123.until_eternity.item.curio.ImmuneCurioItem;
 import com.carrot123.until_eternity.item.curio.LifeCapItem;
 import com.carrot123.until_eternity.item.curio.MithrilGlovesItem;
-import com.carrot123.until_eternity.item.AncientRockItem;
+import com.carrot123.until_eternity.item.curio.PewterGlovesItem;
+import com.carrot123.until_eternity.item.curio.WarpedRingItem;
+import com.carrot123.until_eternity.item.curio.charm.DivineSoulLampItem;
 import com.carrot123.until_eternity.until_eternity;
 
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
@@ -29,14 +36,46 @@ public class ModItems {
     public static final RegistryObject<Item> SATURATED_FIRE_PARTICLE = ITEMS.register("saturated_fire_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SATURATED_EARTH_PARTICLE = ITEMS.register("saturated_earth_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> FINALITE_INGOT = ITEMS.register("finalite_ingot", () -> new Item(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
-    public static final RegistryObject<Item> ELEMENTAL_GAUNTLET = ITEMS.register("elemental_gauntlet", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
-    public static final RegistryObject<Item> REAPER_TOOTH_NECKLACE = ITEMS.register("reaper_tooth_necklace", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
-    public static final RegistryObject<Item> SAND_SHARK_TOOTH_NECKLACE = ITEMS.register("sand_shark_tooth_necklace", () -> new Item(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> REGENERATOR = ITEMS.register("regenerator", () -> new LifeCapItem(new Item.Properties().stacksTo(1), 0.5f, false));
-    public static final RegistryObject<Item> GUTTERING_CANDLE = ITEMS.register("guttering_candle", () -> new LifeCapItem(new Item.Properties().stacksTo(1), 1.0f, true));
-    public static final RegistryObject<Item> COSMIC_AEGIS = ITEMS.register("cosmic_aegis", () -> new ImmuneCurioItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(), ImmuneCurioItem.CurioType.ALL));
-    public static final RegistryObject<Item> EMPOWERED_SHIELD = ITEMS.register("empowered_shield", () -> new ImmuneCurioItem(new Item.Properties().stacksTo(1).fireResistant(), ImmuneCurioItem.CurioType.LIMITED));
-    public static final RegistryObject<Item> PROOF_OF_SPURNER = ITEMS.register("proof_of_spurner", () -> new ImmuneCurioItem(new Item.Properties().stacksTo(1).fireResistant(), ImmuneCurioItem.CurioType.ALL));
+    public static final RegistryObject<Item> ELEMENTAL_GAUNTLET = ITEMS.register("elemental_gauntlet",
+            () -> new AttributeCurioItem(
+                    new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(),
+                    CurioAttributeProfile.ELEMENTAL_GAUNTLET));
+    public static final RegistryObject<Item> REAPER_TOOTH_NECKLACE = ITEMS.register("reaper_tooth_necklace",
+            () -> new AttributeCurioItem(
+                    new Item.Properties().stacksTo(1).rarity(Rarity.EPIC),
+                    CurioAttributeProfile.REAPER_TOOTH_NECKLACE));
+    public static final RegistryObject<Item> SAND_SHARK_TOOTH_NECKLACE =
+            ITEMS.register("sand_shark_tooth_necklace",
+                    () -> new AttributeCurioItem(
+                            new Item.Properties().stacksTo(1),
+                            CurioAttributeProfile.SAND_SHARK_TOOTH_NECKLACE));
+    public static final RegistryObject<Item> REGENERATOR = ITEMS.register("regenerator",
+            () -> new LifeCapItem(
+                    new Item.Properties().stacksTo(1),
+                    0.5f,
+                    false,
+                    CurioAttributeProfile.REGENERATOR));
+    public static final RegistryObject<Item> GUTTERING_CANDLE = ITEMS.register("guttering_candle",
+            () -> new LifeCapItem(
+                    new Item.Properties().stacksTo(1),
+                    1.0f,
+                    true,
+                    CurioAttributeProfile.GUTTERING_CANDLE));
+    public static final RegistryObject<Item> COSMIC_AEGIS = ITEMS.register("cosmic_aegis",
+            () -> new ImmuneCurioItem(
+                    new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(),
+                    ImmuneCurioItem.CurioType.ALL,
+                    CurioAttributeProfile.COSMIC_AEGIS));
+    public static final RegistryObject<Item> EMPOWERED_SHIELD = ITEMS.register("empowered_shield",
+            () -> new ImmuneCurioItem(
+                    new Item.Properties().stacksTo(1).fireResistant(),
+                    ImmuneCurioItem.CurioType.LIMITED,
+                    CurioAttributeProfile.EMPOWERED_SHIELD));
+    public static final RegistryObject<Item> PROOF_OF_SPURNER = ITEMS.register("proof_of_spurner",
+            () -> new ImmuneCurioItem(
+                    new Item.Properties().stacksTo(1).fireResistant(),
+                    ImmuneCurioItem.CurioType.ALL,
+                    CurioAttributeProfile.PROOF_OF_SPURNER));
     public static final RegistryObject<Item> CRYSTAL_OF_DRAWN_BOW = ITEMS.register("crystal_of_drawn_bow", () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SWORD_WRAITH = ITEMS.register("sword_wraith", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> WROUGHT_IRON = ITEMS.register("wrought_iron", () -> new Item(new Item.Properties()));
@@ -66,7 +105,37 @@ public class ModItems {
     public static final RegistryObject<Item> SPAWNER_FRAGMENT = ITEMS.register("spawner_fragment",
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> MITHRIL_GLOVES = ITEMS.register("mithril_gloves", MithrilGlovesItem::new);
+    public static final RegistryObject<Item> PEWTER_GLOVES = ITEMS.register("pewter_gloves", PewterGlovesItem::new);
+    public static final RegistryObject<Item> DIVINE_SOUL_LAMP =
+            ITEMS.register("divine_soul_lamp", DivineSoulLampItem::new);
     public static final RegistryObject<Item> ROCK = ITEMS.register("rock", AncientRockItem::new);
+
+    // 巫戒
+    public static final RegistryObject<Item> RING_OF_WARPED_MAGIC = ITEMS.register("ring_of_warped_magic",
+            () -> new WarpedRingItem("goety_revelation", "spell_power",
+                    1.0, AttributeModifier.Operation.ADDITION, 3,
+                    UUID.fromString("f1a2b3c4-d5e6-7890-abcd-ef0123456700")));
+    public static final RegistryObject<Item> ADVANCED_RING_OF_WARPED_MAGIC = ITEMS.register("advanced_ring_of_warped_magic",
+            () -> new WarpedRingItem("goety_revelation", "spell_power_multiplier",
+                    1.0, AttributeModifier.Operation.MULTIPLY_BASE, 2,
+                    UUID.fromString("f2a3b4c5-d6e7-8901-bcde-f12345670101")));
+    public static final RegistryObject<Item> RING_OF_SOUL_CRAVING = ITEMS.register("ring_of_soul_craving",
+            () -> new WarpedRingItem("goety_revelation", "soul_increase_efficiency",
+                    0.08, AttributeModifier.Operation.MULTIPLY_BASE, 3,
+                    UUID.fromString("f3a4b5c6-d7e8-9012-cdef-a23456780202")));
+    public static final RegistryObject<Item> RING_OF_PURITY = ITEMS.register("ring_of_purity",
+            () -> new WarpedRingItem("goety_revelation", "soul_decrease_reduction",
+                    0.05, AttributeModifier.Operation.MULTIPLY_BASE, 3,
+                    UUID.fromString("f4a5b6c7-d8e9-0123-defa-b34567890303")));
+    public static final RegistryObject<Item> RING_OF_WARPED_CHANTING = ITEMS.register("ring_of_warped_chanting",
+            () -> new WarpedRingItem("goety_revelation", "cast_duration",
+                    0.05, AttributeModifier.Operation.ADDITION, 3,
+                    UUID.fromString("f5a6b7c8-d9e0-1234-efab-c45678900404")));
+    public static final RegistryObject<Item> RING_OF_WARPED_COOLING = ITEMS.register("ring_of_warped_cooling",
+            () -> new WarpedRingItem("goety_revelation", "spell_duration",
+                    0.05, AttributeModifier.Operation.ADDITION, 3,
+                    UUID.fromString("f6a7b8c9-d0e1-2345-fabc-d56789010505")));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

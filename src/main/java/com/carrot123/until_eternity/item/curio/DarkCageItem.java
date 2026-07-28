@@ -23,6 +23,7 @@ import java.util.UUID;
 
 public class DarkCageItem extends Item implements ICurioItem {
 
+    private static final UUID BODY_SLOT_UUID = UUID.fromString("a0b1c2d3-e4f5-6789-abcd-ef0123456700");
     private static final UUID SPELL_POWER_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef0123456701");
     private static final UUID SPELL_POTENCY_UUID = UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f01234567802");
 
@@ -32,10 +33,19 @@ public class DarkCageItem extends Item implements ICurioItem {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
+        return buildModifiers(uuid);
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(String identifier, ItemStack stack) {
+        return buildModifiers(BODY_SLOT_UUID);
+    }
+
+    private Multimap<Attribute, AttributeModifier> buildModifiers(UUID slotUuid) {
         Multimap<Attribute, AttributeModifier> modifiers = ArrayListMultimap.create();
 
         // +1 胸饰栏位
-        CuriosApi.addSlotModifier(modifiers, "body", uuid, 1, AttributeModifier.Operation.ADDITION);
+        CuriosApi.addSlotModifier(modifiers, "body", slotUuid, 1, AttributeModifier.Operation.ADDITION);
 
         // +1 巫法强度 (Goety Revelation)
         Attribute spellPower = ForgeRegistries.ATTRIBUTES.getValue(

@@ -72,11 +72,46 @@ description='''${mod_description}'''
     side = "BOTH"
 
 [[dependencies.until_eternity]]
+    modId="puffish_attributes"
+    mandatory=true
+    versionRange="[0.8.2,0.9.0)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.until_eternity]]
+    modId="terra_curio"
+    mandatory=true
+    versionRange="[0.2.0,0.3.0)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.until_eternity]]
     modId="legendary_monsters"
     mandatory=true
     # The official 2.1.22 JAR incorrectly declares its mod version as 1.20.1.
     # Gradle pins CurseForge file 8444425, while this range matches its runtime metadata.
     versionRange="[1.20.1]"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.until_eternity]]
+    modId="goety"
+    mandatory=false
+    versionRange="[2.5.46.1,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.until_eternity]]
+    modId="goety_revelation"
+    mandatory=false
+    versionRange="[2.3.2,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.until_eternity]]
+    modId="revelationfix"
+    mandatory=false
+    versionRange="[4.2,)"
     ordering="AFTER"
     side="BOTH"
     

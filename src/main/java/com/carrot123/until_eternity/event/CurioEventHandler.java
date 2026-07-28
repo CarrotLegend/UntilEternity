@@ -9,7 +9,6 @@ import com.carrot123.until_eternity.item.curio.LifeCapItem;
 import com.carrot123.until_eternity.until_eternity;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
@@ -127,16 +126,6 @@ public void onLivingDeath(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
         if (player.level().isClientSide) return;
 
-        ItemStack toStack = event.getTo();
-        ResourceLocation id = ForgeRegistries.ITEMS.getKey(toStack.getItem());
-        // 只处理本模组的物品
-        if (id != null && id.getNamespace().equals(until_eternity.MODID)) {
-            MinecraftServer server = player.getServer();      // 提取服务器对象，避免空指针警告
-            if (server != null) {
-                server.execute(() -> enforceNoDuplicate(player, id));
-            }
-        }
-
         // 清除负面效果（免疫饰品）
         if (hasAnyImmuneCurio(player)) {
             clearExistingImmuneEffects(player);
@@ -177,57 +166,6 @@ public void onLivingDeath(LivingDeathEvent event) {
             }
         }
     }
-
-    /**
-    * 移除多余的相同注册名饰品，仅保留一件。
-    */
-    private void enforceNoDuplicate(Player player, ResourceLocation itemId) {
-        CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
-            List<SlotPos> matchingSlots = new ArrayList<>();
-
-            // 收集所有含有该注册名物品的槽位
-            for (var entry : handler.getCurios().entrySet()) {
-                var stacksHandler = entry.getValue();
-                for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                    ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
-                    if (!stack.isEmpty() && itemId.equals(ForgeRegistries.ITEMS.getKey(stack.getItem()))) {
-                        matchingSlots.add(new SlotPos(entry.getKey(), i));
-                    }
-                }
-            }
-
-            // 如果不超过 1 个，无需处理
-            if (matchingSlots.size() <= 1) return;
-
-            // 保留第一个，移除其余
-            for (int idx = 1; idx < matchingSlots.size(); idx++) {
-                SlotPos pos = matchingSlots.get(idx);
-                var stacksHandler = handler.getCurios().get(pos.slotId);
-                if (stacksHandler == null) continue;
-
-                ItemStack stackToRemove = stacksHandler.getStacks().getStackInSlot(pos.index);
-                if (stackToRemove.isEmpty()) continue;
-
-                // 将多余的饰品放回背包或掉落
-                ItemStack copy = stackToRemove.copy();
-                stacksHandler.getStacks().setStackInSlot(pos.index, ItemStack.EMPTY);
-                if (!player.getInventory().add(copy)) {
-                    player.drop(copy, false);
-                }
-            }
-        });
-    }
-
-// 内部辅助类
-private static class SlotPos {
-    final String slotId;
-    final int index;
-
-    SlotPos(String slotId, int index) {
-        this.slotId = slotId;
-        this.index = index;
-    }
-}
 
     // ==================== 辅助方法 ====================
 

@@ -129,6 +129,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     maven { url 'https://maven.aliyun.com/repository/public' }
     maven { url 'https://maven.minecraftforge.net/' }
+    maven { url 'https://maven.puffish.net' }
     mavenCentral()
     maven {
         url = 'https://cursemaven.com'
@@ -139,6 +140,18 @@ repositories {
     maven {
     name = "Illusive Soulworks maven"
     url = "https://maven.theillusivec4.top/"
+    }
+    exclusiveContent {
+        forRepositories(
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            },
+            fg.repository
+        )
+        filter {
+            includeGroup "maven.modrinth"
+        }
     }
     // Put repositories for dependencies here
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
@@ -158,9 +171,12 @@ dependencies {
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compileOnly(fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1:api"))
+    implementation fg.deobf("net.puffish:attributesmod:0.8.2+1.20:forge")
+    implementation fg.deobf("curse.maven:terra-curio-1027625:7449534")
     implementation fg.deobf("curse.maven:legendary-monsters-944035:8444425")
     implementation fg.deobf("curse.maven:goety-586095:7966952")
     implementation files('libs/GoetyRevelation-2.3.2.jar')
+    runtimeOnly fg.deobf("maven.modrinth:tMycyukv:RTKdreoY")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings

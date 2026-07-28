@@ -46,11 +46,23 @@
   "item.until_eternity.dark_cage": "黑暗之笼",
   "item.until_eternity.spawner_fragment": "刷怪笼碎片",
   "item.until_eternity.mithril_gloves": "秘银手套",
+  "item.until_eternity.pewter_gloves": "白镴手套",
+  "item.until_eternity.ring_of_warped_magic": "巫法之戒",
+  "item.until_eternity.advanced_ring_of_warped_magic": "高级巫法之戒",
+  "item.until_eternity.ring_of_soul_craving": "灵魂渴望之戒",
+  "item.until_eternity.ring_of_purity": "精纯之戒",
+  "item.until_eternity.ring_of_warped_chanting": "巫法吟唱之戒",
+  "item.until_eternity.ring_of_warped_cooling": "巫法冷却之戒",
   "item.until_eternity.rock": "古恒石",
   "block.until_eternity.chaos_portal": "混沌传送门",
+
   "tooltip.until_eternity.dark_cage.line1": "更加强大的诅咒之笼",
-  "tooltip.until_eternity.dark_cage.line2": "卧槽！盒！",
+  "tooltip.until_eternity.dark_cage.line2": "笼，可是......",
   "tooltip.until_eternity.rock.line1": "战斗已然结束，而尘埃尚未落定",
+  "tooltip.until_eternity.mithril_gloves.line1": "具有极高法术亲和",
+  "tooltip.until_eternity.mithril_gloves.line2": "能够将戒指造成的法术负荷降低到普通人能承受的水准",
+  "tooltip.until_eternity.pewter_gloves.line1": "具有极高巫法亲和",
+  "tooltip.until_eternity.pewter_gloves.line2": "能够将戒指造成的巫法负担降低到普通人能承受的水准",
   "tooltip.until_eternity.soul_great_sword.bleeding": "§6暴击时有 50% 概率使目标陷入§4流血§6。",
   "tooltip.until_eternity.soul_great_sword.rage": "§6右键使用：§r获得 10 秒灵魂之怒。",
   "tooltip.until_eternity.soul_great_sword.rage_attributes": "§6灵魂之怒：§a攻击速度 +0.5，护甲值 +6，盔甲韧性 +1。",
@@ -75,5 +87,11 @@
   "death.attack.untilEternity.frostBitten.player": "%1$s 被 %2$s 冻成了冰雕",
   
   "biome.until_eternity.chaos_plains": "混沌平原",
-  "biome.until_eternity.chaos_river": "混沌河流"
+  "biome.until_eternity.chaos_river": "混沌河流",
+
+  "curios.identifier.magic_ring": "法戒",
+  "curios.modifiers.magic_ring": "佩戴法戒时：",
+  "curios.identifier.warped_ring": "巫戒",
+  "curios.modifiers.warped_ring": "佩戴巫戒时：",
+  "item.until_eternity.divine_soul_lamp": "神灵魂灯"
 }

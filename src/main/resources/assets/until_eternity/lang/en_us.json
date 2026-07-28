@@ -45,14 +45,25 @@
   "item.until_eternity.dark_cage": "Dark Cage",
   "item.until_eternity.spawner_fragment": "Spawner Fragment",
   "item.until_eternity.mithril_gloves": "Mithril Gloves",
+  "item.until_eternity.pewter_gloves": "Pewter Gloves",
+  "item.until_eternity.ring_of_warped_magic": "Ring of Warped Magic",
+  "item.until_eternity.advanced_ring_of_warped_magic": "Advanced Ring of Warped Magic",
+  "item.until_eternity.ring_of_soul_craving": "Ring of Soul Craving",
+  "item.until_eternity.ring_of_purity": "Ring of Purity",
+  "item.until_eternity.ring_of_warped_chanting": "Ring of Warped Chanting",
+  "item.until_eternity.ring_of_warped_cooling": "Ring of Warped Cooling",
   "item.until_eternity.rock": "Ancient Rock",
   "block.until_eternity.chaos_portal": "Chaos Portal",
   "tooltip.until_eternity.dark_cage.line1": "A more powerful cursed cage",
-  "tooltip.until_eternity.dark_cage.line2": "WTF! Box!",
+  "tooltip.until_eternity.dark_cage.line2": " Dragon,is...",
   "tooltip.until_eternity.rock.line1": "The battle has ended, yet the dust has not settled",
-  "tooltip.until_eternity.soul_great_sword.bleeding": "Critical hits have a 50% chance to inflict Bleeding.",
-  "tooltip.until_eternity.soul_great_sword.rage": "Right-click: Gain Soul Rage for 10 seconds.",
-  "tooltip.until_eternity.soul_great_sword.rage_attributes": "Soul Rage: +0.5 Attack Speed, +6 Armor, +1 Armor Toughness.",
+  "tooltip.until_eternity.mithril_gloves.line1": "Extremely high spell affinity",
+  "tooltip.until_eternity.mithril_gloves.line2": "Reduces the spell burden of rings to a level ordinary people can bear",
+  "tooltip.until_eternity.pewter_gloves.line1": "Extremely high warped magic affinity",
+  "tooltip.until_eternity.pewter_gloves.line2": "Reduces the warped burden of rings to a level ordinary people can bear",
+  "tooltip.until_eternity.soul_great_sword.bleeding": "\u00a76Critical hits have a 50% chance to inflict \u00a74Bleeding\u00a76.",
+  "tooltip.until_eternity.soul_great_sword.rage": "\u00a76Right-click: \u00a7rGain Soul Rage for 10 seconds.",
+  "tooltip.until_eternity.soul_great_sword.rage_attributes": "\u00a76Soul Rage: \u00a7a+0.5 Attack Speed, +6 Armor, +1 Armor Toughness.",
 
   "enchantment.until_eternity.power": "Power",
   "enchantment.until_eternity.curse_of_hunger": "Curse of Hunger",
@@ -74,5 +85,11 @@
   "death.attack.untilEternity.frostBitten.player": "%1$s was frozen into an ice sculpture by %2$s",
 
   "biome.until_eternity.chaos_plains": "Chaos Plains",
-  "biome.until_eternity.chaos_river": "Chaos River"
+  "biome.until_eternity.chaos_river": "Chaos River",
+
+  "curios.identifier.magic_ring": "Magic Ring",
+  "curios.modifiers.magic_ring": "When worn as Magic Ring:",
+  "curios.identifier.warped_ring": "Warped Ring",
+  "curios.modifiers.warped_ring": "When worn as Warped Ring:",
+  "item.until_eternity.divine_soul_lamp": "Divine Soul Lamp"
 }

@@ -19,39 +19,39 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class MithrilGlovesItem extends Item implements ICurioItem {
+public class PewterGlovesItem extends Item implements ICurioItem {
 
-    private static final UUID MAGIC_RING_SLOT_UUID = UUID.fromString("c4d5e6f7-8a90-0b12-4567-890123def012");
+    private static final UUID WARPED_RING_SLOT_UUID = UUID.fromString("e5f6a7b8-c9d0-1234-ef56-789012abcd34");
 
-    public MithrilGlovesItem() {
+    public PewterGlovesItem() {
         super(new Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant());
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(
+            SlotContext slotContext, UUID uuid, ItemStack stack) {
         return buildModifiers(uuid);
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(String identifier, ItemStack stack) {
-        return buildModifiers(MAGIC_RING_SLOT_UUID);
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(
+            String identifier, ItemStack stack) {
+        return buildModifiers(WARPED_RING_SLOT_UUID);
     }
 
     private Multimap<Attribute, AttributeModifier> buildModifiers(UUID slotUuid) {
         Multimap<Attribute, AttributeModifier> modifiers = ArrayListMultimap.create();
-
-        // +8 法戒槽位
-        CuriosApi.addSlotModifier(modifiers, "magic_ring", slotUuid, 8, AttributeModifier.Operation.ADDITION);
-
+        CuriosApi.addSlotModifier(modifiers, "warped_ring", slotUuid,
+                8, AttributeModifier.Operation.ADDITION);
         return modifiers;
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level,
                                 List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.until_eternity.mithril_gloves.line1")
-                .withStyle(ChatFormatting.DARK_AQUA));
-        tooltip.add(Component.translatable("tooltip.until_eternity.mithril_gloves.line2")
+        tooltip.add(Component.translatable("tooltip.until_eternity.pewter_gloves.line1")
+                .withStyle(ChatFormatting.DARK_PURPLE));
+        tooltip.add(Component.translatable("tooltip.until_eternity.pewter_gloves.line2")
                 .withStyle(ChatFormatting.GRAY));
     }
 }

@@ -10,33 +10,12 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.UUID;
 
-public class LifeCapItem extends Item implements ICurioItem {
-    private final float maxHealthFraction;   // 比例值，如 0.5
-    private final boolean useAbsolute;       // true 表示固定数值（1）
+public class AttributeCurioItem extends Item implements ICurioItem {
     private final CurioAttributeProfile attributeProfile;
 
-    /**
-     * @param maxFraction 当 useAbsolute=false 时，为最大生命值的比例（0~1）；
-     *                    当 useAbsolute=true 时，为固定生命值（如 1）。
-     */
-    public LifeCapItem(
-            Properties properties,
-            float maxFraction,
-            boolean absolute,
-            CurioAttributeProfile attributeProfile
-    ) {
+    public AttributeCurioItem(Properties properties, CurioAttributeProfile attributeProfile) {
         super(properties);
-        this.maxHealthFraction = maxFraction;
-        this.useAbsolute = absolute;
         this.attributeProfile = attributeProfile;
-    }
-
-    public float getMaxHealthFraction() {
-        return maxHealthFraction;
-    }
-
-    public boolean isAbsolute() {
-        return useAbsolute;
     }
 
     @Override

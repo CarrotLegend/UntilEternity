@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "until_eternity:item/pewter_gloves"
+  }
+}

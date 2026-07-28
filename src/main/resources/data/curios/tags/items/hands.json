@@ -1,5 +1,8 @@
 {
   "replace": false,
   "values": [
+    "until_eternity:elemental_gauntlet",
+    "until_eternity:mithril_gloves",
+    "until_eternity:pewter_gloves"
   ]
 }
