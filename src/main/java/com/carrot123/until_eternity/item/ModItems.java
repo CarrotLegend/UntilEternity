@@ -1,18 +1,23 @@
 package com.carrot123.until_eternity.item;
 
-import java.util.UUID;
-
+import com.carrot123.until_eternity.compat.GoetyRevelationAttributesCompat;
 import com.carrot123.until_eternity.item.curio.DarkCageItem;
+import com.carrot123.until_eternity.item.curio.DyingFuryItem;
 import com.carrot123.until_eternity.item.curio.AttributeCurioItem;
 import com.carrot123.until_eternity.item.curio.CurioAttributeProfile;
+import com.carrot123.until_eternity.item.curio.CurioAttributeSpec;
 import com.carrot123.until_eternity.item.curio.ImmuneCurioItem;
+import com.carrot123.until_eternity.item.curio.IronAttributeCurioItem;
 import com.carrot123.until_eternity.item.curio.LifeCapItem;
 import com.carrot123.until_eternity.item.curio.MithrilGlovesItem;
 import com.carrot123.until_eternity.item.curio.PewterGlovesItem;
+import com.carrot123.until_eternity.item.curio.VoidRingItem;
 import com.carrot123.until_eternity.item.curio.WarpedRingItem;
 import com.carrot123.until_eternity.item.curio.charm.DivineSoulLampItem;
 import com.carrot123.until_eternity.until_eternity;
+import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -22,6 +27,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.List;
 
 @SuppressWarnings("null")
 public class ModItems {
@@ -108,33 +115,82 @@ public class ModItems {
     public static final RegistryObject<Item> PEWTER_GLOVES = ITEMS.register("pewter_gloves", PewterGlovesItem::new);
     public static final RegistryObject<Item> DIVINE_SOUL_LAMP =
             ITEMS.register("divine_soul_lamp", DivineSoulLampItem::new);
+    public static final RegistryObject<Item> DYING_FURY =
+            ITEMS.register("dying_fury", DyingFuryItem::new);
     public static final RegistryObject<Item> ROCK = ITEMS.register("rock", AncientRockItem::new);
+
+    // Iron's Spells 'n Spellbooks Curios
+    public static final RegistryObject<Item> EMPOWERED_RING =
+            ITEMS.register("empowered_ring",
+                    () -> new IronAttributeCurioItem(
+                            new Item.Properties().rarity(Rarity.RARE).fireResistant(),itemId("empowered_ring"),
+                            List.of(CurioAttributeSpec.of(
+                                    AttributeRegistry.SPELL_POWER::get,
+                                    "empowered_ring/spell_power",0.10D,AttributeModifier.Operation.ADDITION)),3));
+    public static final RegistryObject<Item> ADVANCED_EMPOWERED_RING =
+            ITEMS.register("advanced_empowered_ring",
+                    () -> new IronAttributeCurioItem(
+                            new Item.Properties().rarity(Rarity.EPIC).fireResistant(),itemId("advanced_empowered_ring"),
+                            List.of(CurioAttributeSpec.of(
+                                    AttributeRegistry.SPELL_POWER::get,
+                                    "advanced_empowered_ring/spell_power",0.20D,AttributeModifier.Operation.ADDITION)),2));
+    public static final RegistryObject<Item> AETHERLIGHT_RING =
+            ITEMS.register("aetherlight_ring",
+                    () -> new IronAttributeCurioItem(
+                            new Item.Properties().rarity(Rarity.EPIC).fireResistant(),itemId("aetherlight_ring"),
+                            List.of(
+                                    CurioAttributeSpec.of(
+                                            AttributeRegistry.SPELL_POWER::get,"aetherlight_ring/spell_power",0.25D,AttributeModifier.Operation.ADDITION),
+                                    CurioAttributeSpec.of(
+                                            AttributeRegistry.MAX_MANA::get,"aetherlight_ring/max_mana",200.0D,AttributeModifier.Operation.ADDITION),
+                                    CurioAttributeSpec.of(
+                                            AttributeRegistry.MANA_REGEN::get,"aetherlight_ring/mana_regen",0.15D,AttributeModifier.Operation.MULTIPLY_BASE)),1));
+    public static final RegistryObject<Item> RESONANCE_ARMOR =
+            ITEMS.register("resonance_armor",
+                    () -> new IronAttributeCurioItem(
+                            new Item.Properties().rarity(Rarity.EPIC).fireResistant(),itemId("resonance_armor"),
+                            List.of(CurioAttributeSpec.of(
+                                    AttributeRegistry.COOLDOWN_REDUCTION::get,"resonance_armor/cooldown_reduction",0.10D,AttributeModifier.Operation.MULTIPLY_BASE)),1));
 
     // 巫戒
     public static final RegistryObject<Item> RING_OF_WARPED_MAGIC = ITEMS.register("ring_of_warped_magic",
-            () -> new WarpedRingItem("goety_revelation", "spell_power",
-                    1.0, AttributeModifier.Operation.ADDITION, 3,
-                    UUID.fromString("f1a2b3c4-d5e6-7890-abcd-ef0123456700")));
+            () -> new WarpedRingItem(itemId("ring_of_warped_magic"),
+                    goetyRevelationAttribute("spell_power"), "spell_power",
+                    4.0, AttributeModifier.Operation.ADDITION, 3));
     public static final RegistryObject<Item> ADVANCED_RING_OF_WARPED_MAGIC = ITEMS.register("advanced_ring_of_warped_magic",
-            () -> new WarpedRingItem("goety_revelation", "spell_power_multiplier",
-                    1.0, AttributeModifier.Operation.MULTIPLY_BASE, 2,
-                    UUID.fromString("f2a3b4c5-d6e7-8901-bcde-f12345670101")));
+            () -> new WarpedRingItem(itemId("advanced_ring_of_warped_magic"),
+                    goetyRevelationAttribute("spell_power_multiplier"),
+                    "spell_power_multiplier",
+                    1.0, AttributeModifier.Operation.ADDITION, 2));
     public static final RegistryObject<Item> RING_OF_SOUL_CRAVING = ITEMS.register("ring_of_soul_craving",
-            () -> new WarpedRingItem("goety_revelation", "soul_increase_efficiency",
-                    0.08, AttributeModifier.Operation.MULTIPLY_BASE, 3,
-                    UUID.fromString("f3a4b5c6-d7e8-9012-cdef-a23456780202")));
+            () -> new WarpedRingItem(itemId("ring_of_soul_craving"),
+                    goetyRevelationAttribute("soul_increase_efficiency"),
+                    "soul_increase_efficiency",
+                    0.08, AttributeModifier.Operation.MULTIPLY_BASE, 3));
     public static final RegistryObject<Item> RING_OF_PURITY = ITEMS.register("ring_of_purity",
-            () -> new WarpedRingItem("goety_revelation", "soul_decrease_reduction",
-                    0.05, AttributeModifier.Operation.MULTIPLY_BASE, 3,
-                    UUID.fromString("f4a5b6c7-d8e9-0123-defa-b34567890303")));
+            () -> new WarpedRingItem(itemId("ring_of_purity"),
+                    goetyRevelationAttribute("soul_decrease_reduction"),
+                    "soul_decrease_reduction",
+                    0.05, AttributeModifier.Operation.MULTIPLY_BASE, 3));
     public static final RegistryObject<Item> RING_OF_WARPED_CHANTING = ITEMS.register("ring_of_warped_chanting",
-            () -> new WarpedRingItem("goety_revelation", "cast_duration",
-                    0.05, AttributeModifier.Operation.ADDITION, 3,
-                    UUID.fromString("f5a6b7c8-d9e0-1234-efab-c45678900404")));
+            () -> new WarpedRingItem(itemId("ring_of_warped_chanting"),
+                    goetyRevelationAttribute("cast_duration"), "cast_duration",
+                    0.05, AttributeModifier.Operation.ADDITION, 3));
     public static final RegistryObject<Item> RING_OF_WARPED_COOLING = ITEMS.register("ring_of_warped_cooling",
-            () -> new WarpedRingItem("goety_revelation", "spell_duration",
-                    0.05, AttributeModifier.Operation.ADDITION, 3,
-                    UUID.fromString("f6a7b8c9-d0e1-2345-fabc-d56789010505")));
+            () -> new WarpedRingItem(itemId("ring_of_warped_cooling"),
+                    GoetyRevelationAttributesCompat.SPELL_COOLDOWN,
+                    "spell_cooldown",
+                    0.05, AttributeModifier.Operation.ADDITION, 3));
+    public static final RegistryObject<Item> VOID_RING =
+            ITEMS.register("void_ring", VoidRingItem::new);
+
+    private static ResourceLocation goetyRevelationAttribute(String path) {
+        return new ResourceLocation("goety_revelation", path);
+    }
+
+    private static ResourceLocation itemId(String path) {
+        return new ResourceLocation(until_eternity.MODID, path);
+    }
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

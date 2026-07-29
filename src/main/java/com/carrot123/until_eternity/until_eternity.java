@@ -8,6 +8,7 @@ import com.carrot123.until_eternity.event.CurioEventHandler;
 import com.carrot123.until_eternity.event.EnchantmentEventHandler;
 import com.carrot123.until_eternity.item.ModCreativeModeTabs;
 import com.carrot123.until_eternity.item.ModItems;
+import com.carrot123.until_eternity.loot.ModLootModifiers;
 import com.carrot123.until_eternity.particle.ModParticles;
 import com.mojang.logging.LogUtils;
 
@@ -48,6 +49,7 @@ public class until_eternity
         ModEnchantments.register(modEventBus);
         ModParticles.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
+        ModLootModifiers.register(modEventBus);
 
 
         // Register ourselves for server and other game events we are interested in

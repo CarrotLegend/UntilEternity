@@ -66,12 +66,18 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.MITHRIL_GLOVES.get());
                 output.accept(ModItems.PEWTER_GLOVES.get());
                 output.accept(ModItems.DIVINE_SOUL_LAMP.get());
+                output.accept(ModItems.DYING_FURY.get());
+                output.accept(ModItems.EMPOWERED_RING.get());
+                output.accept(ModItems.ADVANCED_EMPOWERED_RING.get());
+                output.accept(ModItems.AETHERLIGHT_RING.get());
+                output.accept(ModItems.RESONANCE_ARMOR.get());
                 output.accept(ModItems.RING_OF_WARPED_MAGIC.get());
                 output.accept(ModItems.ADVANCED_RING_OF_WARPED_MAGIC.get());
                 output.accept(ModItems.RING_OF_SOUL_CRAVING.get());
                 output.accept(ModItems.RING_OF_PURITY.get());
                 output.accept(ModItems.RING_OF_WARPED_CHANTING.get());
                 output.accept(ModItems.RING_OF_WARPED_COOLING.get());
+                output.accept(ModItems.VOID_RING.get());
                 output.accept(ModItems.ROCK.get());
             }).build());
 

@@ -2,8 +2,7 @@ package com.carrot123.until_eternity.item.curio;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -11,64 +10,77 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class CurioAttributeProfileTest {
-    private static final UUID FIRST_SLOT =
-            UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
-    private static final UUID SECOND_SLOT =
-            UUID.fromString("11111111-2222-3333-4444-555555555555");
-
-    private static final List<String> SALTS = List.of(
-            "elemental_gauntlet/melee_damage",
-            "elemental_gauntlet/attack_speed",
-            "elemental_gauntlet/attack_knockback",
-            "elemental_gauntlet/entity_reach",
-            "reaper_tooth_necklace/melee_damage",
-            "reaper_tooth_necklace/armor_pass",
-            "sand_shark_tooth_necklace/melee_damage",
-            "sand_shark_tooth_necklace/armor_pass",
-            "regenerator/healing",
-            "regenerator/max_health",
-            "guttering_candle/max_health",
-            "empowered_shield/armor",
-            "empowered_shield/armor_toughness",
-            "empowered_shield/knockback_resistance",
-            "cosmic_aegis/armor",
-            "cosmic_aegis/armor_toughness",
-            "cosmic_aegis/knockback_resistance",
-            "proof_of_spurner/attack_damage",
-            "proof_of_spurner/attack_speed",
-            "proof_of_spurner/knockback",
-            "proof_of_spurner/max_health",
-            "proof_of_spurner/armor",
-            "proof_of_spurner/armor_toughness",
-            "proof_of_spurner/damage_resistance",
-            "proof_of_spurner/armor_penetration",
-            "proof_of_spurner/enchantment_piercing"
-    );
+    private static final UUID SLOT_UUID =
+            UUID.fromString("12345678-1234-5678-9abc-def012345678");
 
     @Test
-    void allModifierSaltsAreUniqueWithinOneSlot() {
-        Set<UUID> uuids = SALTS.stream()
-                .map(salt -> CurioAttributeProfile.deriveModifierUuid(FIRST_SLOT, salt))
-                .collect(Collectors.toSet());
-
-        assertEquals(SALTS.size(), uuids.size());
+    void modifierKeysWithinEveryProfileAreUniqueForOneSlot() {
+        for (CurioAttributeProfile profile : CurioAttributeProfile.values()) {
+            long unique = profile.modifierSpecs().stream()
+                    .map(spec -> CurioModifierId.create(
+                            SLOT_UUID, spec.modifierKey()))
+                    .distinct()
+                    .count();
+            assertEquals(profile.expectedModifierCount(), unique, profile.name());
+        }
     }
 
     @Test
-    void derivationIsStable() {
-        String salt = "proof_of_spurner/attack_damage";
+    void sameSlotAndKeyAreStable() {
         assertEquals(
-                CurioAttributeProfile.deriveModifierUuid(FIRST_SLOT, salt),
-                CurioAttributeProfile.deriveModifierUuid(FIRST_SLOT, salt)
+                CurioModifierId.create(
+                        SLOT_UUID, "attack_damage"),
+                CurioModifierId.create(
+                        SLOT_UUID, "attack_damage")
         );
     }
 
     @Test
-    void differentSlotsDoNotShareModifierUuids() {
-        String salt = "regenerator/max_health";
+    void sameKeyInDifferentSlotsDoesNotShareUuid() {
         assertNotEquals(
-                CurioAttributeProfile.deriveModifierUuid(FIRST_SLOT, salt),
-                CurioAttributeProfile.deriveModifierUuid(SECOND_SLOT, salt)
+                CurioModifierId.create(
+                        SLOT_UUID, "max_health"),
+                CurioModifierId.create(
+                        UUID.fromString("87654321-4321-8765-cba9-876543210fed"),
+                        "max_health")
         );
+    }
+
+    @Test
+    void profilesDeclareTheExpectedModifierCounts() {
+        Map<CurioAttributeProfile, Integer> expectedCounts = Map.of(
+                CurioAttributeProfile.ELEMENTAL_GAUNTLET, 4,
+                CurioAttributeProfile.REAPER_TOOTH_NECKLACE, 2,
+                CurioAttributeProfile.SAND_SHARK_TOOTH_NECKLACE, 2,
+                CurioAttributeProfile.REGENERATOR, 2,
+                CurioAttributeProfile.GUTTERING_CANDLE, 1,
+                CurioAttributeProfile.EMPOWERED_SHIELD, 3,
+                CurioAttributeProfile.COSMIC_AEGIS, 3,
+                CurioAttributeProfile.PROOF_OF_SPURNER, 9
+        );
+
+        expectedCounts.forEach((profile, count) ->
+                assertEquals(count.intValue(), profile.expectedModifierCount()));
+    }
+
+    @Test
+    void proofOfSpurnerKeepsEveryModifierValueAndOperation() {
+        Map<String, String> actual = CurioAttributeProfile.PROOF_OF_SPURNER
+                .modifierSpecs().stream()
+                .collect(Collectors.toMap(
+                        CurioAttributeSpec::modifierKey,
+                        spec -> spec.amount() + "/" + spec.operation()));
+
+        assertEquals(Map.of(
+                "attack_damage", "2.0/MULTIPLY_TOTAL",
+                "attack_speed", "0.15/MULTIPLY_TOTAL",
+                "knockback", "1.0/MULTIPLY_TOTAL",
+                "max_health", "100.0/ADDITION",
+                "armor", "8.0/ADDITION",
+                "armor_toughness", "4.0/ADDITION",
+                "damage_resistance", "0.7/MULTIPLY_TOTAL",
+                "armor_penetration", "1.0/MULTIPLY_TOTAL",
+                "enchantment_piercing", "0.5/MULTIPLY_TOTAL"
+        ), actual);
     }
 }

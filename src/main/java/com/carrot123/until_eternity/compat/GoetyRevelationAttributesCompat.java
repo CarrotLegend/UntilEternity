@@ -21,6 +21,16 @@ public final class GoetyRevelationAttributesCompat {
             new ResourceLocation("goety_revelation", "armor_penetration");
     public static final ResourceLocation ENCHANTMENT_PIERCING =
             new ResourceLocation("goety_revelation", "enchantment_piercing");
+    public static final ResourceLocation SPELL_COOLDOWN =
+            new ResourceLocation("goety_revelation", "spell_cooldown");
+    public static final ResourceLocation SPELL_POWER =
+            new ResourceLocation("goety_revelation", "spell_power");
+    public static final ResourceLocation SPELL_POWER_MULTIPLIER =
+            new ResourceLocation("goety_revelation", "spell_power_multiplier");
+    public static final ResourceLocation SOUL_DECREASE_REDUCTION =
+            new ResourceLocation("goety_revelation", "soul_decrease_reduction");
+    public static final ResourceLocation SOUL_INCREASE_EFFICIENCY =
+            new ResourceLocation("goety_revelation", "soul_increase_efficiency");
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Map<ResourceLocation, Attribute> CACHE = new HashMap<>();
@@ -35,7 +45,7 @@ public final class GoetyRevelationAttributesCompat {
         if (!ModList.get().isLoaded("goety_revelation")
                 || !ModList.get().isLoaded("revelationfix")) {
             if (MISSING_MODS_WARNED.compareAndSet(false, true)) {
-                LOGGER.warn("Proof of God-Spurner Revelation attributes are disabled because "
+                LOGGER.warn("Goety Revelation attribute integration is disabled because "
                         + "Goety Revelation or RevelationFix is not loaded");
             }
             return null;

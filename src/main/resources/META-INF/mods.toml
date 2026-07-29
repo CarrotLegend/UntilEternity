@@ -72,6 +72,13 @@ description='''${mod_description}'''
     side = "BOTH"
 
 [[dependencies.until_eternity]]
+    modId="irons_spellbooks"
+    mandatory=true
+    versionRange="[1.20.1-3.15.6]"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.until_eternity]]
     modId="puffish_attributes"
     mandatory=true
     versionRange="[0.8.2,0.9.0)"

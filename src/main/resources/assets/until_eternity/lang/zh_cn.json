@@ -93,5 +93,19 @@
   "curios.modifiers.magic_ring": "佩戴法戒时：",
   "curios.identifier.warped_ring": "巫戒",
   "curios.modifiers.warped_ring": "佩戴巫戒时：",
-  "item.until_eternity.divine_soul_lamp": "神灵魂灯"
+  "item.until_eternity.divine_soul_lamp": "神灵魂灯",
+  "item.until_eternity.void_ring": "虚空之戒",
+  "item.until_eternity.dying_fury": "垂死之怒",
+  "tooltip.until_eternity.dying_fury.effect": "每损失1点生命值，造成的所有伤害提高0.2%。",
+  "item.until_eternity.empowered_ring": "强效之戒",
+  "item.until_eternity.advanced_empowered_ring": "进阶强效之戒",
+  "item.until_eternity.aetherlight_ring": "以太光戒",
+  "item.until_eternity.resonance_armor": "反韵之甲",
+  "tooltip.until_eternity.resonance_armor.mana_power": "每剩余 1 点法力，法术能效提高 0.1%。",
+  "enchantment.until_eternity.empowerment": "强能",
+  "enchantment.until_eternity.empowerment.desc": "每级使使用该法杖施放的法术获得 5% 法术强度。",
+  "enchantment.until_eternity.plenitude": "饱满",
+  "enchantment.until_eternity.plenitude.desc": "每级使使用该法杖施放的法术消耗降低 5%。",
+  "enchantment.until_eternity.curse_of_hunger.desc": "每级增加 5% 饱食度消耗。",
+  "enchantment.until_eternity.curse_of_short_life.desc": "使用时每秒减少 1 点耐久度。"
 }

@@ -6,9 +6,7 @@ import java.util.Set;
 
 import com.carrot123.until_eternity.item.curio.ImmuneCurioItem;
 import com.carrot123.until_eternity.item.curio.LifeCapItem;
-import com.carrot123.until_eternity.until_eternity;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
@@ -31,7 +29,6 @@ import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
@@ -170,21 +167,9 @@ public void onLivingDeath(LivingDeathEvent event) {
     // ==================== 辅助方法 ====================
 
     private boolean hasProofOfSpurner(Player player) {
-    return CuriosApi.getCuriosInventory(player).map(handler -> {
-        for (var stacksHandler : handler.getCurios().values()) {
-            for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
-                // 通过注册名精确识别 proof_of_spurner，避免误判其他 ImmuneCurioItem
-                ResourceLocation id = ForgeRegistries.ITEMS.getKey(stack.getItem());
-                if (id != null
-                    && id.getNamespace().equals(until_eternity.MODID)
-                    && id.getPath().equals("proof_of_spurner")) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }).orElse(false);
+        return CuriosApi.getCuriosInventory(player)
+                .map(handler -> handler.isEquipped(ModItems.PROOF_OF_SPURNER.get()))
+                .orElse(false);
 }
 
     private boolean isFireDamage(DamageSource source) {

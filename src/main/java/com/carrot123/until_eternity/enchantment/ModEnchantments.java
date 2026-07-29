@@ -17,6 +17,8 @@ public class ModEnchantments {
             EnchantmentCategory.create("until_eternity_curse_equippable", item -> item.getMaxStackSize() == 1);
     public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, until_eternity.MODID);
     public static final RegistryObject<Enchantment> POWER = ENCHANTMENTS.register("power", PowerEnchantment::new);
+    public static final RegistryObject<Enchantment> EMPOWERMENT = ENCHANTMENTS.register("empowerment", EmpowermentEnchantment::new);
+    public static final RegistryObject<Enchantment> PLENITUDE = ENCHANTMENTS.register("plenitude", PlenitudeEnchantment::new);
     public static final RegistryObject<Enchantment> CURSE_OF_HUNGER = ENCHANTMENTS.register("curse_of_hunger", CurseOfHungerEnchantment::new);
     public static final RegistryObject<Enchantment> CURSE_OF_SHORT_LIFE = ENCHANTMENTS.register("curse_of_short_life", CurseOfShortLifeEnchantment::new);
 

@@ -91,5 +91,19 @@
   "curios.modifiers.magic_ring": "When worn as Magic Ring:",
   "curios.identifier.warped_ring": "Warped Ring",
   "curios.modifiers.warped_ring": "When worn as Warped Ring:",
-  "item.until_eternity.divine_soul_lamp": "Divine Soul Lamp"
+  "item.until_eternity.divine_soul_lamp": "Divine Soul Lamp",
+  "item.until_eternity.void_ring": "Void Ring",
+  "item.until_eternity.dying_fury": "Dying Fury",
+  "tooltip.until_eternity.dying_fury.effect": "Increases all damage dealt by 0.2% for each missing health point.",
+  "item.until_eternity.empowered_ring": "Empowered Ring",
+  "item.until_eternity.advanced_empowered_ring": "Advanced Empowered Ring",
+  "item.until_eternity.aetherlight_ring": "Aetherlight Ring",
+  "item.until_eternity.resonance_armor": "Resonance Armor",
+  "tooltip.until_eternity.resonance_armor.mana_power": "Increases spell power by 0.1% for each remaining mana point.",
+  "enchantment.until_eternity.empowerment": "Empowerment",
+  "enchantment.until_eternity.empowerment.desc": "Each level grants spells cast with this staff 5% spell power.",
+  "enchantment.until_eternity.plenitude": "Plenitude",
+  "enchantment.until_eternity.plenitude.desc": "Each level reduces the mana cost of spells cast with this staff by 5%.",
+  "enchantment.until_eternity.curse_of_hunger.desc": "Increase satiety consumption rate by 5% per level.",
+  "enchantment.until_eternity.curse_of_short_life.desc": "Reduces durability by 1 point when in use."
 }

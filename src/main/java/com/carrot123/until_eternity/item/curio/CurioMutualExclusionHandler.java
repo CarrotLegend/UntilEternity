@@ -47,7 +47,9 @@ public final class CurioMutualExclusionHandler {
     }
 
     public static boolean canEquip(SlotContext targetContext, ItemStack candidate) {
-        if (candidate.isEmpty() || targetContext.entity() == null) {
+        if (candidate.isEmpty()
+                || targetContext == null
+                || targetContext.entity() == null) {
             return true;
         }
 

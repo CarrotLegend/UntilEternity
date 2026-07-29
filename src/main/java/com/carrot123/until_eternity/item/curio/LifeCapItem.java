@@ -1,19 +1,11 @@
 package com.carrot123.until_eternity.item.curio;
 
-import com.google.common.collect.Multimap;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-import java.util.UUID;
-
-public class LifeCapItem extends Item implements ICurioItem {
+public class LifeCapItem extends BaseModCurioItem {
     private final float maxHealthFraction;   // 比例值，如 0.5
     private final boolean useAbsolute;       // true 表示固定数值（1）
-    private final CurioAttributeProfile attributeProfile;
 
     /**
      * @param maxFraction 当 useAbsolute=false 时，为最大生命值的比例（0~1）；
@@ -25,10 +17,9 @@ public class LifeCapItem extends Item implements ICurioItem {
             boolean absolute,
             CurioAttributeProfile attributeProfile
     ) {
-        super(properties);
+        super(properties, attributeProfile.itemId(), attributeProfile.modifierSpecs());
         this.maxHealthFraction = maxFraction;
         this.useAbsolute = absolute;
-        this.attributeProfile = attributeProfile;
     }
 
     public float getMaxHealthFraction() {
@@ -40,16 +31,8 @@ public class LifeCapItem extends Item implements ICurioItem {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(
-            SlotContext slotContext,
-            UUID slotUuid,
-            ItemStack stack
-    ) {
-        return attributeProfile.getModifiers(slotContext, slotUuid);
-    }
-
-    @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        return CurioMutualExclusionHandler.canEquip(slotContext, stack);
+        return super.canEquip(slotContext, stack)
+                && CurioMutualExclusionHandler.canEquip(slotContext, stack);
     }
 }

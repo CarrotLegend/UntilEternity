@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "until_eternity:divine_soul_lamp"
+    "until_eternity:divine_soul_lamp",
+    "until_eternity:regenerator",
+    "until_eternity:guttering_candle",
+    "until_eternity:proof_of_spurner",
+    "until_eternity:dying_fury"
   ]
 }

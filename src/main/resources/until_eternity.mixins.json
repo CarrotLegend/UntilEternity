@@ -5,7 +5,17 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "until_eternity.refmap.json",
   "mixins": [
-    "SoulGreatSwordItemMixin"
+    "SoulGreatSwordItemMixin",
+    "compat.irons_spellbooks.AbstractSpellMixin",
+    "compat.irons_spellbooks.CastingItemMixin",
+    "compat.irons_spellbooks.CurioBaseItemMixin",
+    "compat.irons_spellbooks.MagicManagerMixin",
+    "compat.irons_spellbooks.ServerPlayerEventsMixin",
+    "compat.irons_spellbooks.TeleportationAmuletItemMixin"
+  ],
+  "client": [
+    "compat.irons_spellbooks.SpellWheelOverlayMixin",
+    "compat.irons_spellbooks.TooltipsUtilsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
