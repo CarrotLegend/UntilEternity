@@ -5,9 +5,7 @@ import io.redspace.ironsspellbooks.item.curios.CurioBaseItem;
 import io.redspace.ironsspellbooks.item.curios.TeleportationAmuletItem;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.capabilities.magic.MagicManager;
-import io.redspace.ironsspellbooks.item.CastingItem;
 import io.redspace.ironsspellbooks.player.ServerPlayerEvents;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -93,13 +91,6 @@ class IronsSpellbooks3156ContractTest {
                 "lambda$tick$0",
                 boolean.class,
                 Player.class).getReturnType());
-        assertEquals(
-                net.minecraft.world.InteractionResultHolder.class,
-                CastingItem.class.getDeclaredMethod(
-                        "use",
-                        Level.class,
-                        Player.class,
-                        InteractionHand.class).getReturnType());
         assertEquals(void.class, ServerPlayerEvents.class.getDeclaredMethod(
                 "onUseItem",
                 PlayerInteractEvent.RightClickItem.class).getReturnType());

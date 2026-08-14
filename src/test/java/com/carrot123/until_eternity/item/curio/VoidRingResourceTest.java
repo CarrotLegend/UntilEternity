@@ -77,13 +77,18 @@ class VoidRingResourceTest {
                 .forEach(value -> mixins.add(value.getAsString()));
 
         assertEquals(Set.of(
+                "ItemStackHoverNameMixin",
+                "FoodDataMixin",
+                "ManaEruptionStackingMixin",
                 "SoulGreatSwordItemMixin",
+                "compat.eeeabsmobs.BlockErosionPortalMixin",
+                "compat.irons_spellbooks.AbstractSpellCastingContextMixin",
                 "compat.irons_spellbooks.AbstractSpellMixin",
-                "compat.irons_spellbooks.CastingItemMixin",
                 "compat.irons_spellbooks.CurioBaseItemMixin",
                 "compat.irons_spellbooks.MagicManagerMixin",
                 "compat.irons_spellbooks.ServerPlayerEventsMixin",
-                "compat.irons_spellbooks.TeleportationAmuletItemMixin"
+                "compat.irons_spellbooks.TeleportationAmuletItemMixin",
+                "compat.thirst.PlayerThirstMixin"
         ), mixins);
         assertFalse(Files.exists(Path.of(
                 "src", "main", "java", "com", "carrot123",

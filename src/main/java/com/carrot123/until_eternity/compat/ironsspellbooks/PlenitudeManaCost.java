@@ -2,11 +2,8 @@ package com.carrot123.until_eternity.compat.ironsspellbooks;
 
 import com.carrot123.until_eternity.enchantment.ActualEnchantmentLevel;
 import com.carrot123.until_eternity.enchantment.ModEnchantments;
-import com.carrot123.until_eternity.compat.ScopedValueStack;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.function.Supplier;
 
 public final class PlenitudeManaCost {
     public static final double REDUCTION_PER_LEVEL = 0.05D;
@@ -52,44 +49,4 @@ public final class PlenitudeManaCost {
         return Math.max(1, reducedCost);
     }
 
-    public static ItemStack currentCastingStack() {
-        return CastingContexts.CONTEXTS
-                .current(CastingContexts.EMPTY)
-                .stack();
-    }
-
-    public static CastSource currentCastSource() {
-        return CastingContexts.CONTEXTS
-                .current(CastingContexts.EMPTY)
-                .source();
-    }
-
-    public static <T> T withCastingStack(
-            ItemStack castingStack,
-            CastSource castSource,
-            Supplier<T> action
-    ) {
-        return CastingContexts.CONTEXTS.withValue(
-                new CastingContext(
-                        castingStack == null
-                                ? ItemStack.EMPTY
-                                : castingStack,
-                        castSource == null
-                                ? CastSource.NONE
-                                : castSource),
-                action);
-    }
-
-    private record CastingContext(ItemStack stack, CastSource source) {
-    }
-
-    private static final class CastingContexts {
-        private static final ScopedValueStack<CastingContext> CONTEXTS =
-                new ScopedValueStack<>();
-        private static final CastingContext EMPTY =
-                new CastingContext(ItemStack.EMPTY, CastSource.NONE);
-
-        private CastingContexts() {
-        }
-    }
 }

@@ -29,11 +29,5 @@ public final class PlenitudeTooltipEvents {
         event.getToolTip().add(Component.translatable(
                         "enchantment.until_eternity.plenitude.desc")
                 .withStyle(ChatFormatting.GRAY));
-        event.getToolTip().add(Component.translatable(
-                        "enchantment.until_eternity.plenitude.limit")
-                .withStyle(ChatFormatting.GRAY));
-        event.getToolTip().add(Component.translatable(
-                        "enchantment.until_eternity.plenitude.minimum")
-                .withStyle(ChatFormatting.GRAY));
     }
 }

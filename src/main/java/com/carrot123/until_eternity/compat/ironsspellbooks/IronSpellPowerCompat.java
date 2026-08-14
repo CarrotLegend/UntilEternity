@@ -26,7 +26,8 @@ public final class IronSpellPowerCompat {
         }
 
         MagicData magicData = MagicData.getPlayerMagicData(caster);
-        ItemStack castingStack = magicData.getPlayerCastingItem();
+        ItemStack castingStack = IronCastingContext.preferMagicDataStack(
+                magicData.getPlayerCastingItem());
         int empowermentLevel = EmpowermentLevel.read(castingStack);
         boolean hasResonanceArmor =
                 CurioEquipmentHelper.countEquipped(

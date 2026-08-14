@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "until_eternity:block/final_key_mold" },
+    "facing=east": { "model": "until_eternity:block/final_key_mold", "y": 90 },
+    "facing=south": { "model": "until_eternity:block/final_key_mold", "y": 180 },
+    "facing=west": { "model": "until_eternity:block/final_key_mold", "y": 270 }
+  }
+}

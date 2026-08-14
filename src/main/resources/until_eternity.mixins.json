@@ -5,15 +5,21 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "until_eternity.refmap.json",
   "mixins": [
+    "ItemStackHoverNameMixin",
+    "FoodDataMixin",
+    "ManaEruptionStackingMixin",
     "SoulGreatSwordItemMixin",
+    "compat.eeeabsmobs.BlockErosionPortalMixin",
+    "compat.irons_spellbooks.AbstractSpellCastingContextMixin",
     "compat.irons_spellbooks.AbstractSpellMixin",
-    "compat.irons_spellbooks.CastingItemMixin",
     "compat.irons_spellbooks.CurioBaseItemMixin",
     "compat.irons_spellbooks.MagicManagerMixin",
     "compat.irons_spellbooks.ServerPlayerEventsMixin",
-    "compat.irons_spellbooks.TeleportationAmuletItemMixin"
+    "compat.irons_spellbooks.TeleportationAmuletItemMixin",
+    "compat.thirst.PlayerThirstMixin"
   ],
   "client": [
+    "client.HorrorHuntSelectedItemNameMixin",
     "compat.irons_spellbooks.SpellWheelOverlayMixin",
     "compat.irons_spellbooks.TooltipsUtilsMixin"
   ],

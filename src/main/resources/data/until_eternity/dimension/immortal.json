@@ -1,0 +1,22 @@
+{
+  "type": "until_eternity:immortal",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "until_eternity:immortal_wasteland",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:stone",
+          "height": 63
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

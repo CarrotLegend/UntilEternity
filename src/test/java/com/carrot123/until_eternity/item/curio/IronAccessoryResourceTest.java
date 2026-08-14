@@ -24,7 +24,8 @@ class IronAccessoryResourceTest {
             "empowered_ring",
             "advanced_empowered_ring",
             "aetherlight_ring",
-            "resonance_armor");
+            "resonance_armor",
+            "greater_arcane_ring");
 
     @Test
     void registrationsUseDistinctIdsLimitsAndIronAttributes()
@@ -69,7 +70,8 @@ class IronAccessoryResourceTest {
         assertEquals(Set.of(
                 "until_eternity:empowered_ring",
                 "until_eternity:advanced_empowered_ring",
-                "until_eternity:aetherlight_ring"),
+                "until_eternity:aetherlight_ring",
+                "until_eternity:greater_arcane_ring"),
                 values("magic_ring.json"));
         assertTrue(values("accessory.json").contains(
                 "until_eternity:resonance_armor"));
@@ -87,7 +89,8 @@ class IronAccessoryResourceTest {
                 "empowered_ring", "Empowered Ring",
                 "advanced_empowered_ring", "Advanced Empowered Ring",
                 "aetherlight_ring", "Aetherlight Ring",
-                "resonance_armor", "Resonance Armor");
+                "resonance_armor", "Resonance Armor",
+                "greater_arcane_ring", "Greater Arcane Ring");
         JsonObject english = readJson(RESOURCES.resolve(Path.of(
                 "assets", "until_eternity", "lang", "en_us.json")));
         JsonObject chinese = readJson(RESOURCES.resolve(Path.of(
@@ -119,6 +122,10 @@ class IronAccessoryResourceTest {
                 "enchantment.until_eternity.empowerment.desc"));
         assertTrue(chinese.has(
                 "enchantment.until_eternity.empowerment.desc"));
+        assertFalse(Files.exists(ROOT.resolve(Path.of(
+                "src", "main", "java", "com", "carrot123",
+                "until_eternity", "event",
+                "EmpowermentTooltipEvents.java"))));
     }
 
     @Test

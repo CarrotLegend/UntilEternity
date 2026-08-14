@@ -1,11 +1,14 @@
 package com.carrot123.until_eternity.item;
 
 import com.carrot123.until_eternity.until_eternity;
+import com.carrot123.until_eternity.registry.ModPotions;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -24,6 +27,9 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.DRAGONBREATH_INGOT.get());
                 output.accept(ModItems.ELEMENTAL_CORE.get());
                 output.accept(ModItems.FINALITE_INGOT.get());
+                output.accept(ModItems.FINAL_KEY.get());
+                output.accept(ModItems.FINAL_KEY_MOLD.get());
+                output.accept(ModItems.FINAL_KEY_CASTING_FLUID.get());
                 output.accept(ModItems.SATURATED_EARTH_PARTICLE.get());
                 output.accept(ModItems.SATURATED_FIRE_PARTICLE.get());
                 output.accept(ModItems.SATURATED_GOLD_PARTICLE.get());
@@ -67,10 +73,12 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.PEWTER_GLOVES.get());
                 output.accept(ModItems.DIVINE_SOUL_LAMP.get());
                 output.accept(ModItems.DYING_FURY.get());
+                output.accept(ModItems.HORROR_HUNT.get());
                 output.accept(ModItems.EMPOWERED_RING.get());
                 output.accept(ModItems.ADVANCED_EMPOWERED_RING.get());
                 output.accept(ModItems.AETHERLIGHT_RING.get());
                 output.accept(ModItems.RESONANCE_ARMOR.get());
+                output.accept(ModItems.GREATER_ARCANE_RING.get());
                 output.accept(ModItems.RING_OF_WARPED_MAGIC.get());
                 output.accept(ModItems.ADVANCED_RING_OF_WARPED_MAGIC.get());
                 output.accept(ModItems.RING_OF_SOUL_CRAVING.get());
@@ -79,6 +87,12 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.RING_OF_WARPED_COOLING.get());
                 output.accept(ModItems.VOID_RING.get());
                 output.accept(ModItems.ROCK.get());
+                output.accept(PotionUtils.setPotion(
+                    new ItemStack(Items.POTION),
+                    ModPotions.MANA_ERUPTION_LONG.get()));
+                output.accept(PotionUtils.setPotion(
+                    new ItemStack(Items.POTION),
+                    ModPotions.MANA_ERUPTION_STRONG.get()));
             }).build());
 
     public static void register(IEventBus eventBus) {

@@ -44,7 +44,8 @@ class StaticCurioMigrationTest {
             "until_eternity:empowered_ring",
             "until_eternity:advanced_empowered_ring",
             "until_eternity:aetherlight_ring",
-            "until_eternity:resonance_armor"
+            "until_eternity:resonance_armor",
+            "until_eternity:greater_arcane_ring"
     );
 
     @Test
@@ -61,8 +62,9 @@ class StaticCurioMigrationTest {
             }
         }
         tagged.remove("until_eternity:dying_fury");
+        tagged.remove("until_eternity:horror_hunt");
 
-        assertEquals(23, STATIC_CURIOS.size());
+        assertEquals(24, STATIC_CURIOS.size());
         assertEquals(STATIC_CURIOS, tagged);
     }
 

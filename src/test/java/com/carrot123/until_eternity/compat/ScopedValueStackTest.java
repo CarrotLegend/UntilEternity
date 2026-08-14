@@ -3,7 +3,9 @@ package com.carrot123.until_eternity.compat;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ScopedValueStackTest {
     @Test
@@ -25,6 +27,23 @@ class ScopedValueStackTest {
                 context.withValue("failure", () -> {
                     throw new IllegalStateException("expected");
                 }));
+        assertEquals("none", context.current("none"));
+    }
+
+    @Test
+    void cleansUpAfterBothBooleanReturnValues() {
+        ScopedValueStack<String> context = new ScopedValueStack<>();
+
+        assertTrue(context.withValue("true", () -> {
+            assertEquals("true", context.current("none"));
+            return true;
+        }));
+        assertEquals("none", context.current("none"));
+
+        assertFalse(context.withValue("false", () -> {
+            assertEquals("false", context.current("none"));
+            return false;
+        }));
         assertEquals("none", context.current("none"));
     }
 }

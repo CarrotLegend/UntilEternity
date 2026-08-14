@@ -10,6 +10,9 @@ import com.carrot123.until_eternity.item.ModCreativeModeTabs;
 import com.carrot123.until_eternity.item.ModItems;
 import com.carrot123.until_eternity.loot.ModLootModifiers;
 import com.carrot123.until_eternity.particle.ModParticles;
+import com.carrot123.until_eternity.recipe.ModRecipeSerializers;
+import com.carrot123.until_eternity.registry.ModMobEffects;
+import com.carrot123.until_eternity.registry.ModPotions;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
@@ -50,6 +53,9 @@ public class until_eternity
         ModParticles.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
         ModLootModifiers.register(modEventBus);
+        ModRecipeSerializers.register(modEventBus);
+        ModMobEffects.register(modEventBus);
+        ModPotions.register(modEventBus);
 
 
         // Register ourselves for server and other game events we are interested in

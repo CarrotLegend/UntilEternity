@@ -93,6 +93,15 @@ description='''${mod_description}'''
     side="BOTH"
 
 [[dependencies.until_eternity]]
+    modId="eeeabsmobs"
+    mandatory=true
+    # CurseForge file 6095880 pins the 0.97-Fix build, whose embedded
+    # metadata reports 1.20.1-0.97 without the Fix suffix.
+    versionRange="[1.20.1-0.97]"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.until_eternity]]
     modId="legendary_monsters"
     mandatory=true
     # The official 2.1.22 JAR incorrectly declares its mod version as 1.20.1.
@@ -103,7 +112,7 @@ description='''${mod_description}'''
 
 [[dependencies.until_eternity]]
     modId="goety"
-    mandatory=false
+    mandatory=true
     versionRange="[2.5.46.1,)"
     ordering="AFTER"
     side="BOTH"
@@ -112,6 +121,13 @@ description='''${mod_description}'''
     modId="goety_revelation"
     mandatory=false
     versionRange="[2.3.2,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.until_eternity]]
+    modId="thirst"
+    mandatory=true
+    versionRange="[1.20.1-1.4.0]"
     ordering="AFTER"
     side="BOTH"
 

@@ -48,12 +48,12 @@ public class EnchantmentEventHandler {
                             AttributeModifier.Operation.ADDITION));
         }
 
-        // +2% 攻击伤害 每级
+        // +15% 攻击伤害 每级
         if (event.getOriginalModifiers().containsKey(Attributes.ATTACK_DAMAGE)) {
             event.addModifier(Attributes.ATTACK_DAMAGE,
                     new AttributeModifier(POWER_ATTACK_DAMAGE_UUID,
                             "Power attack damage bonus",
-                            0.02 * level,
+                            0.15 * level,
                             AttributeModifier.Operation.MULTIPLY_BASE));
         }
     }

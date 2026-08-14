@@ -15,6 +15,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> CHAOS_PORTAL = BLOCKS.register("chaos_portal",
             ChaosPortalBlock::new);
 
+    public static final RegistryObject<Block> FINAL_KEY_MOLD = BLOCKS.register("final_key_mold",
+            FinalKeyMoldBlock::new);
+
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }

@@ -102,10 +102,6 @@ class PlenitudeResourceTest {
                     "enchantment.until_eternity.plenitude"));
             assertTrue(translations.has(
                     "enchantment.until_eternity.plenitude.desc"));
-            assertTrue(translations.has(
-                    "enchantment.until_eternity.plenitude.limit"));
-            assertTrue(translations.has(
-                    "enchantment.until_eternity.plenitude.minimum"));
         }
     }
 

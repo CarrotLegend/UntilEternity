@@ -1,8 +1,10 @@
 package com.carrot123.until_eternity.item;
 
 import com.carrot123.until_eternity.compat.GoetyRevelationAttributesCompat;
+import com.carrot123.until_eternity.block.ModBlocks;
 import com.carrot123.until_eternity.item.curio.DarkCageItem;
 import com.carrot123.until_eternity.item.curio.DyingFuryItem;
+import com.carrot123.until_eternity.item.curio.HorrorHuntItem;
 import com.carrot123.until_eternity.item.curio.AttributeCurioItem;
 import com.carrot123.until_eternity.item.curio.CurioAttributeProfile;
 import com.carrot123.until_eternity.item.curio.CurioAttributeSpec;
@@ -20,6 +22,7 @@ import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
@@ -43,6 +46,12 @@ public class ModItems {
     public static final RegistryObject<Item> SATURATED_FIRE_PARTICLE = ITEMS.register("saturated_fire_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SATURATED_EARTH_PARTICLE = ITEMS.register("saturated_earth_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> FINALITE_INGOT = ITEMS.register("finalite_ingot", () -> new Item(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
+    public static final RegistryObject<Item> FINAL_KEY = ITEMS.register("final_key",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> FINAL_KEY_MOLD = ITEMS.register("final_key_mold",
+            () -> new BlockItem(ModBlocks.FINAL_KEY_MOLD.get(), new Item.Properties()));
+    public static final RegistryObject<Item> FINAL_KEY_CASTING_FLUID = ITEMS.register("final_key_casting_fluid",
+            () -> new Item(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> ELEMENTAL_GAUNTLET = ITEMS.register("elemental_gauntlet",
             () -> new AttributeCurioItem(
                     new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(),
@@ -117,6 +126,8 @@ public class ModItems {
             ITEMS.register("divine_soul_lamp", DivineSoulLampItem::new);
     public static final RegistryObject<Item> DYING_FURY =
             ITEMS.register("dying_fury", DyingFuryItem::new);
+    public static final RegistryObject<Item> HORROR_HUNT =
+            ITEMS.register("horror_hunt", HorrorHuntItem::new);
     public static final RegistryObject<Item> ROCK = ITEMS.register("rock", AncientRockItem::new);
 
     // Iron's Spells 'n Spellbooks Curios
@@ -126,21 +137,21 @@ public class ModItems {
                             new Item.Properties().rarity(Rarity.RARE).fireResistant(),itemId("empowered_ring"),
                             List.of(CurioAttributeSpec.of(
                                     AttributeRegistry.SPELL_POWER::get,
-                                    "empowered_ring/spell_power",0.10D,AttributeModifier.Operation.ADDITION)),3));
+                                    "empowered_ring/spell_power",0.10D,AttributeModifier.Operation.MULTIPLY_BASE)),3));
     public static final RegistryObject<Item> ADVANCED_EMPOWERED_RING =
             ITEMS.register("advanced_empowered_ring",
                     () -> new IronAttributeCurioItem(
                             new Item.Properties().rarity(Rarity.EPIC).fireResistant(),itemId("advanced_empowered_ring"),
                             List.of(CurioAttributeSpec.of(
                                     AttributeRegistry.SPELL_POWER::get,
-                                    "advanced_empowered_ring/spell_power",0.20D,AttributeModifier.Operation.ADDITION)),2));
+                                    "advanced_empowered_ring/spell_power",0.20D,AttributeModifier.Operation.MULTIPLY_BASE)),2));
     public static final RegistryObject<Item> AETHERLIGHT_RING =
             ITEMS.register("aetherlight_ring",
                     () -> new IronAttributeCurioItem(
                             new Item.Properties().rarity(Rarity.EPIC).fireResistant(),itemId("aetherlight_ring"),
                             List.of(
                                     CurioAttributeSpec.of(
-                                            AttributeRegistry.SPELL_POWER::get,"aetherlight_ring/spell_power",0.25D,AttributeModifier.Operation.ADDITION),
+                                            AttributeRegistry.SPELL_POWER::get,"aetherlight_ring/spell_power",0.25D,AttributeModifier.Operation.MULTIPLY_BASE),
                                     CurioAttributeSpec.of(
                                             AttributeRegistry.MAX_MANA::get,"aetherlight_ring/max_mana",200.0D,AttributeModifier.Operation.ADDITION),
                                     CurioAttributeSpec.of(
@@ -150,7 +161,18 @@ public class ModItems {
                     () -> new IronAttributeCurioItem(
                             new Item.Properties().rarity(Rarity.EPIC).fireResistant(),itemId("resonance_armor"),
                             List.of(CurioAttributeSpec.of(
-                                    AttributeRegistry.COOLDOWN_REDUCTION::get,"resonance_armor/cooldown_reduction",0.10D,AttributeModifier.Operation.MULTIPLY_BASE)),1));
+                                    AttributeRegistry.COOLDOWN_REDUCTION::get,"resonance_armor/cooldown_reduction",0.10D,AttributeModifier.Operation.MULTIPLY_BASE)),1,
+                            "tooltip.until_eternity.resonance_armor.mana_power"));
+    public static final RegistryObject<Item> GREATER_ARCANE_RING =
+            ITEMS.register("greater_arcane_ring",
+                    () -> new IronAttributeCurioItem(
+                            new Item.Properties().rarity(Rarity.RARE).fireResistant(),itemId("greater_arcane_ring"),
+                            List.of(
+                                    CurioAttributeSpec.of(
+                                            AttributeRegistry.MAX_MANA::get,"greater_arcane_ring/max_mana_flat",400.0D,AttributeModifier.Operation.ADDITION),
+                                    CurioAttributeSpec.of(
+                                            AttributeRegistry.MAX_MANA::get,"greater_arcane_ring/max_mana_percent",0.10D,AttributeModifier.Operation.MULTIPLY_BASE)),3,
+                            "tooltip.until_eternity.greater_arcane_ring.mana_regeneration"));
 
     // 巫戒
     public static final RegistryObject<Item> RING_OF_WARPED_MAGIC = ITEMS.register("ring_of_warped_magic",
