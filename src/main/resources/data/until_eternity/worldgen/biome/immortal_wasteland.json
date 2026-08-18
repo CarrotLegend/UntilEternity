@@ -52,7 +52,10 @@
     [],
     [],
     [],
-    [],
+    [
+      "until_eternity:statue",
+      "until_eternity:broken_statue"
+    ],
     []
   ]
 }
