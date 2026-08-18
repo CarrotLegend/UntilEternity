@@ -3,6 +3,7 @@ package com.carrot123.until_eternity.event;
 import com.carrot123.until_eternity.until_eternity;
 import com.carrot123.until_eternity.worldgen.ImmortalDimensions;
 import com.eeeab.eeeabsmobs.sever.init.EntityInit;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Monster;
@@ -18,6 +19,9 @@ import java.util.Set;
 @Mod.EventBusSubscriber(modid = until_eternity.MODID,
         bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ImmortalSpawnEvents {
+    public static final String ALTAR_SUMMONED_TAG =
+            "until_eternity:immortal_altar_summoned";
+
     private static final Set<MobSpawnType> NATURAL_ECOLOGY_TYPES =
             EnumSet.of(
                     MobSpawnType.NATURAL,
@@ -37,6 +41,10 @@ public final class ImmortalSpawnEvents {
     public static void onSpawnPlacement(
             MobSpawnEvent.SpawnPlacementCheck event) {
         if (!isImmortalDimension(event.getLevel())) {
+            return;
+        }
+
+        if (isTriggeredImmortalBoss(event.getEntityType(), event.getSpawnType())) {
             return;
         }
 
@@ -60,9 +68,24 @@ public final class ImmortalSpawnEvents {
     public static void onFinalizeSpawn(MobSpawnEvent.FinalizeSpawn event) {
         if (isImmortalDimension(event.getLevel())
                 && isNaturalEcology(event.getSpawnType())
+                && !isAltarSummonedImmortal(event.getEntity(), event.getSpawnType())
                 && !isAllowedEntity(event.getEntity().getType())) {
             event.setSpawnCancelled(true);
         }
+    }
+
+    static boolean isTriggeredImmortalBoss(
+            EntityType<?> entityType,
+            MobSpawnType spawnType) {
+        return spawnType == MobSpawnType.TRIGGERED
+                && entityType == EntityInit.IMMORTAL_BOSS.get();
+    }
+
+    static boolean isAltarSummonedImmortal(
+            Entity entity,
+            MobSpawnType spawnType) {
+        return isTriggeredImmortalBoss(entity.getType(), spawnType)
+                && entity.getPersistentData().getBoolean(ALTAR_SUMMONED_TAG);
     }
 
     static boolean isNaturalEcology(MobSpawnType spawnType) {

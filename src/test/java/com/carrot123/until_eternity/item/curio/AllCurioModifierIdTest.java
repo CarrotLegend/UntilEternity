@@ -69,7 +69,7 @@ class AllCurioModifierIdTest {
         result.put("proof_of_spurner", List.of(
                 "attack_damage", "attack_speed", "knockback", "max_health",
                 "armor", "armor_toughness", "damage_resistance",
-                "armor_penetration", "enchantment_piercing"));
+                "armor_shred", "protection_shred"));
         result.put("dark_cage", List.of(
                 "body_slots", "spell_power", "spell_potency"));
         result.put("mithril_gloves", List.of("magic_ring_slots"));

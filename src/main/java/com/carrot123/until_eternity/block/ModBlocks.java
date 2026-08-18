@@ -18,6 +18,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> FINAL_KEY_MOLD = BLOCKS.register("final_key_mold",
             FinalKeyMoldBlock::new);
 
+    public static final RegistryObject<Block> IMMORTAL_ALTAR = BLOCKS.register("immortal_altar",
+            ImmortalAltarBlock::new);
+
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }

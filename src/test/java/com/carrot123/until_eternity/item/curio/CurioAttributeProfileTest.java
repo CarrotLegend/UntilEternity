@@ -79,8 +79,8 @@ class CurioAttributeProfileTest {
                 "armor", "8.0/ADDITION",
                 "armor_toughness", "4.0/ADDITION",
                 "damage_resistance", "0.7/MULTIPLY_TOTAL",
-                "armor_penetration", "1.0/MULTIPLY_TOTAL",
-                "enchantment_piercing", "0.5/MULTIPLY_TOTAL"
+                "armor_shred", "1.0/MULTIPLY_BASE",
+                "protection_shred", "0.5/MULTIPLY_BASE"
         ), actual);
     }
 }

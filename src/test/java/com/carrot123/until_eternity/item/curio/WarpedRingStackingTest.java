@@ -15,23 +15,24 @@ class WarpedRingStackingTest {
             "until_eternity");
 
     @Test
-    void registrationsRestoreThePreviousTwoAndThreeRingLimits()
+    void registrationsUseCurrentAmountsAndTwoOrThreeRingLimits()
             throws IOException {
         String items = Files.readString(JAVA.resolve("item/ModItems.java"));
+        String normalizedItems = items.replaceAll("\\s+", " ");
 
         assertTrue(items.contains(
-                "4.0, AttributeModifier.Operation.ADDITION, 3)"));
+                "0.15, AttributeModifier.Operation.ADDITION, 3)"));
         assertTrue(items.contains(
-                "1.0, AttributeModifier.Operation.ADDITION, 2)"));
+                "0.3, AttributeModifier.Operation.ADDITION, 2)"));
         assertTrue(items.contains(
                 "0.08, AttributeModifier.Operation.MULTIPLY_BASE, 3)"));
         assertTrue(items.contains(
                 "0.05, AttributeModifier.Operation.MULTIPLY_BASE, 3)"));
         assertTrue(items.contains(
                 "0.05, AttributeModifier.Operation.ADDITION, 3)"));
-        assertTrue(items.contains(
-                "SPELL_COOLDOWN,\n                    \"spell_cooldown\",\n"
-                        + "                    0.05, "
+        assertTrue(normalizedItems.contains(
+                "GoetyRevelationAttributesCompat.SPELL_COOLDOWN, "
+                        + "\"spell_cooldown\", 0.05, "
                         + "AttributeModifier.Operation.ADDITION, 3)"));
     }
 

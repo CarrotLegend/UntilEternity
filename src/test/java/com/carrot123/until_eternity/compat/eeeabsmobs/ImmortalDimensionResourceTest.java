@@ -112,6 +112,11 @@ class ImmortalDimensionResourceTest {
                 "Monster.checkAnyLightMonsterSpawnRules"));
         assertTrue(spawnSource.contains("EventPriority.LOWEST"));
         assertTrue(spawnSource.contains("event.setSpawnCancelled(true)"));
+        assertTrue(spawnSource.contains(
+                "until_eternity:immortal_altar_summoned"));
+        assertTrue(spawnSource.contains("isAltarSummonedImmortal("));
+        assertTrue(spawnSource.contains(
+                "entity.getPersistentData().getBoolean(ALTAR_SUMMONED_TAG)"));
 
         String mixin = Files.readString(JAVA.resolve(Path.of(
                 "mixin", "compat", "eeeabsmobs",

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "until_eternity:block/immortal_altar"
+  }
+}

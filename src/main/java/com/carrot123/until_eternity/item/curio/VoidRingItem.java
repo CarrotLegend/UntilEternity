@@ -10,8 +10,8 @@ import top.theillusivec4.curios.api.SlotContext;
 import java.util.List;
 
 public final class VoidRingItem extends BaseModCurioItem {
-    static final double SPELL_POWER_AMOUNT = 16.0D;
-    static final double SPELL_POWER_MULTIPLIER_AMOUNT = 4.0D;
+    static final double SPELL_POWER_AMOUNT = 2.0D;
+    static final double SPELL_POWER_MULTIPLIER_AMOUNT = 1.0D;
     static final int MAX_EQUIPPED = 1;
     private static final ResourceLocation ITEM_ID =
             new ResourceLocation("until_eternity", "void_ring");

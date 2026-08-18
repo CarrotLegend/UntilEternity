@@ -32,15 +32,19 @@ class FinalKeyCastingResourceTest {
         assertTrue(blocks.contains("BLOCKS.register(\"final_key_mold\""));
         String normalizedItems = items.replaceAll("\\s+", " ");
         assertTrue(normalizedItems.contains(
-                "FINAL_KEY = ITEMS.register(\"final_key\", () -> new Item(new Item.Properties().stacksTo(1)))"));
+                "FINAL_KEY = ITEMS.register(\"final_key\", () -> new Item(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant()))"));
         assertTrue(normalizedItems.contains(
-                "FINAL_KEY_CASTING_FLUID = ITEMS.register(\"final_key_casting_fluid\", () -> new Item(new Item.Properties().stacksTo(1)))"));
+                "FINAL_KEY_MOLD = ITEMS.register(\"final_key_mold\", () -> new BlockItem(ModBlocks.FINAL_KEY_MOLD.get(), new Item.Properties().rarity(Rarity.EPIC).fireResistant()))"));
+        assertTrue(normalizedItems.contains(
+                "FINAL_KEY_CASTING_FLUID = ITEMS.register(\"final_key_casting_fluid\", () -> new Item(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant()))"));
 
         int finalite = creativeTab.indexOf("output.accept(ModItems.FINALITE_INGOT.get())");
         int key = creativeTab.indexOf("output.accept(ModItems.FINAL_KEY.get())");
         int mold = creativeTab.indexOf("output.accept(ModItems.FINAL_KEY_MOLD.get())");
         int fluid = creativeTab.indexOf("output.accept(ModItems.FINAL_KEY_CASTING_FLUID.get())");
-        assertTrue(finalite < key && key < mold && mold < fluid);
+        int universalTemplate = creativeTab.indexOf(
+                "output.accept(ModItems.UNIVERSAL_SMITHING_TEMPLATE.get())");
+        assertTrue(finalite < key && key < mold && mold < fluid && fluid < universalTemplate);
     }
 
     @Test

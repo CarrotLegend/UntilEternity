@@ -16,7 +16,9 @@
           "height": 63
         }
       ],
-      "structure_overrides": []
+      "structure_overrides": [
+        "until_eternity:immortal_duel_arena"
+      ]
     }
   }
 }

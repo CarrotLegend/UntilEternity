@@ -2,6 +2,7 @@ package com.carrot123.until_eternity.item;
 
 import com.carrot123.until_eternity.compat.GoetyRevelationAttributesCompat;
 import com.carrot123.until_eternity.block.ModBlocks;
+import com.carrot123.until_eternity.block.ImmortalAltarBlockItem;
 import com.carrot123.until_eternity.item.curio.DarkCageItem;
 import com.carrot123.until_eternity.item.curio.DyingFuryItem;
 import com.carrot123.until_eternity.item.curio.HorrorHuntItem;
@@ -47,11 +48,15 @@ public class ModItems {
     public static final RegistryObject<Item> SATURATED_EARTH_PARTICLE = ITEMS.register("saturated_earth_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> FINALITE_INGOT = ITEMS.register("finalite_ingot", () -> new Item(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
     public static final RegistryObject<Item> FINAL_KEY = ITEMS.register("final_key",
-            () -> new Item(new Item.Properties().stacksTo(1)));
+            () -> new Item(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant()));
     public static final RegistryObject<Item> FINAL_KEY_MOLD = ITEMS.register("final_key_mold",
-            () -> new BlockItem(ModBlocks.FINAL_KEY_MOLD.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.FINAL_KEY_MOLD.get(), new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
     public static final RegistryObject<Item> FINAL_KEY_CASTING_FLUID = ITEMS.register("final_key_casting_fluid",
-            () -> new Item(new Item.Properties().stacksTo(1)));
+            () -> new Item(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant()));
+    public static final RegistryObject<UniversalSmithingTemplateItem> UNIVERSAL_SMITHING_TEMPLATE =
+            ITEMS.register("universal_smithing_template", UniversalSmithingTemplateItem::new);
+    public static final RegistryObject<Item> IMMORTAL_ALTAR = ITEMS.register("immortal_altar",
+            () -> new ImmortalAltarBlockItem(ModBlocks.IMMORTAL_ALTAR.get(), new Item.Properties()));
     public static final RegistryObject<Item> ELEMENTAL_GAUNTLET = ITEMS.register("elemental_gauntlet",
             () -> new AttributeCurioItem(
                     new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(),
@@ -178,12 +183,12 @@ public class ModItems {
     public static final RegistryObject<Item> RING_OF_WARPED_MAGIC = ITEMS.register("ring_of_warped_magic",
             () -> new WarpedRingItem(itemId("ring_of_warped_magic"),
                     goetyRevelationAttribute("spell_power"), "spell_power",
-                    4.0, AttributeModifier.Operation.ADDITION, 3));
+                    0.15, AttributeModifier.Operation.ADDITION, 3));
     public static final RegistryObject<Item> ADVANCED_RING_OF_WARPED_MAGIC = ITEMS.register("advanced_ring_of_warped_magic",
             () -> new WarpedRingItem(itemId("advanced_ring_of_warped_magic"),
                     goetyRevelationAttribute("spell_power_multiplier"),
                     "spell_power_multiplier",
-                    1.0, AttributeModifier.Operation.ADDITION, 2));
+                    0.3, AttributeModifier.Operation.ADDITION, 2));
     public static final RegistryObject<Item> RING_OF_SOUL_CRAVING = ITEMS.register("ring_of_soul_craving",
             () -> new WarpedRingItem(itemId("ring_of_soul_craving"),
                     goetyRevelationAttribute("soul_increase_efficiency"),

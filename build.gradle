@@ -181,9 +181,12 @@ dependencies {
     compileOnly(fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1:api"))
     implementation fg.deobf("net.puffish:attributesmod:0.8.2+1.20:forge")
     implementation fg.deobf("curse.maven:terra-curio-1027625:7449534")
+    implementation fg.deobf("curse.maven:obscure-api-638417:7171906")
     // File 6095880 is eeeabsmobs-1.20.1-0.97-Fix.jar. Its embedded
     // mods.toml still reports the version as 1.20.1-0.97.
     implementation fg.deobf("curse.maven:eeeabs-mobs-921600:6095880")
+    implementation fg.deobf("curse.maven:lendercataclysm-551586:7908487")
+    implementation fg.deobf("curse.maven:lionfish-api-1001614:5922047")
     implementation fg.deobf("curse.maven:legendary-monsters-944035:8444425")
     implementation fg.deobf("curse.maven:goety-586095:7966952")
     implementation files('libs/GoetyRevelation-2.3.2.jar')

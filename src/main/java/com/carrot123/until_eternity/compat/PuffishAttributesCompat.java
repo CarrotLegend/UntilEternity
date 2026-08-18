@@ -19,6 +19,10 @@ public final class PuffishAttributesCompat {
             new ResourceLocation("puffish_attributes", "healing");
     public static final ResourceLocation KNOCKBACK =
             new ResourceLocation("puffish_attributes", "knockback");
+    public static final ResourceLocation ARMOR_SHRED =
+            new ResourceLocation("puffish_attributes", "armor_shred");
+    public static final ResourceLocation PROTECTION_SHRED =
+            new ResourceLocation("puffish_attributes", "protection_shred");
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Map<ResourceLocation, Attribute> CACHE = new HashMap<>();

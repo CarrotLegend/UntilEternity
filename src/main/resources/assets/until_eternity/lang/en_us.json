@@ -133,6 +133,15 @@
   "item.until_eternity.final_key": "Final Key",
   "block.until_eternity.final_key_mold": "Final Key Mold",
   "item.until_eternity.final_key_casting_fluid": "Final Key Casting Fluid",
+  "item.until_eternity.universal_smithing_template": "Universal Smithing Template",
+  "item.until_eternity.smithing_template.universal.applies_to": "Universal Upgrade",
+  "item.until_eternity.smithing_template.universal.ingredients": "Ingot",
+  "item.until_eternity.smithing_template.universal.upgrade": "Universal Upgrade",
+  "item.until_eternity.smithing_template.universal.base_slot_description": "Add item to upgrade",
+  "item.until_eternity.smithing_template.universal.additions_slot_description": "Add ingot",
   "dimension.until_eternity.immortal": "Immortal Dimension",
-  "biome.until_eternity.immortal_wasteland": "Immortal Wasteland"
+  "biome.until_eternity.immortal_wasteland": "Immortal Wasteland",
+  "block.until_eternity.immortal_altar": "Immortal Altar",
+
+  "structure.until_eternity.immortal_duel_arena": "Immortal's Duel Arena"
 }

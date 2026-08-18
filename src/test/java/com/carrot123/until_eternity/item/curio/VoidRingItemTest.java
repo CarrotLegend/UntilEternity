@@ -12,9 +12,9 @@ class VoidRingItemTest {
             UUID.fromString("12345678-1234-5678-9abc-def012345678");
 
     @Test
-    void requestedRevelationAttributeAmountsArePreserved() {
-        assertEquals(16.0D, VoidRingItem.SPELL_POWER_AMOUNT);
-        assertEquals(4.0D, VoidRingItem.SPELL_POWER_MULTIPLIER_AMOUNT);
+    void currentRevelationAttributeAmountsArePreserved() {
+        assertEquals(2.0D, VoidRingItem.SPELL_POWER_AMOUNT);
+        assertEquals(1.0D, VoidRingItem.SPELL_POWER_MULTIPLIER_AMOUNT);
         assertEquals(1, VoidRingItem.MAX_EQUIPPED);
     }
 

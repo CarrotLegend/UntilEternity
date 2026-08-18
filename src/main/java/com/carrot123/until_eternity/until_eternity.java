@@ -3,6 +3,7 @@ package com.carrot123.until_eternity;
 import org.slf4j.Logger;
 
 import com.carrot123.until_eternity.block.ModBlocks;
+import com.carrot123.until_eternity.block.entity.ModBlockEntities;
 import com.carrot123.until_eternity.enchantment.ModEnchantments;
 import com.carrot123.until_eternity.event.CurioEventHandler;
 import com.carrot123.until_eternity.event.EnchantmentEventHandler;
@@ -48,6 +49,7 @@ public class until_eternity
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
         ModBlocks.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
         ModItems.register(modEventBus);
         ModEnchantments.register(modEventBus);
         ModParticles.register(modEventBus);

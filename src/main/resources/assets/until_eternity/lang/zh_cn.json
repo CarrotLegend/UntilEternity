@@ -136,6 +136,15 @@
   "item.until_eternity.final_key": "最终钥匙",
   "block.until_eternity.final_key_mold": "最终钥匙模板",
   "item.until_eternity.final_key_casting_fluid": "最终钥匙铸液",
+  "item.until_eternity.universal_smithing_template": "通用锻造模板",
+  "item.until_eternity.smithing_template.universal.applies_to": "通用升级",
+  "item.until_eternity.smithing_template.universal.ingredients": "矿锭",
+  "item.until_eternity.smithing_template.universal.upgrade": "通用升级",
+  "item.until_eternity.smithing_template.universal.base_slot_description": "放入要升级的物品",
+  "item.until_eternity.smithing_template.universal.additions_slot_description": "放入矿锭",
   "dimension.until_eternity.immortal": "不朽维度",
-  "biome.until_eternity.immortal_wasteland": "不朽荒原"
+  "biome.until_eternity.immortal_wasteland": "不朽荒原",
+  "block.until_eternity.immortal_altar": "不朽者祭坛",
+  
+  "structure.until_eternity.immortal_duel_arena": "不朽者角斗场"
 }

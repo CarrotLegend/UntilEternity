@@ -61,12 +61,12 @@ public enum CurioAttributeProfile {
             spec(() -> GoetyRevelationAttributesCompat.resolve(
                             GoetyRevelationAttributesCompat.DAMAGE_RESISTANCE),
                     "damage_resistance", 0.70D, AttributeModifier.Operation.MULTIPLY_TOTAL),
-            spec(() -> GoetyRevelationAttributesCompat.resolve(
-                            GoetyRevelationAttributesCompat.ARMOR_PENETRATION),
-                    "armor_penetration", 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL),
-            spec(() -> GoetyRevelationAttributesCompat.resolve(
-                            GoetyRevelationAttributesCompat.ENCHANTMENT_PIERCING),
-                    "enchantment_piercing", 0.50D, AttributeModifier.Operation.MULTIPLY_TOTAL)
+            spec(() -> PuffishAttributesCompat.resolve(
+                            PuffishAttributesCompat.ARMOR_SHRED),
+                    "armor_shred", 1.0D, AttributeModifier.Operation.MULTIPLY_BASE),
+            spec(() -> PuffishAttributesCompat.resolve(
+                            PuffishAttributesCompat.PROTECTION_SHRED),
+                    "protection_shred", 0.50D, AttributeModifier.Operation.MULTIPLY_BASE)
     ));
 
     private static final String MOD_ID = "until_eternity";
