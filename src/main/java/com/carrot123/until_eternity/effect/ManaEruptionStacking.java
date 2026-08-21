@@ -25,6 +25,13 @@ public final class ManaEruptionStacking {
         return ATTRIBUTE_AMOUNT_PER_LEVEL * (clampAmplifier(amplifier) + 1);
     }
 
+    public static double focusDamageAmount(int amplifier) {
+        return FOCUS_DAMAGE_AMOUNT_PER_LEVEL
+                * (clampAmplifier(amplifier) + 1);
+    }
+
     private static final double ATTRIBUTE_AMOUNT_PER_LEVEL =
             ManaEruptionEffect.ATTRIBUTE_AMOUNT_PER_LEVEL;
+    private static final double FOCUS_DAMAGE_AMOUNT_PER_LEVEL =
+            ManaEruptionEffect.FOCUS_DAMAGE_AMOUNT_PER_LEVEL;
 }

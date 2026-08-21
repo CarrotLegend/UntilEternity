@@ -41,6 +41,8 @@ public class ModItems {
     public static final RegistryObject<Item> DRAGONBREATH_INGOT = ITEMS.register("dragonbreath_ingot", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BLOOD_COPPER_INGOT = ITEMS.register("blood_copper_ingot", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> ELEMENTAL_CORE = ITEMS.register("elemental_core", () -> new Item(new Item.Properties().rarity(Rarity.RARE).fireResistant()));
+    public static final RegistryObject<ReplicaGelItem> REPLICA_GEL =
+            ITEMS.register("replica_gel", ReplicaGelItem::new);
     public static final RegistryObject<Item> SATURATED_GOLD_PARTICLE = ITEMS.register("saturated_gold_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SATURATED_WOOD_PARTICLE = ITEMS.register("saturated_wood_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SATURATED_WATER_PARTICLE = ITEMS.register("saturated_water_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
@@ -117,7 +119,6 @@ public class ModItems {
     public static final RegistryObject<Item> PUMPKIN_INGOT = ITEMS.register("pumpkin_ingot", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> IMFULL = ITEMS.register("imfull", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> EMPTY_POTTERY_SHARD = ITEMS.register("empty_pottery_shard", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> GODS_RECOGNITION = ITEMS.register("gods_recognition", () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> INERT_FINALITE_INGOT = ITEMS.register("inert_finalite_ingot", () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> OMINOUS_TOTEM = ITEMS.register("ominous_totem", () -> new OminousTotem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> CHAOS_ELIXIR = ITEMS.register("chaos_elixir",

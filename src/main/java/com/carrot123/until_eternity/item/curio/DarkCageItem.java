@@ -1,5 +1,6 @@
 package com.carrot123.until_eternity.item.curio;
 
+import com.carrot123.until_eternity.registry.ModAttributes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -14,12 +15,11 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class DarkCageItem extends BaseModCurioItem {
+    static final double FOCUS_DAMAGE_AMOUNT = 0.13D;
     private static final ResourceLocation ITEM_ID =
             new ResourceLocation("until_eternity", "dark_cage");
     private static final ResourceLocation SPELL_POWER =
             new ResourceLocation("goety_revelation", "spell_power");
-    private static final ResourceLocation SPELL_POTENCY =
-            new ResourceLocation("goety", "spell_potency");
 
     public DarkCageItem() {
         super(
@@ -34,13 +34,13 @@ public class DarkCageItem extends BaseModCurioItem {
                         CurioAttributeSpec.of(
                                 () -> ForgeRegistries.ATTRIBUTES.getValue(SPELL_POWER),
                                 "spell_power",
-                                8.0D,
+                                1.0D,
                                 AttributeModifier.Operation.ADDITION),
                         CurioAttributeSpec.of(
-                                () -> ForgeRegistries.ATTRIBUTES.getValue(SPELL_POTENCY),
-                                "spell_potency",
-                                0.45D,
-                                AttributeModifier.Operation.MULTIPLY_BASE)
+                                ModAttributes.FOCUS_DAMAGE,
+                                "dark_cage_focus_damage",
+                                FOCUS_DAMAGE_AMOUNT,
+                                AttributeModifier.Operation.ADDITION)
                 )
         );
     }

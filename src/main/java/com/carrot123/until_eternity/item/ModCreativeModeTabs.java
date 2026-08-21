@@ -26,6 +26,7 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.BLOOD_COPPER_INGOT.get());
                 output.accept(ModItems.DRAGONBREATH_INGOT.get());
                 output.accept(ModItems.ELEMENTAL_CORE.get());
+                output.accept(ModItems.REPLICA_GEL.get());
                 output.accept(ModItems.FINALITE_INGOT.get());
                 output.accept(ModItems.FINAL_KEY.get());
                 output.accept(ModItems.FINAL_KEY_MOLD.get());
@@ -65,7 +66,6 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.PUMPKIN_INGOT.get());
                 output.accept(ModItems.IMFULL.get());
                 output.accept(ModItems.EMPTY_POTTERY_SHARD.get());
-                output.accept(ModItems.GODS_RECOGNITION.get());
                 output.accept(ModItems.INERT_FINALITE_INGOT.get());
                 output.accept(ModItems.OMINOUS_TOTEM.get());
                 output.accept(ModItems.CHAOS_ELIXIR.get());

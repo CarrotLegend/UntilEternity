@@ -71,7 +71,9 @@ class CurioTagResourceTest {
                 Files.readString(TAG_DIRECTORY.resolve(fileName))).getAsJsonObject();
         JsonArray values = root.getAsJsonArray("values");
         Set<String> result = new HashSet<>();
-        values.forEach(value -> result.add(value.getAsString()));
+        values.forEach(value -> result.add(value.isJsonObject()
+                ? value.getAsJsonObject().get("id").getAsString()
+                : value.getAsString()));
         return result;
     }
 }

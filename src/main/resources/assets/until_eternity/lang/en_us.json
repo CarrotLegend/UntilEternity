@@ -8,6 +8,7 @@
   "item.until_eternity.dragonbreath_ingot": "Dragonbreath Ingot",
   "item.until_eternity.blood_copper_ingot": "Bloodcopper Ingot",
   "item.until_eternity.elemental_core": "Elemental Core",
+  "item.until_eternity.replica_gel": "Replica Gel",
   "item.until_eternity.saturated_gold_particle": "Saturated Gold Particle",
   "item.until_eternity.saturated_wood_particle": "Saturated Wood Particle",
   "item.until_eternity.saturated_water_particle": "Saturated Water Particle",
@@ -43,7 +44,6 @@
   "item.until_eternity.pumpkin_nugget": "Pumpkin Nugget",
   "item.until_eternity.pumpkin_ingot": "Pumpkin Ingot",
   "item.until_eternity.imfull": "I'm full!",
-  "item.until_eternity.gods_recognition": "The God of Cookery's Approval",
   "item.until_eternity.empty_pottery_shard": "Empty Pottery Shard",
   "item.until_eternity.inert_finalite_ingot": "Inert Finalite Ingot",
   "item.until_eternity.ominous_totem": "Ominous Totem",
@@ -142,6 +142,7 @@
   "dimension.until_eternity.immortal": "Immortal Dimension",
   "biome.until_eternity.immortal_wasteland": "Immortal Wasteland",
   "block.until_eternity.immortal_altar": "Immortal Altar",
+  "attribute.name.until_eternity.focus_damage": "Focus Damage",
 
   "structure.until_eternity.immortal_duel_arena": "Immortal's Duel Arena"
 }

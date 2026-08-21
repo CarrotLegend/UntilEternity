@@ -14,6 +14,7 @@ import com.carrot123.until_eternity.loot.ModLootModifiers;
 import com.carrot123.until_eternity.particle.ModParticles;
 import com.carrot123.until_eternity.recipe.ModRecipeSerializers;
 import com.carrot123.until_eternity.registry.ModMobEffects;
+import com.carrot123.until_eternity.registry.ModAttributes;
 import com.carrot123.until_eternity.registry.ModPotions;
 import com.mojang.logging.LogUtils;
 
@@ -57,6 +58,7 @@ public class until_eternity
         ModCreativeModeTabs.register(modEventBus);
         ModLootModifiers.register(modEventBus);
         ModRecipeSerializers.register(modEventBus);
+        ModAttributes.register(modEventBus);
         ModMobEffects.register(modEventBus);
         ModPotions.register(modEventBus);
         ModFeatures.register(modEventBus);

@@ -26,7 +26,7 @@ class ManaEruptionResourceTest {
             ROOT.resolve(Path.of("src", "main", "resources"));
 
     @Test
-    void effectUsesTheTwoRealDependencyAttributesAndStableModifiers()
+    void effectKeepsIronsPowerAndUsesTheExistingFocusDamageAttribute()
             throws IOException {
         String source = Files.readString(MAIN_JAVA.resolve(Path.of(
                 "effect", "ManaEruptionEffect.java")));
@@ -36,16 +36,25 @@ class ManaEruptionResourceTest {
         assertTrue(source.contains(
                 "AttributeRegistry.SPELL_POWER.get()"));
         assertTrue(source.contains(
-                "ModAttributes.SPELL_POTENCY.get()"));
+                "ModAttributes.FOCUS_DAMAGE.get()"));
         assertEquals(
-                2,
+                1,
                 occurrences(
                         source,
                         "AttributeModifier.Operation.ADDITION"));
+        assertEquals(
+                1,
+                occurrences(
+                        source,
+                        "AttributeModifier.Operation.MULTIPLY_BASE"));
         assertTrue(source.contains(
                 "\"1c73d95a-fafe-38e0-973e-829f64787e33\""));
         assertTrue(source.contains(
-                "\"ce524cc2-bbdf-31c0-9058-063657c75cb2\""));
+                "\"d0b0a8a2-03be-38ee-b6f0-225d3e6ba086\""));
+        assertTrue(source.contains(
+                "FOCUS_DAMAGE_AMOUNT_PER_LEVEL = 0.10D"));
+        assertFalse(source.contains("SPELL_POTENCY"));
+        assertFalse(source.contains("com.Polarice3.Goety.init.ModAttributes"));
         assertFalse(source.contains("applyEffectTick"));
         assertFalse(source.contains("randomUUID"));
         assertEquals(
@@ -54,10 +63,8 @@ class ManaEruptionResourceTest {
                         "until_eternity:mana_eruption/irons_spell_power"
                                 .getBytes(java.nio.charset.StandardCharsets.UTF_8)));
         assertEquals(
-                UUID.fromString("ce524cc2-bbdf-31c0-9058-063657c75cb2"),
-                UUID.nameUUIDFromBytes(
-                        "until_eternity:mana_eruption/goety_spell_potency"
-                                .getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+                UUID.fromString("d0b0a8a2-03be-38ee-b6f0-225d3e6ba086"),
+                UUID.fromString(ManaEruptionEffect.FOCUS_DAMAGE_UUID));
     }
 
     @Test

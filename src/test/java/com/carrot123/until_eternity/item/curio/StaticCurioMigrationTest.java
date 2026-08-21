@@ -58,11 +58,14 @@ class StaticCurioMigrationTest {
                                 Files.readString(file))
                         .getAsJsonObject()
                         .getAsJsonArray("values");
-                values.forEach(value -> tagged.add(value.getAsString()));
+                values.forEach(value -> tagged.add(value.isJsonObject()
+                        ? value.getAsJsonObject().get("id").getAsString()
+                        : value.getAsString()));
             }
         }
         tagged.remove("until_eternity:dying_fury");
         tagged.remove("until_eternity:horror_hunt");
+        tagged.remove("goety_revelation:quietus_star");
 
         assertEquals(24, STATIC_CURIOS.size());
         assertEquals(STATIC_CURIOS, tagged);

@@ -21,7 +21,7 @@ class AllCurioModifierIdTest {
     @Test
     void allStaticItemsHaveUniqueKeysWithinOneItem() {
         assertEquals(23, MODIFIER_KEYS.size());
-        assertEquals(50, MODIFIER_KEYS.values().stream()
+        assertEquals(52, MODIFIER_KEYS.values().stream()
                 .mapToInt(List::size)
                 .sum());
         MODIFIER_KEYS.forEach((item, keys) ->
@@ -71,12 +71,13 @@ class AllCurioModifierIdTest {
                 "armor", "armor_toughness", "damage_resistance",
                 "armor_shred", "protection_shred"));
         result.put("dark_cage", List.of(
-                "body_slots", "spell_power", "spell_potency"));
+                "body_slots", "spell_power", "dark_cage_focus_damage"));
         result.put("mithril_gloves", List.of("magic_ring_slots"));
         result.put("pewter_gloves", List.of("warped_ring_slots"));
         result.put("divine_soul_lamp", List.of(
                 "soul_reflux", "soul_affinity", "spell_power_flat",
-                "spell_power_percent", "spell_power_multiplier"));
+                "spell_power_percent", "spell_power_multiplier",
+                "divine_soul_lamp_focus_damage"));
         result.put("ring_of_warped_magic", List.of("spell_power"));
         result.put("advanced_ring_of_warped_magic", List.of(
                 "spell_power_multiplier"));
@@ -86,7 +87,8 @@ class AllCurioModifierIdTest {
         result.put("ring_of_warped_chanting", List.of("cast_duration"));
         result.put("ring_of_warped_cooling", List.of("spell_cooldown"));
         result.put("void_ring", List.of(
-                "spell_power", "spell_power_multiplier"));
+                "spell_power", "spell_power_multiplier",
+                "void_ring_focus_damage"));
         result.put("empowered_ring", List.of(
                 "empowered_ring/spell_power"));
         result.put("advanced_empowered_ring", List.of(

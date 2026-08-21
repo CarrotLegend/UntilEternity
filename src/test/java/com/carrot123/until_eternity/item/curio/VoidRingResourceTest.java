@@ -91,6 +91,9 @@ class VoidRingResourceTest {
                 "compat.terra_curio.TerraCurioLivingHurtAttributesMixin",
                 "compat.terra_curio.TerraCurioLivingDamageMixin",
                 "compat.eeeabsmobs.BlockErosionPortalMixin",
+                "compat.goety.DarkWandFocusCastMixin",
+                "compat.goety.ServerLevelFocusEntityTickMixin",
+                "compat.goetyrevelation.QuietusStarPropertiesMixin",
                 "compat.irons_spellbooks.AbstractSpellCastingContextMixin",
                 "compat.irons_spellbooks.AbstractSpellMixin",
                 "compat.irons_spellbooks.CurioBaseItemMixin",
@@ -105,7 +108,7 @@ class VoidRingResourceTest {
     }
 
     @Test
-    void allVoidRingSpellDamageImplementationAndResourcesAreRemoved() {
+    void allLegacyVoidRingSpellDamageImplementationAndResourcesAreRemoved() {
         Path mainJava = Path.of(
                 "src", "main", "java", "com", "carrot123", "until_eternity");
         for (String relativePath : Set.of(
@@ -114,7 +117,6 @@ class VoidRingResourceTest {
                 "compat/goety/FocusDamageKind.java",
                 "compat/goety/FocusDamageResolution.java",
                 "compat/goety/GoetyFocusCastEventCompat.java",
-                "compat/goety/GoetyFocusDamageResolver.java",
                 "compat/goety/GoetyFocusWhitelist.java",
                 "compat/goety/VoidRingFocusContext.java",
                 "event/VoidRingCombatEvents.java",

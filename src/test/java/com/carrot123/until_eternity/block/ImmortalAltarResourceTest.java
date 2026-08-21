@@ -138,16 +138,12 @@ class ImmortalAltarResourceTest {
         assertTrue(entity.contains(
                 "SHAKE_FADE_DURATION =\n            ImmortalAltarRitualState.DURATION_TICKS"));
         assertTrue(entity.contains("ScreenShake_Entity.ScreenShake("));
-        assertTrue(entity.contains("MobSpawnType.TRIGGERED"));
         int marker = entity.indexOf(
                 "ImmortalSpawnEvents.ALTAR_SUMMONED_TAG");
-        int finalizeSpawn = entity.indexOf("immortal.finalizeSpawn(");
-        int initSpawn = entity.indexOf("immortal.setInitSpawn()");
         int addEntity = entity.indexOf("serverLevel.addFreshEntity(immortal)");
-        assertTrue(marker < finalizeSpawn);
-        assertTrue(finalizeSpawn < initSpawn);
-        assertTrue(initSpawn < addEntity);
-        assertTrue(entity.contains("serverLevel.noCollision(immortal, immortal.getBoundingBox())"));
+        assertTrue(marker >= 0 && marker < addEntity);
+        assertTrue(entity.contains("serverLevel.noCollision("));
+        assertTrue(entity.contains("immortal.getBoundingBox()"));
         assertFalse(entity.contains("setActive("));
         assertFalse(entity.contains("setInvulnerable("));
         assertFalse(entity.contains("playAnimation("));

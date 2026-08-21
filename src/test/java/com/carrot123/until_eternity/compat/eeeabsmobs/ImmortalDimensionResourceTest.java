@@ -39,7 +39,11 @@ class ImmortalDimensionResourceTest {
                 settings.get("biome").getAsString());
         assertFalse(settings.get("features").getAsBoolean());
         assertFalse(settings.get("lakes").getAsBoolean());
-        assertTrue(settings.getAsJsonArray("structure_overrides").isEmpty());
+        JsonArray structures = settings.getAsJsonArray(
+                "structure_overrides");
+        assertEquals(1, structures.size());
+        assertEquals("until_eternity:immortal_duel_arena",
+                structures.get(0).getAsString());
 
         JsonArray layers = settings.getAsJsonArray("layers");
         assertEquals(2, layers.size());
@@ -73,8 +77,20 @@ class ImmortalDimensionResourceTest {
                 "immortal_wasteland.json");
         assertFalse(biome.get("has_precipitation").getAsBoolean());
         assertEquals(0, biome.getAsJsonObject("carvers").size());
-        for (var step : biome.getAsJsonArray("features")) {
-            assertTrue(step.getAsJsonArray().isEmpty());
+        JsonArray features = biome.getAsJsonArray("features");
+        assertEquals(11, features.size());
+        for (int index = 0; index < features.size(); index++) {
+            JsonArray step = features.get(index).getAsJsonArray();
+            if (index == 9) {
+                assertEquals(List.of(
+                        "until_eternity:statue",
+                        "until_eternity:broken_statue"),
+                        StreamSupport.stream(step.spliterator(), false)
+                                .map(value -> value.getAsString())
+                                .toList());
+            } else {
+                assertTrue(step.isEmpty());
+            }
         }
 
         JsonObject spawners = biome.getAsJsonObject("spawners");

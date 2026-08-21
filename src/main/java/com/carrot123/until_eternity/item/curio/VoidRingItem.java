@@ -1,6 +1,7 @@
 package com.carrot123.until_eternity.item.curio;
 
 import com.carrot123.until_eternity.compat.GoetyRevelationAttributesCompat;
+import com.carrot123.until_eternity.registry.ModAttributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -12,6 +13,7 @@ import java.util.List;
 public final class VoidRingItem extends BaseModCurioItem {
     static final double SPELL_POWER_AMOUNT = 2.0D;
     static final double SPELL_POWER_MULTIPLIER_AMOUNT = 1.0D;
+    static final double FOCUS_DAMAGE_AMOUNT = 0.25D;
     static final int MAX_EQUIPPED = 1;
     private static final ResourceLocation ITEM_ID =
             new ResourceLocation("until_eternity", "void_ring");
@@ -32,6 +34,11 @@ public final class VoidRingItem extends BaseModCurioItem {
                                         GoetyRevelationAttributesCompat.SPELL_POWER_MULTIPLIER),
                                 "spell_power_multiplier",
                                 SPELL_POWER_MULTIPLIER_AMOUNT,
+                                AttributeModifier.Operation.ADDITION),
+                        CurioAttributeSpec.of(
+                                ModAttributes.FOCUS_DAMAGE,
+                                "void_ring_focus_damage",
+                                FOCUS_DAMAGE_AMOUNT,
                                 AttributeModifier.Operation.ADDITION)
                 )
         );

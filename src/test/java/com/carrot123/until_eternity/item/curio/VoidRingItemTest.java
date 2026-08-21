@@ -15,6 +15,7 @@ class VoidRingItemTest {
     void currentRevelationAttributeAmountsArePreserved() {
         assertEquals(2.0D, VoidRingItem.SPELL_POWER_AMOUNT);
         assertEquals(1.0D, VoidRingItem.SPELL_POWER_MULTIPLIER_AMOUNT);
+        assertEquals(0.25D, VoidRingItem.FOCUS_DAMAGE_AMOUNT);
         assertEquals(1, VoidRingItem.MAX_EQUIPPED);
     }
 

@@ -8,6 +8,7 @@
   "item.until_eternity.dragonbreath_ingot": "龙息合金",
   "item.until_eternity.blood_copper_ingot": "血铜锭",
   "item.until_eternity.elemental_core": "元素核心",
+  "item.until_eternity.replica_gel": "复刻凝胶",
   "item.until_eternity.saturated_gold_particle": "饱和金元素粒子",
   "item.until_eternity.saturated_wood_particle": "饱和木元素粒子",
   "item.until_eternity.saturated_water_particle": "饱和水元素粒子",
@@ -44,7 +45,6 @@
   "item.until_eternity.pumpkin_nugget": "熔融南瓜锭碎片",
   "item.until_eternity.pumpkin_ingot": "南瓜锭",
   "item.until_eternity.imfull": "我吃饱了！",
-  "item.until_eternity.gods_recognition": "厨神的认可",
   "item.until_eternity.empty_pottery_shard": "空纹样陶片",
   "item.until_eternity.inert_finalite_ingot": "惰性终式合金锭",
   "item.until_eternity.ominous_totem": "恶兆图腾",
@@ -145,6 +145,7 @@
   "dimension.until_eternity.immortal": "不朽维度",
   "biome.until_eternity.immortal_wasteland": "不朽荒原",
   "block.until_eternity.immortal_altar": "不朽者祭坛",
+  "attribute.name.until_eternity.focus_damage": "聚晶伤害",
   
   "structure.until_eternity.immortal_duel_arena": "不朽者角斗场"
 }

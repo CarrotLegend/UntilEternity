@@ -17,6 +17,9 @@ public final class PuffishAttributesCompat {
             new ResourceLocation("puffish_attributes", "melee_damage");
     public static final ResourceLocation HEALING =
             new ResourceLocation("puffish_attributes", "healing");
+    /** Pufferfish's general-purpose percentage damage resistance attribute. */
+    public static final ResourceLocation RESISTANCE =
+            new ResourceLocation("puffish_attributes", "resistance");
     public static final ResourceLocation KNOCKBACK =
             new ResourceLocation("puffish_attributes", "knockback");
     public static final ResourceLocation ARMOR_SHRED =

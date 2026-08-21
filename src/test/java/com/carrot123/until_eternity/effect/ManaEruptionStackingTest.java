@@ -39,4 +39,13 @@ class ManaEruptionStackingTest {
         assertEquals(10.0D, ManaEruptionStacking.attributeAmount(9));
         assertEquals(10.0D, ManaEruptionStacking.attributeAmount(99));
     }
+
+    @Test
+    void focusDamageScalingProducesTenPercentPerLevel() {
+        assertEquals(0.10D, ManaEruptionStacking.focusDamageAmount(0), 1.0E-12D);
+        assertEquals(0.20D, ManaEruptionStacking.focusDamageAmount(1), 1.0E-12D);
+        assertEquals(0.30D, ManaEruptionStacking.focusDamageAmount(2), 1.0E-12D);
+        assertEquals(1.00D, ManaEruptionStacking.focusDamageAmount(9), 1.0E-12D);
+        assertEquals(1.00D, ManaEruptionStacking.focusDamageAmount(99), 1.0E-12D);
+    }
 }
