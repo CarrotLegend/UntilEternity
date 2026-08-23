@@ -1,7 +1,5 @@
 package com.carrot123.until_eternity.compat.eternalcareer;
 
-import com.carrot123.until_eternity.util.RainbowTextHelper;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.UUID;
@@ -16,49 +14,77 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public final class ChefRankHelper {
 
-    public static final String RANK_TAG = "until_eternity:chef_rank";
-    public static final String ETERNAL_CAREER_MOD_ID = "eternal_career";
+    public static final String RANK_TAG =
+            "until_eternity:chef_rank";
+
+    public static final String ETERNAL_CAREER_MOD_ID =
+            "eternal_career";
 
     public static final ResourceLocation KITCHENWARE_DAMAGE_ID =
-            new ResourceLocation(ETERNAL_CAREER_MOD_ID, "kitchenware_damage");
-
-    private static final Set<String> CHEF_ARMOR_PATHS =
-            Set.of(
-                    "chef_hat",
-                    "chef_jacket",
-                    "chef_leggings",
-                    "chef_boots"
+            new ResourceLocation(
+                    "eternal_career",
+                    "kitchenware_damage"
             );
+
+    private static final Set<ResourceLocation> CHEF_ARMOR_IDS =
+            Set.of(
+                    id("chef_hat"),
+                    id("chef_jacket"),
+                    id("chef_leggings"),
+                    id("chef_boots")
+            );
+
+    private static final ResourceLocation APPRENTICE_BADGE =
+            id("chef_apprentice_badge");
+
+    private static final ResourceLocation INTERMEDIATE_BADGE =
+            id("intermediate_chef_badge");
+
+    private static final ResourceLocation ADVANCED_BADGE =
+            id("advanced_chef_badge");
+
+    private static final ResourceLocation SENIOR_BADGE =
+            id("senior_technician_badge");
+
+    private static final ResourceLocation MASTER_BADGE =
+            id("master_chef_badge");
 
     private ChefRankHelper() {
     }
 
+    private static ResourceLocation id(String path) {
+        return new ResourceLocation(
+                ETERNAL_CAREER_MOD_ID,
+                path
+        );
+    }
+
     public static boolean isChefArmor(ItemStack stack) {
+
         if (stack == null || stack.isEmpty()) {
             return false;
         }
 
-        ResourceLocation id =
+        ResourceLocation itemId =
                 ForgeRegistries.ITEMS.getKey(
                         stack.getItem()
                 );
 
-        return id != null
-                && ETERNAL_CAREER_MOD_ID.equals(
-                        id.getNamespace()
-                )
-                && CHEF_ARMOR_PATHS.contains(
-                        id.getPath()
-                );
+        return itemId != null
+                && CHEF_ARMOR_IDS.contains(itemId);
     }
 
     public static ChefRank getRank(ItemStack stack) {
+
         if (!isChefArmor(stack)) {
             return ChefRank.NONE;
         }
 
-        if (stack.getTag() == null
-                || !stack.getTag().contains(
+        if (stack.getTag() == null) {
+            return ChefRank.NONE;
+        }
+
+        if (!stack.getTag().contains(
                 RANK_TAG,
                 Tag.TAG_INT
         )) {
@@ -74,14 +100,17 @@ public final class ChefRankHelper {
             ItemStack stack,
             ChefRank rank
     ) {
+
         if (!isChefArmor(stack)) {
             return;
         }
 
         if (rank == null || rank == ChefRank.NONE) {
+
             if (stack.getTag() != null) {
                 stack.getTag().remove(RANK_TAG);
             }
+
             return;
         }
 
@@ -92,35 +121,40 @@ public final class ChefRankHelper {
     }
 
     public static ChefRank getRankForBadge(
-            ItemStack badge
+            ItemStack stack
     ) {
-        if (badge == null || badge.isEmpty()) {
+
+        if (stack == null || stack.isEmpty()) {
             return ChefRank.NONE;
         }
 
-        ResourceLocation id =
+        ResourceLocation itemId =
                 ForgeRegistries.ITEMS.getKey(
-                        badge.getItem()
+                        stack.getItem()
                 );
 
-        if (id == null
-                || !ETERNAL_CAREER_MOD_ID.equals(
-                id.getNamespace()
-        )) {
+        if (itemId == null) {
             return ChefRank.NONE;
         }
 
-        for (ChefRank rank : ChefRank.values()) {
-            if (!rank.isRanked()
-                    || rank.badgePath() == null) {
-                continue;
-            }
+        if (itemId.equals(APPRENTICE_BADGE)) {
+            return ChefRank.APPRENTICE;
+        }
 
-            if (rank.badgePath().equals(
-                    id.getPath()
-            )) {
-                return rank;
-            }
+        if (itemId.equals(INTERMEDIATE_BADGE)) {
+            return ChefRank.INTERMEDIATE;
+        }
+
+        if (itemId.equals(ADVANCED_BADGE)) {
+            return ChefRank.ADVANCED;
+        }
+
+        if (itemId.equals(SENIOR_BADGE)) {
+            return ChefRank.SENIOR;
+        }
+
+        if (itemId.equals(MASTER_BADGE)) {
+            return ChefRank.MASTER;
         }
 
         return ChefRank.NONE;
@@ -130,6 +164,7 @@ public final class ChefRankHelper {
             ItemStack armor,
             ItemStack badge
     ) {
+
         if (!isChefArmor(armor)) {
             return false;
         }
@@ -140,40 +175,40 @@ public final class ChefRankHelper {
         ChefRank target =
                 getRankForBadge(badge);
 
-        if (!target.isRanked()) {
+        if (target == ChefRank.NONE) {
             return false;
         }
 
-        return target.previous() == current;
+        return target.id()
+                == current.id() + 1;
     }
 
     public static Component composeHoverName(
             ItemStack stack,
             Component originalName
     ) {
-        ChefRank rank = getRank(stack);
 
-        if (!rank.isRanked()) {
+        ChefRank rank =
+                getRank(stack);
+
+        if (rank == ChefRank.NONE) {
             return originalName;
         }
 
-        Component prefix;
+        Component prefix =
+                Component.translatable(
+                        rank.translationKey()
+                );
 
-        if (rank == ChefRank.MASTER) {
-            String translated =
-                    Component.translatable(
-                            rank.translationKey()
-                    ).getString();
-
-            prefix = RainbowTextHelper.parse(translated);
-
-        } else {
-            prefix = Component.translatable(rank.translationKey()).copy().withStyle(rank.color());
+        if (rank.color() != null) {
+            prefix =
+                    prefix.copy()
+                            .withStyle(rank.color());
         }
 
         return Component.empty()
                 .append(prefix)
-                .append(Component.literal(" "))
+                .append(" ")
                 .append(originalName.copy());
     }
 
@@ -181,9 +216,9 @@ public final class ChefRankHelper {
             EquipmentSlot slot,
             String attributePath
     ) {
+
         String key =
-                ETERNAL_CAREER_MOD_ID
-                        + ":chef_armor/"
+                "eternal_career:chef_armor/"
                         + slot.getName()
                         + "/"
                         + attributePath;
@@ -199,6 +234,7 @@ public final class ChefRankHelper {
             EquipmentSlot slot,
             String attributePath
     ) {
+
         String key =
                 "until_eternity:chef_rank/"
                         + slot.getName()

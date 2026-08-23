@@ -15,10 +15,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class ItemStackHoverNameMixin {
 
     @Inject(
-            method =
+            method = {
                     "getHoverName()Lnet/minecraft/network/chat/Component;",
+                    "m_41786_()Lnet/minecraft/network/chat/Component;"
+            },
             at = @At("RETURN"),
             cancellable = true,
+            remap = false,
             require = 1
     )
     private void untilEternity$composeDisplayName(
@@ -26,12 +29,21 @@ public abstract class ItemStackHoverNameMixin {
     ) {
         ItemStack stack =
                 (ItemStack) (Object) this;
+
         Component result =
                 callback.getReturnValue().copy();
 
-        result = StaffAffixHelper.composeHoverName(stack, result);
+        result =
+                StaffAffixHelper.composeHoverName(
+                        stack,
+                        result
+                );
 
-        result = ChefRankHelper.composeHoverName(stack, result);
+        result =
+                ChefRankHelper.composeHoverName(
+                        stack,
+                        result
+                );
 
         callback.setReturnValue(result);
     }
