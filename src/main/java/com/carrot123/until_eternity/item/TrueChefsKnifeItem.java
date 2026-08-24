@@ -2,16 +2,22 @@ package com.carrot123.until_eternity.item;
 
 import com.carrot123.until_eternity.registry.ModMobEffects;
 import com.carrot123.until_eternity.combat.CookingFrenzyProgression;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public final class TrueChefsKnifeItem extends SwordItem {
     public TrueChefsKnifeItem(Properties properties) {
@@ -67,6 +73,15 @@ public final class TrueChefsKnifeItem extends SwordItem {
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner) {
         ensureUnbreakable(stack);
         return super.mineBlock(stack, level, state, pos, miner);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level,
+                                List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+        tooltip.add(Component.translatable(
+                "tooltip.until_eternity.true_chefs_knife.unavoidable"
+        ).withStyle(ChatFormatting.RED));
     }
 
 }

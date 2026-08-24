@@ -1,0 +1,46 @@
+{
+  "type": "until_eternity:end_crafting",
+  "pattern": [
+    "  B  ",
+    " FGD ",
+    "BAECB",
+    " OMc ",
+    "  B  "
+  ],
+  "key": {
+    "E": {
+      "item": "enigmaticdelicacy:etherium_machete"
+    },
+    "A": {
+      "item": "until_eternity:ancient_netherite_blade"
+    },
+    "C": {
+      "item": "until_eternity:calamity_dagger"
+    },
+    "F": {
+      "item": "goetydelight:false_proverbs"
+    },
+    "c": {
+      "item": "trailandtales_delight:cherry_iron_knife"
+    },
+    "G": {
+      "item": "aethersdelight:gravitite_knife"
+    },
+    "D": {
+      "item": "kaleidoscope_end:dragon_tooth_knife"
+    },
+    "O": {
+      "item": "bosses_delight:obsidian_heart_knife"
+    },
+    "M": {
+      "item": "eternal_career:master_chef_badge"
+    },
+    "B": {
+      "item": "until_eternity:blood_copper_ingot"
+    }
+  },
+  "result": {
+    "item": "until_eternity:true_chefs_knife",
+    "count": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "type": "until_eternity:end_crafting",
+  "pattern": [
+    "ggEgg",
+    "gGfGg",
+    "APFPA",
+    "gECEg",
+    "ggGgg"
+  ],
+  "key": {
+    "F": {
+      "item": "solcarrot:food_book"
+    },
+    "f": {
+      "item": "until_eternity:finalite_ingot"
+    },
+    "P": {
+      "item": "enigmaticaddons:pure_heart"
+    },
+    "C": {
+      "item": "enigmaticlegacy:cosmic_cake"
+    },
+    "A": {
+      "item": "enigmaticlegacy:astral_potato"
+    },
+    "G": {
+      "item": "minecraft:golden_carrot"
+    },
+    "E": {
+      "item": "minecraft:enchanted_golden_apple"
+    },
+    "g": {
+      "item": "immortalers_delight:golden_fabric"
+    }
+  },
+  "result": {
+    "item": "eternal_career:gods_recognition",
+    "count": 1
+  }
+}

@@ -2,6 +2,8 @@ package com.carrot123.until_eternity.item;
 
 import com.carrot123.until_eternity.combat.CookingFrenzyProgression;
 import com.carrot123.until_eternity.combat.ForcedHitDamageMath;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Test;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -63,5 +65,32 @@ class TrueChefsKnifeTest {
         String dataHelper = Files.readString(Path.of(
                 "src/main/java/com/carrot123/until_eternity/item/UnbreakableStackData.java"));
         assertTrue(dataHelper.contains("putBoolean(\"Unbreakable\", true)"));
+    }
+
+    @Test
+    void unavoidableTooltipUsesOneRedTranslatedLineAndKeepsVanillaTooltip() throws Exception {
+        String source = Files.readString(Path.of(
+                "src/main/java/com/carrot123/until_eternity/item/TrueChefsKnifeItem.java"));
+        String key = "tooltip.until_eternity.true_chefs_knife.unavoidable";
+
+        assertTrue(source.contains("void appendHoverText("));
+        assertTrue(source.contains("super.appendHoverText(stack, level, tooltip, flag);"));
+        assertEquals(1, occurrences(source, "Component.translatable(\n                \"" + key + "\""));
+        assertTrue(source.contains("withStyle(ChatFormatting.RED)"));
+        assertTrue(!source.contains("§c"));
+
+        JsonObject zhCn = language("zh_cn");
+        JsonObject enUs = language("en_us");
+        assertEquals("没人能躲开你的攻击", zhCn.get(key).getAsString());
+        assertEquals("No one can evade your attacks", enUs.get(key).getAsString());
+    }
+
+    private static JsonObject language(String locale) throws Exception {
+        return JsonParser.parseString(Files.readString(Path.of(
+                "src/main/resources/assets/until_eternity/lang/" + locale + ".json"))).getAsJsonObject();
+    }
+
+    private static int occurrences(String text, String needle) {
+        return (text.length() - text.replace(needle, "").length()) / needle.length();
     }
 }
