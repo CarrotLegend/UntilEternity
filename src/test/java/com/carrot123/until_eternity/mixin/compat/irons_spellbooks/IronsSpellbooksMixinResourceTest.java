@@ -38,6 +38,8 @@ class IronsSpellbooksMixinResourceTest {
                 "FoodDataMixin",
                 "ManaEruptionStackingMixin",
                 "SoulGreatSwordItemMixin",
+                "TrueChefsKnifePlayerAttackMixin",
+                "TrueChefsKnifeLivingEntityDamageMixin",
                 "compat.obscure_api.ObscureApiCriticalHitMixin",
                 "compat.obscure_api.ObscureApiDodgeMixin",
                 "compat.obscure_api.ObscureApiHealingPowerMixin",
@@ -63,6 +65,7 @@ class IronsSpellbooksMixinResourceTest {
         config.getAsJsonArray("client")
                 .forEach(entry -> clientMixins.add(entry.getAsString()));
         assertEquals(Set.of(
+                "client.FontRainbowMixin",
                 "client.HorrorHuntSelectedItemNameMixin",
                 "compat.irons_spellbooks.SpellWheelOverlayMixin",
                 "compat.irons_spellbooks.TooltipsUtilsMixin"

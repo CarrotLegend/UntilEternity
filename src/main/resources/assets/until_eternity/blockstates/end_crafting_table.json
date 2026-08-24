@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "until_eternity:block/end_crafting_table" },
+    "facing=east": { "model": "until_eternity:block/end_crafting_table", "y": 90 },
+    "facing=south": { "model": "until_eternity:block/end_crafting_table", "y": 180 },
+    "facing=west": { "model": "until_eternity:block/end_crafting_table", "y": 270 }
+  }
+}

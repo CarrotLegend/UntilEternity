@@ -59,6 +59,8 @@ public class ModItems {
             ITEMS.register("universal_smithing_template", UniversalSmithingTemplateItem::new);
     public static final RegistryObject<Item> IMMORTAL_ALTAR = ITEMS.register("immortal_altar",
             () -> new ImmortalAltarBlockItem(ModBlocks.IMMORTAL_ALTAR.get(), new Item.Properties()));
+    public static final RegistryObject<Item> END_CRAFTING_TABLE = ITEMS.register("end_crafting_table",
+            () -> new BlockItem(ModBlocks.END_CRAFTING_TABLE.get(), new Item.Properties()));
     public static final RegistryObject<Item> ELEMENTAL_GAUNTLET = ITEMS.register("elemental_gauntlet",
             () -> new AttributeCurioItem(
                     new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(),
@@ -104,7 +106,8 @@ public class ModItems {
     public static final RegistryObject<Item> WROUGHT_IRON = ITEMS.register("wrought_iron", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> IMMORTAL_HEART = ITEMS.register("immortal_heart", () -> new Item(new Item.Properties().rarity(Rarity.RARE).fireResistant()));
     public static final RegistryObject<Item> IMMORTAL_ESSENCE = ITEMS.register("immortal_essence", () -> new Item(new Item.Properties().fireResistant()));
-    public static final RegistryObject<Item> TRUE_CHEFS_KNIFE = ITEMS.register("true_chefs_knife", () -> new SwordItem(ModTiers.TRUE_CHEFS_KNIFE, 0, -1.8F, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
+    public static final RegistryObject<Item> TRUE_CHEFS_KNIFE = ITEMS.register("true_chefs_knife",
+            () -> new TrueChefsKnifeItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
     public static final RegistryObject<Item> ANCIENT_NETHERITE_BLADE = ITEMS.register("ancient_netherite_blade", () -> new SwordItem(ModTiers.ANCIENT_NETHERITE_BLADE, 0, -1.8F, new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> CALAMITY_DAGGER = ITEMS.register("calamity_dagger", () -> new SwordItem(ModTiers.CALAMITY_DAGGER, 0, -1.8F, new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> TATTERED_CLOAK = ITEMS.register("tattered_cloak", () -> new Item(new Item.Properties()));

@@ -1,6 +1,7 @@
 {
   "effect.until_eternity.mana_eruption": "魔力喷发",
   "effect.until_eternity.immortal_scar": "不朽之痕",
+  "effect.until_eternity.cooking_frenzy": "烹饪狂热",
   "effect.until_eternity.immortal_scar.description": "幽冥炼狱太刀对受影响目标造成双倍伤害。",
   "tooltip.until_eternity.netherworld_katana.critical_chance": "+25% 暴击率",
   "tooltip.until_eternity.netherworld_katana.immortal_scar": "§6命中时有 50% 概率施加 10 秒不朽之痕，对有印记的目标造成双倍伤害。",
@@ -150,6 +151,10 @@
   "dimension.until_eternity.immortal": "不朽维度",
   "biome.until_eternity.immortal_wasteland": "不朽荒原",
   "block.until_eternity.immortal_altar": "不朽者祭坛",
+  "block.until_eternity.end_crafting_table": "终末合成台",
+  "container.until_eternity.end_crafting_table": "终末合成台",
+  "jei.until_eternity.end_crafting": "终末合成",
+  "jei.until_eternity.end_crafting.nbt_transfer_conflict": "请先移走物品栏中 NBT 不符合要求的冲突物品，再转移此配方。",
   "attribute.name.until_eternity.focus_damage": "聚晶伤害",
   
   "structure.until_eternity.immortal_duel_arena": "不朽者角斗场"

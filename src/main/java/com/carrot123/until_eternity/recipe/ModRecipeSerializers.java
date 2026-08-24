@@ -24,6 +24,8 @@ public final class ModRecipeSerializers {
                     "staff_affix_reroll",
                     () -> new SimpleCraftingRecipeSerializer<>(
                             StaffAffixRerollRecipe::new));
+    public static final RegistryObject<RecipeSerializer<EndCraftingRecipe>> END_CRAFTING =
+            RECIPE_SERIALIZERS.register("end_crafting", EndCraftingRecipeSerializer::new);
 
     private ModRecipeSerializers() {
     }

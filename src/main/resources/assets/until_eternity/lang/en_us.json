@@ -1,6 +1,7 @@
 {
   "effect.until_eternity.mana_eruption": "Mana Eruption",
   "effect.until_eternity.immortal_scar": "Immortal Scar",
+  "effect.until_eternity.cooking_frenzy": "Cooking Frenzy",
   "effect.until_eternity.immortal_scar.description": "A Netherworld Katana deals double damage to the afflicted.",
   "tooltip.until_eternity.netherworld_katana.critical_chance": "+25% Critical Chance",
   "tooltip.until_eternity.netherworld_katana.immortal_scar": "§6Hits have a 50% chance to inflict Immortal Scar for 10 seconds; afflicted targets take double damage from this katana.",
@@ -147,6 +148,10 @@
   "dimension.until_eternity.immortal": "Immortal Dimension",
   "biome.until_eternity.immortal_wasteland": "Immortal Wasteland",
   "block.until_eternity.immortal_altar": "Immortal Altar",
+  "block.until_eternity.end_crafting_table": "End Crafting Table",
+  "container.until_eternity.end_crafting_table": "End Crafting Table",
+  "jei.until_eternity.end_crafting": "End Crafting",
+  "jei.until_eternity.end_crafting.nbt_transfer_conflict": "Move conflicting items with incorrect NBT out of your inventory before transferring this recipe.",
   "attribute.name.until_eternity.focus_damage": "Focus Damage",
 
   "structure.until_eternity.immortal_duel_arena": "Immortal's Duel Arena"

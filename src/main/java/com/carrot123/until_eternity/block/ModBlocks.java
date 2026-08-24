@@ -20,6 +20,8 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> IMMORTAL_ALTAR = BLOCKS.register("immortal_altar",
             ImmortalAltarBlock::new);
+    public static final RegistryObject<Block> END_CRAFTING_TABLE = BLOCKS.register("end_crafting_table",
+            EndCraftingTableBlock::new);
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);

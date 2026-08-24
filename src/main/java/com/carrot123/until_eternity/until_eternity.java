@@ -13,6 +13,10 @@ import com.carrot123.until_eternity.worldgen.ModFeatures;
 import com.carrot123.until_eternity.loot.ModLootModifiers;
 import com.carrot123.until_eternity.particle.ModParticles;
 import com.carrot123.until_eternity.recipe.ModRecipeSerializers;
+import com.carrot123.until_eternity.recipe.ModRecipeTypes;
+import com.carrot123.until_eternity.menu.ModMenuTypes;
+import com.carrot123.until_eternity.client.screen.EndCraftingTableScreen;
+import net.minecraft.client.gui.screens.MenuScreens;
 import com.carrot123.until_eternity.registry.ModMobEffects;
 import com.carrot123.until_eternity.registry.ModAttributes;
 import com.carrot123.until_eternity.registry.ModPotions;
@@ -58,6 +62,8 @@ public class until_eternity
         ModCreativeModeTabs.register(modEventBus);
         ModLootModifiers.register(modEventBus);
         ModRecipeSerializers.register(modEventBus);
+        ModRecipeTypes.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
         ModAttributes.register(modEventBus);
         ModMobEffects.register(modEventBus);
         ModPotions.register(modEventBus);
@@ -115,6 +121,8 @@ public class until_eternity
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
             // Chaos portal translucent rendering
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CHAOS_PORTAL.get(), RenderType.translucent());
+            event.enqueueWork(() -> MenuScreens.register(
+                    ModMenuTypes.END_CRAFTING_TABLE.get(), EndCraftingTableScreen::new));
         }
     }
 }

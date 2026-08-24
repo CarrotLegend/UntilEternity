@@ -81,6 +81,8 @@ class VoidRingResourceTest {
                 "FoodDataMixin",
                 "ManaEruptionStackingMixin",
                 "SoulGreatSwordItemMixin",
+                "TrueChefsKnifePlayerAttackMixin",
+                "TrueChefsKnifeLivingEntityDamageMixin",
                 "compat.obscure_api.ObscureApiCriticalHitMixin",
                 "compat.obscure_api.ObscureApiDodgeMixin",
                 "compat.obscure_api.ObscureApiHealingPowerMixin",

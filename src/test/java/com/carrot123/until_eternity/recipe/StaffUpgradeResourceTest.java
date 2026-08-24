@@ -82,6 +82,8 @@ class StaffUpgradeResourceTest {
         assertTrue(source.contains("@Mixin(ItemStack.class)"));
         assertTrue(source.contains(
                 "getHoverName()Lnet/minecraft/network/chat/Component;"));
+        assertTrue(source.contains(
+                "m_41786_()Lnet/minecraft/network/chat/Component;"));
         assertTrue(source.contains("at = @At(\"RETURN\")"));
         assertTrue(source.contains("cancellable = true"));
         assertTrue(source.contains("require = 1"));
@@ -91,7 +93,7 @@ class StaffUpgradeResourceTest {
                 "StaffAffixHelper.composeHoverName"));
         assertFalse(source.contains(
                 "Component.literal(\" +\" + level)"));
-        assertFalse(source.contains("remap = false"));
+        assertTrue(source.contains("remap = false"));
         assertFalse(source.contains("display.Name"));
     }
 
