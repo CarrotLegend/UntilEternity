@@ -60,7 +60,7 @@ public class ModItems {
     public static final RegistryObject<Item> IMMORTAL_ALTAR = ITEMS.register("immortal_altar",
             () -> new ImmortalAltarBlockItem(ModBlocks.IMMORTAL_ALTAR.get(), new Item.Properties()));
     public static final RegistryObject<Item> END_CRAFTING_TABLE = ITEMS.register("end_crafting_table",
-            () -> new BlockItem(ModBlocks.END_CRAFTING_TABLE.get(), new Item.Properties()));
+            () -> new EndCraftingTableBlockItem(ModBlocks.END_CRAFTING_TABLE.get(), new Item.Properties()));
     public static final RegistryObject<Item> ELEMENTAL_GAUNTLET = ITEMS.register("elemental_gauntlet",
             () -> new AttributeCurioItem(
                     new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(),

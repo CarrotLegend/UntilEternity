@@ -29,12 +29,47 @@ class EndCraftingResourceTest {
         assertTrue(menu.contains("RESULT_SLOT = 0"));
         assertTrue(menu.contains("INPUT_START = 1"));
         assertTrue(menu.contains("INPUT_END = 26"));
-        assertTrue(menu.contains("PLAYER_START = 26"));
-        assertTrue(menu.contains("PLAYER_END = 62"));
+        assertTrue(menu.contains("PLAYER_INVENTORY_START = 26"));
+        assertTrue(menu.contains("PLAYER_INVENTORY_END = 53"));
+        assertTrue(menu.contains("HOTBAR_START = 53"));
+        assertTrue(menu.contains("HOTBAR_END = 62"));
+        assertTrue(menu.contains("clickMenuButton(Player player, int buttonId)"));
         String jei = source("compat/jei/EndCraftingRecipeTransferHandler.java");
-        assertTrue(jei.contains("1, 25, 26, 36"));
-        assertTrue(jei.contains("requiredNbt()"));
+        assertTrue(jei.contains("implements IRecipeTransferHandler<EndCraftingTableMenu, EndCraftingRecipe>"));
+        assertTrue(jei.contains("menu.createTransferPlan(recipe, maxTransfer)"));
+        assertTrue(jei.contains("handleInventoryButtonClick(menu.containerId, buttonId)"));
+        assertFalse(jei.contains("createUnregisteredRecipeTransferHandler"));
+        assertFalse(jei.contains("setItem("));
+        String planner = source("menu/EndCraftingTransferPlanner.java");
+        assertTrue(planner.contains("ingredient.test(groups.get(group).prototype)"));
+        assertTrue(planner.contains("ItemStack.isSameItemSameTags"));
+        assertTrue(planner.contains("for (int sets = PLAYER_SLOT_LIMIT; sets >= 1; sets--)"));
         assertEquals(25, count(source("compat/jei/EndCraftingRecipeCategory.java"), "builder.addInputSlot") * 25);
+    }
+
+    @Test
+    void worldAndItemGlintUseAnIsolatedRenderAnchor() throws Exception {
+        String block = source("block/EndCraftingTableBlock.java");
+        assertTrue(block.contains("implements EntityBlock"));
+        assertTrue(block.contains("new EndCraftingTableBlockEntity(pos, state)"));
+        assertTrue(block.contains("RenderShape.MODEL"));
+        String entities = source("block/entity/ModBlockEntities.java");
+        assertTrue(entities.contains("END_CRAFTING_TABLE"));
+        String entity = source("block/entity/EndCraftingTableBlockEntity.java");
+        assertFalse(entity.contains("tick("));
+        assertFalse(entity.contains("saveAdditional"));
+        String renderer = source("client/endcrafting/EndCraftingTableBlockEntityRenderer.java");
+        assertTrue(renderer.contains("SHELL_EXPANSION = 0.002F"));
+        assertEquals(6, count(renderer, "face(vertices"));
+        String renderType = source("client/endcrafting/EndCraftingTableGlintRenderType.java");
+        assertTrue(renderType.contains("RENDERTYPE_GLINT_DIRECT_SHADER"));
+        assertTrue(renderType.contains("ItemRenderer.ENCHANTED_GLINT_ITEM"));
+        assertTrue(renderType.contains("GLINT_TEXTURING"));
+        assertTrue(renderType.contains("LEQUAL_DEPTH_TEST"));
+        assertTrue(renderType.contains("POLYGON_OFFSET_LAYERING"));
+        String item = source("item/EndCraftingTableBlockItem.java");
+        assertTrue(item.contains("boolean isFoil(ItemStack stack)"));
+        assertTrue(item.contains("return true"));
     }
 
     @Test

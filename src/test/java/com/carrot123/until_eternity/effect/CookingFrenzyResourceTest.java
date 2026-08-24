@@ -60,9 +60,10 @@ class CookingFrenzyResourceTest {
     }
 
     @Test
-    void mixinsWrapOnlyTheVanillaPrimaryHitAndPreservePositiveHooks() throws IOException {
+    void primaryHitUsesDirectHealthDamageWithoutCallingVictimHurt() throws IOException {
         String playerMixin = source("mixin/TrueChefsKnifePlayerAttackMixin.java");
-        String livingMixin = source("mixin/TrueChefsKnifeLivingEntityDamageMixin.java");
+        String directDamage = source("combat/TrueChefsKnifeDirectDamage.java");
+        String accessor = source("mixin/LivingEntityDamageStateAccessor.java");
         String context = source("combat/TrueChefsKnifeAttackContext.java");
         JsonObject mixins = JsonParser.parseString(Files.readString(
                 RESOURCES.resolve("until_eternity.mixins.json"))).getAsJsonObject();
@@ -73,25 +74,42 @@ class CookingFrenzyResourceTest {
         assertTrue(playerMixin.contains("Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"));
         assertFalse(playerMixin.contains("LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"));
         assertEquals(4, occurrences(playerMixin, "require = 1"));
-        assertEquals(1, occurrences(playerMixin, "withAttack("));
-        assertTrue(playerMixin.contains("invulnerableTime = 0"));
-        assertTrue(playerMixin.contains("if (!completed || !hurt)"));
+        assertEquals(1, occurrences(playerMixin, "original.call(target, source, amount)"));
+        assertTrue(playerMixin.contains(
+                "return TrueChefsKnifeDirectDamage.apply(player, victim, source, amount);"));
+        assertFalse(playerMixin.contains("withAttack("));
 
-        assertTrue(livingMixin.contains("ForgeHooks;onLivingAttack"));
-        assertTrue(livingMixin.contains("isDamageSourceBlocked"));
-        assertEquals(2, occurrences(livingMixin, "isInvulnerableTo"));
-        assertTrue(livingMixin.contains("ForgeHooks;onLivingHurt"));
-        assertTrue(livingMixin.contains("ForgeHooks;onLivingDamage"));
-        assertEquals(6, occurrences(livingMixin, "require = 1"));
-        assertTrue(context.contains("ScopedValueStack<Attack>"));
-        assertTrue(context.contains("source.getEntity() == attack.player()"));
-        String damageMath = source("combat/ForcedHitDamageMath.java");
-        assertTrue(damageMath.contains("Float.isFinite(hookResult) && hookResult > 0.0F"));
+        assertTrue(directDamage.contains("ForgeHooks.onLivingAttack"));
+        assertTrue(directDamage.contains("ForgeHooks.onLivingHurt"));
+        assertTrue(directDamage.contains("ForgeHooks.onLivingDamage"));
+        assertTrue(directDamage.contains("victim.setHealth(requiredHealth)"));
+        assertTrue(directDamage.contains("Math.max(previous, returned)"));
+        assertTrue(directDamage.contains("victim.die(source)"));
+        assertFalse(directDamage.contains("victim.hurt("));
+        assertFalse(directDamage.contains("getDamageAfterArmorAbsorb"));
+        assertFalse(directDamage.contains("getDamageAfterMagicAbsorb"));
+
+        assertTrue(context.contains("PartEntity<?> part"));
+        assertTrue(context.contains("part.getParent() instanceof LivingEntity"));
+        assertFalse(context.contains("ScopedValueStack"));
+        assertFalse(context.contains("withAttack("));
+        assertFalse(context.contains("matches("));
+
+        assertTrue(accessor.contains("@Accessor(\"lastHurt\")"));
+        assertTrue(accessor.contains("@Accessor(\"lastDamageSource\")"));
+        assertFalse(accessor.contains("@Inject"));
+        assertFalse(accessor.contains("@Wrap"));
+        assertFalse(Files.exists(MAIN_JAVA.resolve(
+                "mixin/TrueChefsKnifeLivingEntityDamageMixin.java")));
+        assertFalse(Files.exists(MAIN_JAVA.resolve("combat/ForcedHitDamageMath.java")));
 
         assertTrue(mixins.getAsJsonArray("mixins").asList().stream()
                 .anyMatch(value -> value.getAsString().equals("TrueChefsKnifePlayerAttackMixin")));
         assertTrue(mixins.getAsJsonArray("mixins").asList().stream()
-                .anyMatch(value -> value.getAsString().equals("TrueChefsKnifeLivingEntityDamageMixin")));
+                .anyMatch(value -> value.getAsString().equals("LivingEntityDamageStateAccessor")));
+        assertFalse(mixins.getAsJsonArray("mixins").asList().stream()
+                .anyMatch(value -> value.getAsString().equals(
+                        "TrueChefsKnifeLivingEntityDamageMixin")));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.carrot123.until_eternity.mixin;
 
 import com.carrot123.until_eternity.combat.TrueChefsKnifeAttackContext;
+import com.carrot123.until_eternity.combat.TrueChefsKnifeDirectDamage;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.world.damagesource.DamageSource;
@@ -66,27 +67,10 @@ public abstract class TrueChefsKnifePlayerAttackMixin {
             float amount,
             Operation<Boolean> original) {
         Player player = (Player) (Object) this;
-        if (!TrueChefsKnifeAttackContext.isEligible(player, target)) {
+        LivingEntity victim = TrueChefsKnifeAttackContext.resolveVictim(target);
+        if (!TrueChefsKnifeAttackContext.isEligible(player, target) || victim == null) {
             return original.call(target, source, amount);
         }
-
-        LivingEntity livingTarget = (LivingEntity) target;
-        int previousInvulnerableTime = livingTarget.invulnerableTime;
-        livingTarget.invulnerableTime = 0;
-        boolean hurt = false;
-        boolean completed = false;
-        try {
-            hurt = TrueChefsKnifeAttackContext.withAttack(
-                    player,
-                    livingTarget,
-                    amount,
-                    () -> original.call(target, source, amount));
-            completed = true;
-            return hurt;
-        } finally {
-            if (!completed || !hurt) {
-                livingTarget.invulnerableTime = previousInvulnerableTime;
-            }
-        }
+        return TrueChefsKnifeDirectDamage.apply(player, victim, source, amount);
     }
 }

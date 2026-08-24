@@ -27,17 +27,11 @@ public final class EndCraftingRecipeCategory implements IRecipeCategory<EndCraft
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, EndCraftingRecipe recipe, IFocusGroup focuses) {
-        int offsetX = (5 - recipe.width()) / 2;
-        int offsetY = (5 - recipe.height()) / 2;
         for (int gridY = 0; gridY < 5; gridY++) {
             for (int gridX = 0; gridX < 5; gridX++) {
                 var slot = builder.addInputSlot(1 + gridX * 18, 1 + gridY * 18).setStandardSlotBackground();
-                int recipeX = gridX - offsetX;
-                int recipeY = gridY - offsetY;
-                if (recipeX >= 0 && recipeX < recipe.width() && recipeY >= 0 && recipeY < recipe.height()) {
-                    EndCraftingIngredient ingredient = recipe.endIngredients().get(recipeX + recipeY * recipe.width());
-                    if (!ingredient.isEmpty()) slot.addItemStacks(java.util.List.of(ingredient.displayStacks()));
-                }
+                EndCraftingIngredient ingredient = recipe.displayIngredientAt(gridX + gridY * 5);
+                if (!ingredient.isEmpty()) slot.addItemStacks(java.util.List.of(ingredient.displayStacks()));
             }
         }
         builder.addOutputSlot(119, 37).setOutputSlotBackground()

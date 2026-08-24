@@ -1,10 +1,26 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["OEO", "ECE", "OEO"],
+  "pattern": [
+    "DAD",
+    "CIC",
+    "CHC"
+  ],
   "key": {
-    "O": { "item": "minecraft:obsidian" },
-    "E": { "item": "minecraft:ender_eye" },
-    "C": { "item": "minecraft:crafting_table" }
+    "I": {
+      "item": "until_eternity:inert_finalite_ingot"
+    },
+    "H": {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    "C": {
+      "item": "minecraft:crafting_table"
+    },
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
   },
   "result": { "item": "until_eternity:end_crafting_table" }
 }

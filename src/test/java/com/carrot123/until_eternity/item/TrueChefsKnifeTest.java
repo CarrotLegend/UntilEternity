@@ -1,7 +1,6 @@
 package com.carrot123.until_eternity.item;
 
 import com.carrot123.until_eternity.combat.CookingFrenzyProgression;
-import com.carrot123.until_eternity.combat.ForcedHitDamageMath;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Test;
@@ -21,16 +20,6 @@ class TrueChefsKnifeTest {
         assertEquals(9, CookingFrenzyProgression.nextAmplifier(9));
         assertEquals(9, CookingFrenzyProgression.nextAmplifier(100));
         assertEquals(200, CookingFrenzyProgression.DURATION_TICKS);
-    }
-
-    @Test
-    void forcedHitKeepsPositiveFiniteHooksAndRejectsInvalidResults() {
-        assertEquals(7.5F, ForcedHitDamageMath.preservePositiveHookResult(5.0F, 7.5F));
-        assertEquals(5.0F, ForcedHitDamageMath.preservePositiveHookResult(5.0F, 0.0F));
-        assertEquals(5.0F, ForcedHitDamageMath.preservePositiveHookResult(5.0F, -1.0F));
-        assertEquals(5.0F, ForcedHitDamageMath.preservePositiveHookResult(5.0F, Float.NaN));
-        assertEquals(5.0F, ForcedHitDamageMath.preservePositiveHookResult(
-                5.0F, Float.POSITIVE_INFINITY));
     }
 
     @Test

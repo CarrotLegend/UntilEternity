@@ -18,6 +18,12 @@ public final class ModBlockEntities {
                             ImmortalAltarBlockEntity::new,
                             ModBlocks.IMMORTAL_ALTAR.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<EndCraftingTableBlockEntity>> END_CRAFTING_TABLE =
+            BLOCK_ENTITIES.register("end_crafting_table",
+                    () -> BlockEntityType.Builder.of(
+                            EndCraftingTableBlockEntity::new,
+                            ModBlocks.END_CRAFTING_TABLE.get()).build(null));
+
     private ModBlockEntities() {
     }
 

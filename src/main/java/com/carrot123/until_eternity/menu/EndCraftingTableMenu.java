@@ -17,13 +17,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
+import java.util.Comparator;
+import java.util.List;
 
 public final class EndCraftingTableMenu extends AbstractContainerMenu {
     public static final int RESULT_SLOT = 0;
     public static final int INPUT_START = 1;
     public static final int INPUT_END = 26;
-    public static final int PLAYER_START = 26;
-    public static final int PLAYER_END = 62;
+    public static final int PLAYER_INVENTORY_START = 26;
+    public static final int PLAYER_INVENTORY_END = 53;
+    public static final int HOTBAR_START = 53;
+    public static final int HOTBAR_END = 62;
+    public static final int PLAYER_START = PLAYER_INVENTORY_START;
+    public static final int PLAYER_END = HOTBAR_END;
+    public static final int INPUT_COUNT = INPUT_END - INPUT_START;
+    public static final int PLAYER_SLOT_COUNT = PLAYER_END - PLAYER_START;
 
     private final TransientCraftingContainer craftSlots = new TransientCraftingContainer(this, 5, 5);
     private final ResultContainer resultSlots = new ResultContainer();
@@ -50,6 +58,60 @@ public final class EndCraftingTableMenu extends AbstractContainerMenu {
 
     public TransientCraftingContainer craftSlots() { return craftSlots; }
     public ResultContainer resultContainer() { return resultSlots; }
+
+    public EndCraftingTransferPlanner.Plan createTransferPlan(EndCraftingRecipe recipe, boolean maxTransfer) {
+        List<ItemStack> input = slots.subList(INPUT_START, INPUT_END).stream()
+                .map(slot -> slot.getItem().copy()).toList();
+        List<ItemStack> inventory = slots.subList(PLAYER_START, PLAYER_END).stream()
+                .map(slot -> slot.getItem().copy()).toList();
+        return EndCraftingTransferPlanner.plan(recipe, input, inventory, maxTransfer);
+    }
+
+    public int recipeTransferButtonId(EndCraftingRecipe recipe, boolean maxTransfer) {
+        List<EndCraftingRecipe> recipes = sortedTransferRecipes();
+        for (int ordinal = 0; ordinal < recipes.size(); ordinal++) {
+            if (recipes.get(ordinal).getId().equals(recipe.getId())) {
+                return ordinal << 1 | (maxTransfer ? 1 : 0);
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public boolean clickMenuButton(Player player, int buttonId) {
+        if (buttonId < 0) return false;
+        int ordinal = buttonId >>> 1;
+        List<EndCraftingRecipe> recipes = sortedTransferRecipes();
+        if (ordinal >= recipes.size()) return false;
+        if (player.level().isClientSide) return true;
+
+        EndCraftingTransferPlanner.Plan plan = createTransferPlan(recipes.get(ordinal), (buttonId & 1) != 0);
+        if (!plan.success()) {
+            player.displayClientMessage(net.minecraft.network.chat.Component.translatable(
+                    plan.error() == EndCraftingTransferPlanner.Error.INVENTORY_FULL
+                            ? "jei.tooltip.error.recipe.transfer.inventory.full"
+                            : "jei.tooltip.error.recipe.transfer.missing"), true);
+            return false;
+        }
+
+        for (int index = INPUT_START; index < INPUT_END; index++) {
+            slots.get(index).setByPlayer(ItemStack.EMPTY);
+        }
+        for (int index = PLAYER_START; index < PLAYER_END; index++) {
+            slots.get(index).setByPlayer(plan.playerInventory().get(index - PLAYER_START).copy());
+        }
+        for (int index = INPUT_START; index < INPUT_END; index++) {
+            slots.get(index).setByPlayer(plan.input().get(index - INPUT_START).copy());
+        }
+        broadcastChanges();
+        return true;
+    }
+
+    private List<EndCraftingRecipe> sortedTransferRecipes() {
+        return player.level().getRecipeManager().getAllRecipesFor(ModRecipeTypes.END_CRAFTING.get()).stream()
+                .sorted(Comparator.comparing(recipe -> recipe.getId().toString()))
+                .toList();
+    }
 
     @Override
     public void slotsChanged(Container container) {
@@ -110,9 +172,9 @@ public final class EndCraftingTableMenu extends AbstractContainerMenu {
         } else if (index >= INPUT_START && index < INPUT_END) {
             if (!moveItemStackTo(source, PLAYER_START, PLAYER_END, false)) return ItemStack.EMPTY;
         } else if (!moveItemStackTo(source, INPUT_START, INPUT_END, false)) {
-            if (index < 53) {
-                if (!moveItemStackTo(source, 53, PLAYER_END, false)) return ItemStack.EMPTY;
-            } else if (!moveItemStackTo(source, PLAYER_START, 53, false)) return ItemStack.EMPTY;
+            if (index < HOTBAR_START) {
+                if (!moveItemStackTo(source, HOTBAR_START, HOTBAR_END, false)) return ItemStack.EMPTY;
+            } else if (!moveItemStackTo(source, PLAYER_INVENTORY_START, PLAYER_INVENTORY_END, false)) return ItemStack.EMPTY;
         }
         if (source.isEmpty()) slot.setByPlayer(ItemStack.EMPTY); else slot.setChanged();
         if (source.getCount() == copy.getCount()) return ItemStack.EMPTY;

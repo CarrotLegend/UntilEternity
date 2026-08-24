@@ -36,6 +36,23 @@ public final class EndCraftingRecipe implements Recipe<CraftingContainer> {
     public int height() { return height; }
     public List<EndCraftingIngredient> endIngredients() { return ingredients; }
     public ItemStack result() { return result.copy(); }
+    public int displayOffsetX() { return (GRID_SIZE - width) / 2; }
+    public int displayOffsetY() { return (GRID_SIZE - height) / 2; }
+
+    public int displayGridIndex(int patternIndex) {
+        int patternX = patternIndex % width;
+        int patternY = patternIndex / width;
+        return patternX + displayOffsetX() + (patternY + displayOffsetY()) * GRID_SIZE;
+    }
+
+    public EndCraftingIngredient displayIngredientAt(int gridIndex) {
+        int patternX = gridIndex % GRID_SIZE - displayOffsetX();
+        int patternY = gridIndex / GRID_SIZE - displayOffsetY();
+        if (patternX < 0 || patternX >= width || patternY < 0 || patternY >= height) {
+            return EndCraftingIngredient.EMPTY;
+        }
+        return ingredients.get(patternX + patternY * width);
+    }
 
     @Nullable
     public Match findMatch(CraftingContainer container) {
