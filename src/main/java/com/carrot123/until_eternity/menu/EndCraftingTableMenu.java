@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.TransientCraftingContainer;
@@ -40,7 +39,6 @@ public final class EndCraftingTableMenu extends AbstractContainerMenu {
     private final ResultContainer resultSlots = new ResultContainer();
     private final ContainerLevelAccess access;
     private final Player player;
-    private final DataSlot craftSuccessSerial = DataSlot.standalone();
 
     public EndCraftingTableMenu(int containerId, Inventory inventory, BlockPos pos) {
         this(containerId, inventory, ContainerLevelAccess.create(inventory.player.level(), pos));
@@ -50,24 +48,19 @@ public final class EndCraftingTableMenu extends AbstractContainerMenu {
         super(ModMenuTypes.END_CRAFTING_TABLE.get(), containerId);
         this.access = access;
         this.player = inventory.player;
-        addDataSlot(craftSuccessSerial);
-
-        addSlot(new EndCraftingResultSlot(this, inventory.player, 142, 54));
+        addSlot(new EndCraftingResultSlot(this, inventory.player, 160, 53));
         for (int row = 0; row < 5; row++) for (int column = 0; column < 5; column++)
-            addSlot(new Slot(craftSlots, column + row * 5, 10 + column * 18, 18 + row * 18));
+            addSlot(new Slot(craftSlots, column + row * 5, 30 + column * 18, 17 + row * 18));
         for (int row = 0; row < 3; row++) for (int column = 0; column < 9; column++)
-            addSlot(new Slot(inventory, column + row * 9 + 9, 28 + column * 18, 116 + row * 18));
+            addSlot(new Slot(inventory, column + row * 9 + 9, 26 + column * 18, 120 + row * 18));
         for (int column = 0; column < 9; column++)
-            addSlot(new Slot(inventory, column, 28 + column * 18, 174));
+            addSlot(new Slot(inventory, column, 26 + column * 18, 178));
     }
 
     public TransientCraftingContainer craftSlots() { return craftSlots; }
     public ResultContainer resultContainer() { return resultSlots; }
-    public int craftSuccessSerial() { return craftSuccessSerial.get(); }
-
     public void triggerCraftSuccess() {
         if (player.level().isClientSide) return;
-        craftSuccessSerial.set((craftSuccessSerial.get() + 1) & 0x7FFF);
         access.execute((level, pos) -> level.playSound(
                 null,
                 pos,
@@ -75,7 +68,6 @@ public final class EndCraftingTableMenu extends AbstractContainerMenu {
                 SoundSource.BLOCKS,
                 1.0F,
                 1.0F));
-        broadcastChanges();
     }
 
     public EndCraftingTransferPlanner.Plan createTransferPlan(EndCraftingRecipe recipe, boolean maxTransfer) {

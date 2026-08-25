@@ -45,37 +45,21 @@ class SnowSpearResourceTest {
     }
 
     @Test
-    void frostDamageTypeUsesFreezingAndAetherColdTagsWithoutAnyBypass()
+    void frostDamageUsesTheVanillaFreezeTypeWithoutObsoleteCustomResources()
             throws IOException {
-        JsonObject freezing = json(Path.of(
-                "data", "minecraft", "tags", "damage_type", "is_freezing.json"));
-        JsonObject aetherCold = json(Path.of(
-                "data", "aether", "tags", "damage_type", "is_cold.json"));
-        JsonObject damageType = json(Path.of(
-                "data", "until_eternity", "damage_type", "frost_bitten.json"));
-
-        assertFalse(freezing.get("replace").getAsBoolean());
-        assertEquals(JsonParser.parseString("[\"until_eternity:frost_bitten\"]"),
-                freezing.getAsJsonArray("values"));
-        assertFalse(aetherCold.get("replace").getAsBoolean());
-        assertEquals(JsonParser.parseString("[\"until_eternity:frost_bitten\"]"),
-                aetherCold.getAsJsonArray("values"));
-        assertEquals("freezing", damageType.get("effects").getAsString());
-
-        Path damageTags = MAIN.resolve(Path.of("resources", "data", "minecraft",
-                "tags", "damage_type"));
-        try (var paths = Files.walk(damageTags)) {
-            paths.filter(Files::isRegularFile).forEach(path -> {
+        assertTrue(source("item/SnowSpear.java").contains("DamageTypes.FREEZE"));
+        assertFalse(Files.exists(MAIN.resolve(Path.of("resources", "data", "until_eternity",
+                "damage_type", "frost_bitten.json"))));
+        try (var paths = Files.walk(MAIN.resolve("resources"))) {
+            assertFalse(paths.filter(Files::isRegularFile)
+                    .filter(path -> path.getFileName().toString().endsWith(".json"))
+                    .anyMatch(path -> {
                 try {
-                    String resource = Files.readString(path);
-                    if (path.getFileName().toString().contains("bypass")) {
-                        assertFalse(resource.contains("until_eternity:frost_bitten"),
-                                path.toString());
-                    }
+                    return Files.readString(path).contains("until_eternity:frost_bitten");
                 } catch (IOException exception) {
                     throw new AssertionError(exception);
                 }
-            });
+            }));
         }
     }
 
@@ -99,11 +83,6 @@ class SnowSpearResourceTest {
     private static String source(String path) throws IOException {
         return Files.readString(MAIN.resolve(Path.of(
                 "java", "com", "carrot123", "until_eternity", path)));
-    }
-
-    private static JsonObject json(Path relative) throws IOException {
-        return JsonParser.parseString(Files.readString(
-                MAIN.resolve("resources").resolve(relative))).getAsJsonObject();
     }
 
     private static int occurrences(String text, String needle) {

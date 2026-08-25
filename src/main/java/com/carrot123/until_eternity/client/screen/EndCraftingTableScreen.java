@@ -15,11 +15,11 @@ public final class EndCraftingTableScreen extends AbstractContainerScreen<EndCra
 
     public EndCraftingTableScreen(EndCraftingTableMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
-        imageWidth = 218;
-        imageHeight = 204;
-        inventoryLabelX = 28;
-        inventoryLabelY = 105;
-        titleLabelX = 10;
+        imageWidth = 212;
+        imageHeight = 202;
+        inventoryLabelX = 26;
+        inventoryLabelY = 108;
+        titleLabelX = 29;
         titleLabelY = 6;
     }
 

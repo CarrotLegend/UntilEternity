@@ -23,7 +23,9 @@ class EndCraftingResourceTest {
     void registrationsMenuAndJeiUseTheFixedContracts() throws Exception {
         assertTrue(source("block/ModBlocks.java").contains("BLOCKS.register(\"end_crafting_table\""));
         assertTrue(source("item/ModItems.java").contains("ITEMS.register(\"end_crafting_table\""));
-        assertTrue(source("recipe/ModRecipeTypes.java").contains("TYPES.register(\"end_crafting\""));
+        String recipeTypes = source("recipe/ModRecipeTypes.java");
+        assertTrue(recipeTypes.contains("TYPES.register("));
+        assertTrue(recipeTypes.contains("\"end_crafting\""));
         assertTrue(source("recipe/ModRecipeSerializers.java").contains("register(\"end_crafting\""));
         String menu = source("menu/EndCraftingTableMenu.java");
         assertTrue(menu.contains("RESULT_SLOT = 0"));
@@ -33,10 +35,10 @@ class EndCraftingResourceTest {
         assertTrue(menu.contains("PLAYER_INVENTORY_END = 53"));
         assertTrue(menu.contains("HOTBAR_START = 53"));
         assertTrue(menu.contains("HOTBAR_END = 62"));
-        assertTrue(menu.contains("142, 54"));
-        assertTrue(menu.contains("10 + column * 18, 18 + row * 18"));
-        assertTrue(menu.contains("28 + column * 18, 116 + row * 18"));
-        assertTrue(menu.contains("28 + column * 18, 174"));
+        assertTrue(menu.contains("160, 53"));
+        assertTrue(menu.contains("30 + column * 18, 17 + row * 18"));
+        assertTrue(menu.contains("26 + column * 18, 120 + row * 18"));
+        assertTrue(menu.contains("26 + column * 18, 178"));
         assertTrue(menu.contains("clickMenuButton(Player player, int buttonId)"));
         String jei = source("compat/jei/EndCraftingRecipeTransferHandler.java");
         assertTrue(jei.contains("implements IRecipeTransferHandler<EndCraftingTableMenu, EndCraftingRecipe>"));
@@ -79,21 +81,18 @@ class EndCraftingResourceTest {
     }
 
     @Test
-    void craftingSuccessFeedbackUsesServerDataSlotAndClientOnlyAnimation() throws Exception {
+    void screenUsesOneStaticTextureAndCraftingKeepsOnlyTheServerSound() throws Exception {
         String menu = source("menu/EndCraftingTableMenu.java");
         String resultSlot = source("menu/EndCraftingResultSlot.java");
         String screen = source("client/screen/EndCraftingTableScreen.java");
 
-        assertTrue(menu.contains("DataSlot craftSuccessSerial = DataSlot.standalone()"));
-        assertTrue(menu.contains("addDataSlot(craftSuccessSerial)"));
-        assertTrue(menu.contains("public int craftSuccessSerial()"));
+        assertFalse(menu.contains("DataSlot"));
+        assertFalse(menu.contains("craftSuccessSerial"));
         assertTrue(menu.contains("public void triggerCraftSuccess()"));
         assertTrue(menu.contains("if (player.level().isClientSide) return"));
-        assertTrue(menu.contains("(craftSuccessSerial.get() + 1) & 0x7FFF"));
         assertTrue(menu.contains("SoundEvents.ENCHANTMENT_TABLE_USE"));
         assertTrue(menu.contains("SoundSource.BLOCKS"));
         assertTrue(menu.contains("level.playSound("));
-        assertTrue(menu.contains("broadcastChanges()"));
         assertFalse(menu.contains("GuiGraphics"));
         assertFalse(menu.contains("RenderSystem"));
 
@@ -101,20 +100,45 @@ class EndCraftingResourceTest {
         assertTrue(resultSlot.indexOf("menu.triggerCraftSuccess()")
                 > resultSlot.indexOf("menu.slotsChanged(menu.craftSlots())"));
 
-        assertTrue(screen.contains("GLOW_BLUE = 0x3FA9FF"));
-        assertTrue(screen.contains("BORDER_PULSE_PERIOD_MILLIS = 2_000L"));
-        assertTrue(screen.contains("CRAFT_FLASH_DURATION = 8"));
-        assertTrue(screen.contains("lastCraftSuccessSerial = menu.craftSuccessSerial()"));
-        assertTrue(screen.contains("protected void containerTick()"));
-        assertTrue(screen.contains("craftFlashTicks = CRAFT_FLASH_DURATION"));
-        assertTrue(screen.contains("drawCraftFlash(graphics, slotX, slotY)"));
-        assertTrue(screen.contains("Util.getMillis()"));
-        assertTrue(screen.contains("VertexFormat.Mode.TRIANGLES"));
-        assertTrue(screen.contains("DefaultVertexFormat.POSITION_COLOR"));
-        assertTrue(screen.contains("GameRenderer::getPositionColorShader"));
-        assertTrue(screen.contains("graphics.flush()"));
-        assertFalse(screen.contains("graphics.fill(x + 110, y + 61, x + 132, y + 65, DARK)"));
-        assertFalse(screen.contains("graphics.fill(x + 128, y + 57, x + 132, y + 69, DARK)"));
+        assertTrue(screen.contains("textures/gui/container/end_crafting_table.png"));
+        assertTrue(screen.contains("imageWidth = 212"));
+        assertTrue(screen.contains("imageHeight = 202"));
+        assertTrue(screen.contains("titleLabelX = 29"));
+        assertTrue(screen.contains("titleLabelY = 6"));
+        assertTrue(screen.contains("inventoryLabelX = 26"));
+        assertTrue(screen.contains("inventoryLabelY = 108"));
+        assertEquals(1, count(screen, "graphics.blit("));
+        assertTrue(screen.contains("imageWidth,"));
+        assertTrue(screen.contains("imageHeight,"));
+        assertEquals(2, count(screen, "256"));
+        for (String forbidden : new String[]{"graphics.fill(", "GLOW_", "CRAFT_FLASH", "TRIANGLES", "drawArrow", "drawSlot"}) {
+            assertFalse(screen.contains(forbidden), forbidden);
+        }
+    }
+
+    @Test
+    void guiTextureIsTheFixedOpaqueSlotLayout() throws Exception {
+        Path texture = asset("textures/gui/container/end_crafting_table.png");
+        var image = ImageIO.read(texture.toFile());
+        assertEquals(256, image.getWidth());
+        assertEquals(256, image.getHeight());
+        assertTrue(image.getColorModel().hasAlpha());
+        assertEquals(4, image.getColorModel().getNumComponents());
+        assertEquals("34F4BAA1CA6754A40878F7F1124697BAAD2699E15F18E136FC37F18C91EAC47F",
+                HexFormat.of().withUpperCase().formatHex(
+                        MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(texture))));
+
+        for (int row = 0; row < 5; row++) for (int column = 0; column < 5; column++)
+            assertOpaqueItemArea(image, 30 + column * 18, 17 + row * 18);
+        assertOpaqueItemArea(image, 160, 53);
+        for (int row = 0; row < 3; row++) for (int column = 0; column < 9; column++)
+            assertOpaqueItemArea(image, 26 + column * 18, 120 + row * 18);
+        for (int column = 0; column < 9; column++)
+            assertOpaqueItemArea(image, 26 + column * 18, 178);
+
+        assertEquals(0, image.getRGB(212, 0) >>> 24);
+        assertEquals(0, image.getRGB(0, 202) >>> 24);
+        assertEquals(0, image.getRGB(255, 255) >>> 24);
     }
 
     @Test
@@ -155,6 +179,12 @@ class EndCraftingResourceTest {
         assertTrue(image.getColorModel().hasAlpha());
         assertEquals(hash, HexFormat.of().withUpperCase().formatHex(
                 MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(path))));
+    }
+
+    private static void assertOpaqueItemArea(java.awt.image.BufferedImage image, int x, int y) {
+        for (int pixelY = y; pixelY < y + 16; pixelY++) for (int pixelX = x; pixelX < x + 16; pixelX++)
+            assertEquals(255, image.getRGB(pixelX, pixelY) >>> 24,
+                    "transparent item area at " + pixelX + "," + pixelY);
     }
 
     private static int count(String text, String needle) { return (text.length()-text.replace(needle,"").length())/needle.length(); }

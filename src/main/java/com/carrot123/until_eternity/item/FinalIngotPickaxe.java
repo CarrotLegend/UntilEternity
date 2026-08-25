@@ -74,7 +74,7 @@ public class FinalIngotPickaxe extends PickaxeItem {
             return InteractionResult.SUCCESS;
         }
 
-        boolean destroyed = breakUnbreakableBlock(
+        boolean destroyed = tryBreakUnbreakableBlock(
                 level,
                 pos,
                 player
@@ -122,7 +122,7 @@ public class FinalIngotPickaxe extends PickaxeItem {
             return InteractionResultHolder.success(stack);
         }
 
-        boolean destroyed = breakUnbreakableBlock(
+        boolean destroyed = tryBreakUnbreakableBlock(
                 level,
                 pos,
                 player
@@ -146,7 +146,7 @@ public class FinalIngotPickaxe extends PickaxeItem {
         return state.getDestroySpeed(level, pos) < 0.0F;
     }
 
-    private boolean breakUnbreakableBlock(
+    public boolean tryBreakUnbreakableBlock(
             Level level,
             BlockPos pos,
             Player player
@@ -156,6 +156,10 @@ public class FinalIngotPickaxe extends PickaxeItem {
         }
 
         if (!(player instanceof ServerPlayer serverPlayer)) {
+            return false;
+        }
+
+        if (player.getCooldowns().isOnCooldown(this)) {
             return false;
         }
 
