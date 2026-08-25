@@ -4,12 +4,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -24,9 +23,6 @@ import javax.annotation.Nullable;
 public class SnowSpear extends SwordItem {
     public static final float BASE_ATTACK_DAMAGE = 500.0F;
     private static final float PLAYER_BASE_ATTACK_DAMAGE = 1.0F;
-    public static final ResourceKey<DamageType> FROST_BITTEN_KEY =
-            ResourceKey.create(Registries.DAMAGE_TYPE,
-                    new ResourceLocation("until_eternity", "frost_bitten"));
 
     public SnowSpear(
             Tier tier,
@@ -51,7 +47,7 @@ public class SnowSpear extends SwordItem {
             LivingEntity attacker) {
         Holder.Reference<DamageType> frostType = level.registryAccess()
                 .registryOrThrow(Registries.DAMAGE_TYPE)
-                .getHolderOrThrow(FROST_BITTEN_KEY);
+                .getHolderOrThrow(DamageTypes.FREEZE);
         return new DamageSource(frostType, attacker, attacker);
     }
 
