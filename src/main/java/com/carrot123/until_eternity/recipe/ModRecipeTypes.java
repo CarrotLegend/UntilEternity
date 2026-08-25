@@ -12,10 +12,16 @@ public final class ModRecipeTypes {
             DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, until_eternity.MODID);
 
     public static final RegistryObject<RecipeType<EndCraftingRecipe>> END_CRAFTING =
-            TYPES.register("end_crafting", () -> new RecipeType<>() {
-                @Override public String toString() { return until_eternity.MODID + ":end_crafting"; }
+            TYPES.register("end_crafting", () -> new RecipeType<EndCraftingRecipe>() {
+                @Override
+                public String toString() {
+                    return until_eternity.MODID + ":end_crafting";
+                }
             });
 
     private ModRecipeTypes() { }
-    public static void register(IEventBus bus) { TYPES.register(bus); }
+
+    public static void register(IEventBus bus) {
+        TYPES.register(bus);
+    }
 }
