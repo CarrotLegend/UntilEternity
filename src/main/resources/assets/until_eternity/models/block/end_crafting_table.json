@@ -4,7 +4,7 @@
     "down": "until_eternity:block/end_crafting_table_bottom",
     "up": "until_eternity:block/end_crafting_table_top",
     "north": "until_eternity:block/end_crafting_table_front",
-    "south": "until_eternity:block/end_crafting_table_front",
+    "south": "until_eternity:block/end_crafting_table_side",
     "west": "until_eternity:block/end_crafting_table_side",
     "east": "until_eternity:block/end_crafting_table_side",
     "particle": "until_eternity:block/end_crafting_table_side"
