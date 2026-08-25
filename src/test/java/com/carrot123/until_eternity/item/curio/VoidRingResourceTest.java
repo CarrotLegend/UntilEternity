@@ -81,8 +81,9 @@ class VoidRingResourceTest {
                 "FoodDataMixin",
                 "ManaEruptionStackingMixin",
                 "SoulGreatSwordItemMixin",
-                "LivingEntityDamageStateAccessor",
                 "TrueChefsKnifePlayerAttackMixin",
+                "TrueChefsKnifeLivingEntityDamageMixin",
+                "compat.mowziesmobs.EntityWroughtnautTrueChefsKnifeMixin",
                 "compat.obscure_api.ObscureApiCriticalHitMixin",
                 "compat.obscure_api.ObscureApiDodgeMixin",
                 "compat.obscure_api.ObscureApiHealingPowerMixin",
@@ -93,7 +94,12 @@ class VoidRingResourceTest {
                 "compat.terra_curio.TerraCurioLivingHurtAttributesMixin",
                 "compat.terra_curio.TerraCurioLivingDamageMixin",
                 "compat.eeeabsmobs.BlockErosionPortalMixin",
+                "compat.eeeabsmobs.EeeabTrueChefsKnifeDamageGateMixin",
+                "compat.eeeabsmobs.NamelessGuardianTrueChefsKnifeMixin",
+                "compat.cataclysm.CataclysmTrueChefsKnifeDamageGateMixin",
+                "compat.cataclysm.CataclysmTrueChefsKnifeBlockMixin",
                 "compat.goety.DarkWandFocusCastMixin",
+                "compat.goety.GoetyBossTrueChefsKnifeMixin",
                 "compat.goety.ServerLevelFocusEntityTickMixin",
                 "compat.goetyrevelation.QuietusStarPropertiesMixin",
                 "compat.irons_spellbooks.AbstractSpellCastingContextMixin",
@@ -102,7 +108,8 @@ class VoidRingResourceTest {
                 "compat.irons_spellbooks.MagicManagerMixin",
                 "compat.irons_spellbooks.ServerPlayerEventsMixin",
                 "compat.irons_spellbooks.TeleportationAmuletItemMixin",
-                "compat.thirst.PlayerThirstMixin"
+                "compat.thirst.PlayerThirstMixin",
+                "compat.legendary_monsters.LegendaryMonstersTrueChefsKnifeMixin"
         ), mixins);
         assertFalse(Files.exists(Path.of(
                 "src", "main", "java", "com", "carrot123",

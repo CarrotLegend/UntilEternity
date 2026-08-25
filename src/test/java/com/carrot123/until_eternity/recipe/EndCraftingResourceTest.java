@@ -33,6 +33,10 @@ class EndCraftingResourceTest {
         assertTrue(menu.contains("PLAYER_INVENTORY_END = 53"));
         assertTrue(menu.contains("HOTBAR_START = 53"));
         assertTrue(menu.contains("HOTBAR_END = 62"));
+        assertTrue(menu.contains("142, 54"));
+        assertTrue(menu.contains("10 + column * 18, 18 + row * 18"));
+        assertTrue(menu.contains("28 + column * 18, 116 + row * 18"));
+        assertTrue(menu.contains("28 + column * 18, 174"));
         assertTrue(menu.contains("clickMenuButton(Player player, int buttonId)"));
         String jei = source("compat/jei/EndCraftingRecipeTransferHandler.java");
         assertTrue(jei.contains("implements IRecipeTransferHandler<EndCraftingTableMenu, EndCraftingRecipe>"));
@@ -60,6 +64,8 @@ class EndCraftingResourceTest {
         assertFalse(entity.contains("saveAdditional"));
         String renderer = source("client/endcrafting/EndCraftingTableBlockEntityRenderer.java");
         assertTrue(renderer.contains("SHELL_EXPANSION = 0.002F"));
+        assertTrue(renderer.contains("GLINT_UV_SPAN = 0.125F"));
+        assertEquals(5, count(renderer, "GLINT_UV_SPAN"));
         assertEquals(6, count(renderer, "face(vertices"));
         String renderType = source("client/endcrafting/EndCraftingTableGlintRenderType.java");
         assertTrue(renderType.contains("RENDERTYPE_GLINT_DIRECT_SHADER"));
@@ -70,6 +76,45 @@ class EndCraftingResourceTest {
         String item = source("item/EndCraftingTableBlockItem.java");
         assertTrue(item.contains("boolean isFoil(ItemStack stack)"));
         assertTrue(item.contains("return true"));
+    }
+
+    @Test
+    void craftingSuccessFeedbackUsesServerDataSlotAndClientOnlyAnimation() throws Exception {
+        String menu = source("menu/EndCraftingTableMenu.java");
+        String resultSlot = source("menu/EndCraftingResultSlot.java");
+        String screen = source("client/screen/EndCraftingTableScreen.java");
+
+        assertTrue(menu.contains("DataSlot craftSuccessSerial = DataSlot.standalone()"));
+        assertTrue(menu.contains("addDataSlot(craftSuccessSerial)"));
+        assertTrue(menu.contains("public int craftSuccessSerial()"));
+        assertTrue(menu.contains("public void triggerCraftSuccess()"));
+        assertTrue(menu.contains("if (player.level().isClientSide) return"));
+        assertTrue(menu.contains("(craftSuccessSerial.get() + 1) & 0x7FFF"));
+        assertTrue(menu.contains("SoundEvents.ENCHANTMENT_TABLE_USE"));
+        assertTrue(menu.contains("SoundSource.BLOCKS"));
+        assertTrue(menu.contains("level.playSound("));
+        assertTrue(menu.contains("broadcastChanges()"));
+        assertFalse(menu.contains("GuiGraphics"));
+        assertFalse(menu.contains("RenderSystem"));
+
+        assertEquals(1, count(resultSlot, "menu.triggerCraftSuccess()"));
+        assertTrue(resultSlot.indexOf("menu.triggerCraftSuccess()")
+                > resultSlot.indexOf("menu.slotsChanged(menu.craftSlots())"));
+
+        assertTrue(screen.contains("GLOW_BLUE = 0x3FA9FF"));
+        assertTrue(screen.contains("BORDER_PULSE_PERIOD_MILLIS = 2_000L"));
+        assertTrue(screen.contains("CRAFT_FLASH_DURATION = 8"));
+        assertTrue(screen.contains("lastCraftSuccessSerial = menu.craftSuccessSerial()"));
+        assertTrue(screen.contains("protected void containerTick()"));
+        assertTrue(screen.contains("craftFlashTicks = CRAFT_FLASH_DURATION"));
+        assertTrue(screen.contains("drawCraftFlash(graphics, slotX, slotY)"));
+        assertTrue(screen.contains("Util.getMillis()"));
+        assertTrue(screen.contains("VertexFormat.Mode.TRIANGLES"));
+        assertTrue(screen.contains("DefaultVertexFormat.POSITION_COLOR"));
+        assertTrue(screen.contains("GameRenderer::getPositionColorShader"));
+        assertTrue(screen.contains("graphics.flush()"));
+        assertFalse(screen.contains("graphics.fill(x + 110, y + 61, x + 132, y + 65, DARK)"));
+        assertFalse(screen.contains("graphics.fill(x + 128, y + 57, x + 132, y + 69, DARK)"));
     }
 
     @Test

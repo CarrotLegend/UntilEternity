@@ -4,6 +4,8 @@ import com.carrot123.until_eternity.registry.ModMobEffects;
 import com.carrot123.until_eternity.combat.CookingFrenzyProgression;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
@@ -82,6 +84,9 @@ public final class TrueChefsKnifeItem extends SwordItem {
         tooltip.add(Component.translatable(
                 "tooltip.until_eternity.true_chefs_knife.unavoidable"
         ).withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable(
+                "tooltip.until_eternity.true_chefs_knife.cooking_frenzy"
+        ).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFAA00))));
     }
 
 }

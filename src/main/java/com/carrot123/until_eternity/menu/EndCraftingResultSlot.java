@@ -77,6 +77,7 @@ public final class EndCraftingResultSlot extends Slot {
             }
         }
         menu.slotsChanged(menu.craftSlots());
+        menu.triggerCraftSuccess();
         super.onTake(player, stack);
     }
 }

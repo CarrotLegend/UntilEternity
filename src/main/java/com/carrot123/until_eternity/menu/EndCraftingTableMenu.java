@@ -5,11 +5,14 @@ import com.carrot123.until_eternity.recipe.EndCraftingRecipe;
 import com.carrot123.until_eternity.recipe.ModRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.TransientCraftingContainer;
@@ -37,6 +40,7 @@ public final class EndCraftingTableMenu extends AbstractContainerMenu {
     private final ResultContainer resultSlots = new ResultContainer();
     private final ContainerLevelAccess access;
     private final Player player;
+    private final DataSlot craftSuccessSerial = DataSlot.standalone();
 
     public EndCraftingTableMenu(int containerId, Inventory inventory, BlockPos pos) {
         this(containerId, inventory, ContainerLevelAccess.create(inventory.player.level(), pos));
@@ -46,6 +50,7 @@ public final class EndCraftingTableMenu extends AbstractContainerMenu {
         super(ModMenuTypes.END_CRAFTING_TABLE.get(), containerId);
         this.access = access;
         this.player = inventory.player;
+        addDataSlot(craftSuccessSerial);
 
         addSlot(new EndCraftingResultSlot(this, inventory.player, 142, 54));
         for (int row = 0; row < 5; row++) for (int column = 0; column < 5; column++)
@@ -58,6 +63,20 @@ public final class EndCraftingTableMenu extends AbstractContainerMenu {
 
     public TransientCraftingContainer craftSlots() { return craftSlots; }
     public ResultContainer resultContainer() { return resultSlots; }
+    public int craftSuccessSerial() { return craftSuccessSerial.get(); }
+
+    public void triggerCraftSuccess() {
+        if (player.level().isClientSide) return;
+        craftSuccessSerial.set((craftSuccessSerial.get() + 1) & 0x7FFF);
+        access.execute((level, pos) -> level.playSound(
+                null,
+                pos,
+                SoundEvents.ENCHANTMENT_TABLE_USE,
+                SoundSource.BLOCKS,
+                1.0F,
+                1.0F));
+        broadcastChanges();
+    }
 
     public EndCraftingTransferPlanner.Plan createTransferPlan(EndCraftingRecipe recipe, boolean maxTransfer) {
         List<ItemStack> input = slots.subList(INPUT_START, INPUT_END).stream()

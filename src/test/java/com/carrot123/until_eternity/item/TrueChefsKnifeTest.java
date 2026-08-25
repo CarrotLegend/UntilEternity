@@ -1,6 +1,7 @@
 package com.carrot123.until_eternity.item;
 
 import com.carrot123.until_eternity.combat.CookingFrenzyProgression;
+import com.carrot123.until_eternity.combat.ForcedHitDamageMath;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import net.minecraft.nbt.CompoundTag;
 
 class TrueChefsKnifeTest {
+    @Test
+    void forcedHitKeepsPositiveFiniteHooksAndRejectsInvalidResults() {
+        assertEquals(7.5F, ForcedHitDamageMath.preservePositiveHookResult(5.0F, 7.5F));
+        assertEquals(5.0F, ForcedHitDamageMath.preservePositiveHookResult(5.0F, 0.0F));
+        assertEquals(5.0F, ForcedHitDamageMath.preservePositiveHookResult(5.0F, -1.0F));
+        assertEquals(5.0F, ForcedHitDamageMath.preservePositiveHookResult(5.0F, Float.NaN));
+        assertEquals(5.0F, ForcedHitDamageMath.preservePositiveHookResult(
+                5.0F, Float.POSITIVE_INFINITY));
+    }
+
     @Test
     void frenzyProgressionStartsAtOneAndCapsAtTen() {
         assertEquals(0, CookingFrenzyProgression.nextAmplifier(-1));
@@ -57,21 +68,28 @@ class TrueChefsKnifeTest {
     }
 
     @Test
-    void unavoidableTooltipUsesOneRedTranslatedLineAndKeepsVanillaTooltip() throws Exception {
+    void tooltipUsesTranslatedRedThenRgbOrangeLinesAndKeepsVanillaTooltip() throws Exception {
         String source = Files.readString(Path.of(
                 "src/main/java/com/carrot123/until_eternity/item/TrueChefsKnifeItem.java"));
         String key = "tooltip.until_eternity.true_chefs_knife.unavoidable";
+        String frenzyKey = "tooltip.until_eternity.true_chefs_knife.cooking_frenzy";
 
         assertTrue(source.contains("void appendHoverText("));
         assertTrue(source.contains("super.appendHoverText(stack, level, tooltip, flag);"));
         assertEquals(1, occurrences(source, "Component.translatable(\n                \"" + key + "\""));
         assertTrue(source.contains("withStyle(ChatFormatting.RED)"));
+        assertTrue(source.indexOf(key) < source.indexOf(frenzyKey));
+        assertTrue(source.contains("TextColor.fromRgb(0xFFAA00)"));
         assertTrue(!source.contains("§c"));
+        assertTrue(!source.contains("§6"));
 
         JsonObject zhCn = language("zh_cn");
         JsonObject enUs = language("en_us");
         assertEquals("没人能躲开你的攻击", zhCn.get(key).getAsString());
         assertEquals("No one can evade your attacks", enUs.get(key).getAsString());
+        assertEquals("命中叠加一层“烹饪狂热”", zhCn.get(frenzyKey).getAsString());
+        assertEquals("Gain 1 stack of “Cooking Frenzy” on hit",
+                enUs.get(frenzyKey).getAsString());
     }
 
     private static JsonObject language(String locale) throws Exception {

@@ -188,6 +188,7 @@ dependencies {
     implementation fg.deobf("curse.maven:lendercataclysm-551586:7908487")
     implementation fg.deobf("curse.maven:lionfish-api-1001614:5922047")
     implementation fg.deobf("curse.maven:legendary-monsters-944035:8444425")
+    compileOnly fg.deobf("curse.maven:mowzies-mobs-250498:7815705")
     implementation fg.deobf("curse.maven:goety-586095:7966952")
     implementation files('libs/GoetyRevelation-2.3.2.jar')
     runtimeOnly fg.deobf("maven.modrinth:tMycyukv:RTKdreoY")

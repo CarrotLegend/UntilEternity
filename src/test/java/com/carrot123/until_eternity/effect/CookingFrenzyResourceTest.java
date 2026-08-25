@@ -60,11 +60,11 @@ class CookingFrenzyResourceTest {
     }
 
     @Test
-    void primaryHitUsesDirectHealthDamageWithoutCallingVictimHurt() throws IOException {
+    void primaryHitUsesOneScopedTargetHurtPipelineWithoutDirectHealthDamage()
+            throws IOException {
         String playerMixin = source("mixin/TrueChefsKnifePlayerAttackMixin.java");
-        String directDamage = source("combat/TrueChefsKnifeDirectDamage.java");
-        String accessor = source("mixin/LivingEntityDamageStateAccessor.java");
         String context = source("combat/TrueChefsKnifeAttackContext.java");
+        String livingMixin = source("mixin/TrueChefsKnifeLivingEntityDamageMixin.java");
         JsonObject mixins = JsonParser.parseString(Files.readString(
                 RESOURCES.resolve("until_eternity.mixins.json"))).getAsJsonObject();
 
@@ -74,42 +74,63 @@ class CookingFrenzyResourceTest {
         assertTrue(playerMixin.contains("Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"));
         assertFalse(playerMixin.contains("LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"));
         assertEquals(4, occurrences(playerMixin, "require = 1"));
-        assertEquals(1, occurrences(playerMixin, "original.call(target, source, amount)"));
-        assertTrue(playerMixin.contains(
-                "return TrueChefsKnifeDirectDamage.apply(player, victim, source, amount);"));
-        assertFalse(playerMixin.contains("withAttack("));
-
-        assertTrue(directDamage.contains("ForgeHooks.onLivingAttack"));
-        assertTrue(directDamage.contains("ForgeHooks.onLivingHurt"));
-        assertTrue(directDamage.contains("ForgeHooks.onLivingDamage"));
-        assertTrue(directDamage.contains("victim.setHealth(requiredHealth)"));
-        assertTrue(directDamage.contains("Math.max(previous, returned)"));
-        assertTrue(directDamage.contains("victim.die(source)"));
-        assertFalse(directDamage.contains("victim.hurt("));
-        assertFalse(directDamage.contains("getDamageAfterArmorAbsorb"));
-        assertFalse(directDamage.contains("getDamageAfterMagicAbsorb"));
+        assertEquals(2, occurrences(playerMixin, "original.call(target, source, amount)"));
+        assertTrue(playerMixin.contains("TrueChefsKnifeAttackContext.withAttack("));
+        assertFalse(playerMixin.contains("setHealth("));
+        String removedDirectHelper = "TrueChefsKnife" + "DirectDamage";
+        String removedAccessor = "LivingEntityDamage" + "StateAccessor";
+        assertFalse(playerMixin.contains(removedDirectHelper));
 
         assertTrue(context.contains("PartEntity<?> part"));
         assertTrue(context.contains("part.getParent() instanceof LivingEntity"));
-        assertFalse(context.contains("ScopedValueStack"));
-        assertFalse(context.contains("withAttack("));
-        assertFalse(context.contains("matches("));
+        assertTrue(context.contains("ScopedValueStack<Attack> ACTIVE_ATTACK"));
+        assertTrue(context.contains("ACTIVE_ATTACK.withValue("));
+        assertTrue(context.contains("public static boolean matches("));
+        assertTrue(livingMixin.contains("ForgeHooks;onLivingAttack"));
+        assertTrue(livingMixin.contains("ForgeHooks;onLivingHurt"));
+        assertTrue(livingMixin.contains("ForgeHooks;onLivingDamage"));
+        assertTrue(livingMixin.contains("isDamageSourceBlocked"));
+        assertFalse(livingMixin.contains("setHealth("));
 
-        assertTrue(accessor.contains("@Accessor(\"lastHurt\")"));
-        assertTrue(accessor.contains("@Accessor(\"lastDamageSource\")"));
-        assertFalse(accessor.contains("@Inject"));
-        assertFalse(accessor.contains("@Wrap"));
         assertFalse(Files.exists(MAIN_JAVA.resolve(
+                "combat/" + removedDirectHelper + ".java")));
+        assertFalse(Files.exists(MAIN_JAVA.resolve(
+                "mixin/" + removedAccessor + ".java")));
+        assertTrue(Files.exists(MAIN_JAVA.resolve(
                 "mixin/TrueChefsKnifeLivingEntityDamageMixin.java")));
-        assertFalse(Files.exists(MAIN_JAVA.resolve("combat/ForcedHitDamageMath.java")));
+        assertTrue(Files.exists(MAIN_JAVA.resolve("combat/ForcedHitDamageMath.java")));
 
         assertTrue(mixins.getAsJsonArray("mixins").asList().stream()
                 .anyMatch(value -> value.getAsString().equals("TrueChefsKnifePlayerAttackMixin")));
         assertTrue(mixins.getAsJsonArray("mixins").asList().stream()
-                .anyMatch(value -> value.getAsString().equals("LivingEntityDamageStateAccessor")));
-        assertFalse(mixins.getAsJsonArray("mixins").asList().stream()
                 .anyMatch(value -> value.getAsString().equals(
                         "TrueChefsKnifeLivingEntityDamageMixin")));
+        assertFalse(mixins.getAsJsonArray("mixins").asList().stream()
+                .anyMatch(value -> value.getAsString().equals(
+                        removedAccessor)));
+    }
+
+    @Test
+    void wroughtnautCompatIsScopedAndConditionallyLoaded() throws IOException {
+        String compat = source(
+                "mixin/compat/mowziesmobs/EntityWroughtnautTrueChefsKnifeMixin.java");
+        String plugin = source("compat/mixin/UntilEternityMixinPlugin.java");
+        String config = Files.readString(RESOURCES.resolve("until_eternity.mixins.json"));
+        String metadata = Files.readString(
+                RESOURCES.resolve(Path.of("META-INF", "mods.toml")));
+
+        assertTrue(compat.contains("DamageSource;getEntity()"));
+        assertTrue(compat.contains("return TrueChefsKnifeAttackContext.matches("));
+        assertTrue(compat.contains("? null : original"));
+        assertTrue(compat.contains("DamageTypeTags.BYPASSES_INVULNERABILITY"));
+        assertTrue(compat.contains("original.call(source, tag)"));
+        assertFalse(compat.contains("setHealth("));
+        assertFalse(compat.contains("@Overwrite"));
+        assertTrue(plugin.contains("getModFileById(\"mowziesmobs\")"));
+        assertTrue(config.contains("UntilEternityMixinPlugin"));
+        assertTrue(metadata.contains("modId=\"mowziesmobs\""));
+        assertTrue(metadata.contains("mandatory=false"));
+        assertTrue(metadata.contains("versionRange=\"[1.8.2]\""));
     }
 
     @Test

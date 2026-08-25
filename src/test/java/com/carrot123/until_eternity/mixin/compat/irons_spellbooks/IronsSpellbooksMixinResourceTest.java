@@ -38,8 +38,9 @@ class IronsSpellbooksMixinResourceTest {
                 "FoodDataMixin",
                 "ManaEruptionStackingMixin",
                 "SoulGreatSwordItemMixin",
-                "LivingEntityDamageStateAccessor",
                 "TrueChefsKnifePlayerAttackMixin",
+                "TrueChefsKnifeLivingEntityDamageMixin",
+                "compat.mowziesmobs.EntityWroughtnautTrueChefsKnifeMixin",
                 "compat.obscure_api.ObscureApiCriticalHitMixin",
                 "compat.obscure_api.ObscureApiDodgeMixin",
                 "compat.obscure_api.ObscureApiHealingPowerMixin",
@@ -50,7 +51,12 @@ class IronsSpellbooksMixinResourceTest {
                 "compat.terra_curio.TerraCurioLivingHurtAttributesMixin",
                 "compat.terra_curio.TerraCurioLivingDamageMixin",
                 "compat.eeeabsmobs.BlockErosionPortalMixin",
+                "compat.eeeabsmobs.EeeabTrueChefsKnifeDamageGateMixin",
+                "compat.eeeabsmobs.NamelessGuardianTrueChefsKnifeMixin",
+                "compat.cataclysm.CataclysmTrueChefsKnifeDamageGateMixin",
+                "compat.cataclysm.CataclysmTrueChefsKnifeBlockMixin",
                 "compat.goety.DarkWandFocusCastMixin",
+                "compat.goety.GoetyBossTrueChefsKnifeMixin",
                 "compat.goety.ServerLevelFocusEntityTickMixin",
                 "compat.goetyrevelation.QuietusStarPropertiesMixin",
                 "compat.irons_spellbooks.AbstractSpellCastingContextMixin",
@@ -59,7 +65,8 @@ class IronsSpellbooksMixinResourceTest {
                 "compat.irons_spellbooks.MagicManagerMixin",
                 "compat.irons_spellbooks.ServerPlayerEventsMixin",
                 "compat.irons_spellbooks.TeleportationAmuletItemMixin",
-                "compat.thirst.PlayerThirstMixin"
+                "compat.thirst.PlayerThirstMixin",
+                "compat.legendary_monsters.LegendaryMonstersTrueChefsKnifeMixin"
         ), mixins);
         Set<String> clientMixins = new HashSet<>();
         config.getAsJsonArray("client")

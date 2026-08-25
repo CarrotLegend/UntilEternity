@@ -11,6 +11,7 @@ import org.joml.Matrix4f;
 public final class EndCraftingTableBlockEntityRenderer
         implements BlockEntityRenderer<EndCraftingTableBlockEntity> {
     static final float SHELL_EXPANSION = 0.002F;
+    static final float GLINT_UV_SPAN = 0.125F;
 
     public EndCraftingTableBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
@@ -35,9 +36,9 @@ public final class EndCraftingTableBlockEntityRenderer
                              float x0, float y0, float z0, float x1, float y1, float z1,
                              float x2, float y2, float z2, float x3, float y3, float z3) {
         vertex(vertices, pose, x0, y0, z0, 0.0F, 0.0F);
-        vertex(vertices, pose, x1, y1, z1, 1.0F, 0.0F);
-        vertex(vertices, pose, x2, y2, z2, 1.0F, 1.0F);
-        vertex(vertices, pose, x3, y3, z3, 0.0F, 1.0F);
+        vertex(vertices, pose, x1, y1, z1, GLINT_UV_SPAN, 0.0F);
+        vertex(vertices, pose, x2, y2, z2, GLINT_UV_SPAN, GLINT_UV_SPAN);
+        vertex(vertices, pose, x3, y3, z3, 0.0F, GLINT_UV_SPAN);
     }
 
     private static void vertex(VertexConsumer vertices, Matrix4f pose,
