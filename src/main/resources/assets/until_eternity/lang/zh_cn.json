@@ -44,7 +44,7 @@
   "item.until_eternity.snow_spear": "霜咬",
   "item.until_eternity.snow_spear.desc": "造成 %s 点冰冻伤害",
   "item.until_eternity.final_ingot_pickaxe": "终式合金镐",
-  "item.until_eternity.final_ingot_pickaxe.desc": "潜行右键能够摧毁基岩",
+  "item.until_eternity.final_ingot_pickaxe.desc": "潜行右键能够摧毁无法破坏的方块",
   "item.until_eternity.pumpkin_nugget": "熔融南瓜锭碎片",
   "item.until_eternity.pumpkin_ingot": "南瓜锭",
   "item.until_eternity.imfull": "我吃饱了！",
@@ -90,7 +90,7 @@
   "advancements.until_eternity.god_ascending.title": "登神之物",
   "advancements.until_eternity.god_ascending.description": "锻造出超越神明的造物",
   "advancements.until_eternity.bedrock_smasher.title": "基岩粉碎机",
-  "advancements.until_eternity.bedrock_smasher.description": "基岩也得乖乖就范！",
+  "advancements.until_eternity.bedrock_smasher.description": "基岩也难逃一劫！",
 
   "death.attack.untilEternity.frostBitten": "%1$s 被冻成了冰雕",
   "death.attack.untilEternity.frostBitten.player": "%1$s 被 %2$s 冻成了冰雕",
