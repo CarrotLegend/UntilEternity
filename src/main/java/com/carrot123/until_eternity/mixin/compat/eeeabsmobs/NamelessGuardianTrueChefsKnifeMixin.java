@@ -15,13 +15,16 @@ import org.spongepowered.asm.mixin.injection.At;
         remap = false)
 public abstract class NamelessGuardianTrueChefsKnifeMixin {
     @ModifyExpressionValue(
-            method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+            method = {
+                    "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+                    "m_6469_(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
+            },
             at = @At(
                     value = "FIELD",
                     target = "Lcom/eeeab/eeeabsmobs/sever/entity/guling/EntityNamelessGuardian;guardianInvulnerableTime:I",
                     opcode = Opcodes.GETFIELD,
                     remap = false),
-            remap = true,
+            remap = false,
             require = 1)
     private int untilEternity$bypassGuardianInvulnerableTime(
             int original,
