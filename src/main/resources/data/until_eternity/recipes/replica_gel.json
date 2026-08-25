@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GMG",
+    "MEM",
+    "GMG"
+  ],
+  "key": {
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "G": {
+      "item": "mowziesmobs:glowing_jelly"
+    },
+    "M": {
+      "item": "eternal_food:mineral_gel"
+    }
+  },
+  "result": {
+    "item": "until_eternity:replica_gel",
+    "count": 1
+  }
+}
