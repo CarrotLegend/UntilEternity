@@ -23,5 +23,8 @@ public final class ModRecipeTypes {
                 });
 
     private ModRecipeTypes() { }
-    public static void register(IEventBus bus) { TYPES.register(bus); }
+
+    public static void register(IEventBus bus) {
+        TYPES.register(bus);
+    }
 }
