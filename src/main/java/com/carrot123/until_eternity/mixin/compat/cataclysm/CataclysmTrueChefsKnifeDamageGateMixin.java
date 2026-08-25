@@ -34,12 +34,15 @@ import org.spongepowered.asm.mixin.injection.At;
         remap = false)
 public abstract class CataclysmTrueChefsKnifeDamageGateMixin {
     @WrapOperation(
-            method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+            method = {
+                    "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+                    "m_6469_(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
+            },
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z",
                     remap = true),
-            remap = true,
+            remap = false,
             require = 1)
     private boolean untilEternity$useExistingInvulnerabilityBypassBranches(
             DamageSource source,
@@ -51,19 +54,4 @@ public abstract class CataclysmTrueChefsKnifeDamageGateMixin {
                 (LivingEntity) (Object) this, source);
     }
 
-    @WrapOperation(
-            method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/entity/LivingEntity;isInvulnerableTo(Lnet/minecraft/world/damagesource/DamageSource;)Z",
-                    remap = true),
-            remap = true,
-            require = 0)
-    private boolean untilEternity$bypassPreSuperInvulnerabilityCheck(
-            LivingEntity target,
-            DamageSource source,
-            Operation<Boolean> original) {
-        boolean invulnerable = original.call(target, source);
-        return invulnerable && !TrueChefsKnifeAttackContext.matches(target, source);
-    }
 }

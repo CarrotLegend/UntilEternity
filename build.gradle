@@ -171,6 +171,13 @@ repositories {
     // }
 }
 
+configurations {
+    productionMixinAudit {
+        canBeConsumed = false
+        canBeResolved = true
+    }
+}
+
 dependencies {
     // Specify the version of Minecraft to use.
     // Any artifact can be supplied so long as it has a "userdev" classifier artifact and is a compatible patcher artifact.
@@ -206,6 +213,13 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     testImplementation fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1:api")
+    // Keep these artifacts raw: the production Mixin audit must inspect the
+    // actual SRG names shipped by the locked third-party mods, not FG output.
+    productionMixinAudit "curse.maven:mowzies-mobs-250498:7815705"
+    productionMixinAudit "curse.maven:lendercataclysm-551586:7908487"
+    productionMixinAudit "curse.maven:eeeabs-mobs-921600:6095880"
+    productionMixinAudit "curse.maven:legendary-monsters-944035:8444425"
+    productionMixinAudit "curse.maven:goety-586095:7966952"
     compileOnly fg.deobf("mezz.jei:jei-1.20.1-common-api:15.20.0.130")
     compileOnly fg.deobf("mezz.jei:jei-1.20.1-forge-api:15.20.0.130")
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
@@ -303,6 +317,104 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.named('test', Test).configure {
     useJUnitPlatform()
+    doFirst {
+        systemProperty 'untilEternity.productionMixinAuditClasspath',
+                configurations.productionMixinAudit.asPath
+    }
+}
+
+tasks.register('verifyProductionKnifeArtifacts') {
+    group = 'verification'
+    description = 'Audits reobfuscated third-party True Chef\'s Knife mixins in both distributable jars.'
+    dependsOn tasks.named('reobfJar'), tasks.named('reobfJarJar')
+
+    doLast {
+        File regularJar = tasks.named('jar').get().archiveFile.get().asFile
+        File bundledJar = tasks.named('jarJar').get().archiveFile.get().asFile
+        if (!regularJar.isFile() || !bundledJar.isFile()) {
+            throw new GradleException("Missing distributable jars: ${regularJar}, ${bundledJar}")
+        }
+
+        def readEntry = { File archive, String entryName ->
+            def zip = new java.util.zip.ZipFile(archive)
+            try {
+                def entry = zip.getEntry(entryName)
+                if (entry == null) {
+                    throw new GradleException("${archive.name} is missing ${entryName}")
+                }
+                return zip.getInputStream(entry).bytes
+            } finally {
+                zip.close()
+            }
+        }
+
+        def mixins = [
+                'compat/mowziesmobs/EntityWroughtnautTrueChefsKnifeMixin',
+                'compat/eeeabsmobs/EeeabTrueChefsKnifeDamageGateMixin',
+                'compat/eeeabsmobs/NamelessGuardianTrueChefsKnifeMixin',
+                'compat/cataclysm/CataclysmTrueChefsKnifeDamageGateMixin',
+                'compat/cataclysm/ClawdianTrueChefsKnifeBlockMixin',
+                'compat/cataclysm/IgnisTrueChefsKnifeBlockMixin',
+                'compat/cataclysm/IgnitedRevenantTrueChefsKnifeBlockMixin',
+                'compat/cataclysm/KobolediatorTrueChefsKnifeBlockMixin',
+                'compat/cataclysm/RoyalDraugrTrueChefsKnifeBlockMixin',
+                'compat/cataclysm/WadjetTrueChefsKnifeBlockMixin',
+                'compat/goety/ApostleTrueChefsKnifeMixin',
+                'compat/goety/EnderKeeperTrueChefsKnifeMixin',
+                'compat/goety/VizierTrueChefsKnifeMixin',
+                'compat/legendary_monsters/LegendaryMonstersTrueChefsKnifeMixin'
+        ]
+        def commonEntries = [
+                'until_eternity.mixins.json',
+                'until_eternity.refmap.json'
+        ] + mixins.collect { "com/carrot123/until_eternity/mixin/${it}.class" }
+
+        commonEntries.each { entry ->
+            byte[] regular = readEntry(regularJar, entry)
+            byte[] bundled = readEntry(bundledJar, entry)
+            if (!java.util.Arrays.equals(regular, bundled)) {
+                throw new GradleException("Production jars disagree for ${entry}")
+            }
+        }
+        readEntry(bundledJar, 'META-INF/jarjar/metadata.json')
+
+        String config = new String(readEntry(regularJar,
+                'until_eternity.mixins.json'), java.nio.charset.StandardCharsets.UTF_8)
+        String refmap = new String(readEntry(regularJar,
+                'until_eternity.refmap.json'), java.nio.charset.StandardCharsets.UTF_8)
+        mixins.each { mixin ->
+            String dotted = mixin.replace('/', '.')
+            if (!config.contains(dotted)) {
+                throw new GradleException("Mixin config is missing ${dotted}")
+            }
+            String constants = new String(readEntry(regularJar,
+                    "com/carrot123/until_eternity/mixin/${mixin}.class"),
+                    java.nio.charset.StandardCharsets.ISO_8859_1)
+            if (!constants.contains('hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z') ||
+                    !constants.contains('m_6469_(Lnet/minecraft/world/damagesource/DamageSource;F)Z')) {
+                throw new GradleException("${mixin} lacks development/production hurt selectors")
+            }
+        }
+        ['m_7639_', 'm_269533_'].each { mappedCall ->
+            if (!refmap.contains(mappedCall)) {
+                throw new GradleException("Refmap is missing Minecraft invocation ${mappedCall}")
+            }
+        }
+        [
+                'compat/mowziesmobs/EntityWroughtnautTrueChefsKnifeMixin',
+                'compat/eeeabsmobs/EeeabTrueChefsKnifeDamageGateMixin',
+                'compat/cataclysm/CataclysmTrueChefsKnifeDamageGateMixin',
+                'compat/legendary_monsters/LegendaryMonstersTrueChefsKnifeMixin'
+        ].each { mappedMixin ->
+            if (!refmap.contains("com/carrot123/until_eternity/mixin/${mappedMixin}")) {
+                throw new GradleException("Refmap lacks Minecraft invocation mappings for ${mappedMixin}")
+            }
+        }
+    }
+}
+
+tasks.named('build').configure {
+    finalizedBy tasks.named('verifyProductionKnifeArtifacts')
 }
 
 // Download Goety Revelation (curse.maven doesn't support it due to 3rd-party sharing disabled)

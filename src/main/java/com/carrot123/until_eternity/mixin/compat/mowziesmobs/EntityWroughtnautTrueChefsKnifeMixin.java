@@ -20,11 +20,15 @@ import org.spongepowered.asm.mixin.injection.At;
         remap = false)
 public abstract class EntityWroughtnautTrueChefsKnifeMixin {
     @ModifyExpressionValue(
-            method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+            method = {
+                    "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+                    "m_6469_(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
+            },
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/damagesource/DamageSource;getEntity()Lnet/minecraft/world/entity/Entity;",
                     remap = true),
+            remap = false,
             require = 1)
     private Entity untilEternity$hideKnifeAttackerFromWroughtnautGate(
             Entity original,
@@ -35,11 +39,15 @@ public abstract class EntityWroughtnautTrueChefsKnifeMixin {
     }
 
     @WrapOperation(
-            method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+            method = {
+                    "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+                    "m_6469_(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
+            },
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z",
                     remap = true),
+            remap = false,
             require = 1)
     private boolean untilEternity$allowKnifeThroughWroughtnautGate(
             DamageSource source,

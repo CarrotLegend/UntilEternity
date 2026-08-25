@@ -116,7 +116,7 @@ public class ModItems {
     public static final RegistryObject<Item> BROKEN_NOSERING = ITEMS.register("broken_nosering", () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> VIBRANT_AMETHYST = ITEMS.register("vibrant_amethyst", () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> MONSTERS_SCYTHE = ITEMS.register("monsters_scythe", () -> new MonstersScythe(ModTiers.MONSTERS_SCYTHE, 0, -3.2F, new Item.Properties().durability(3270).fireResistant()));
-    public static final RegistryObject<Item> SNOW_SPEAR = ITEMS.register("snow_spear", () -> new SnowSpear(Tiers.NETHERITE, 0, -2.5F, 400.0F, new Item.Properties().durability(2031).rarity(Rarity.RARE).fireResistant()));
+    public static final RegistryObject<Item> SNOW_SPEAR = ITEMS.register("snow_spear", () -> new SnowSpear(Tiers.NETHERITE, -2.5F, new Item.Properties().durability(2031).rarity(Rarity.RARE).fireResistant()));
     public static final RegistryObject<Item> FINAL_INGOT_PICKAXE = ITEMS.register("final_ingot_pickaxe", () -> new FinalIngotPickaxe(ModTiers.FINAL_INGOT, 0, -2.8F, new Item.Properties().durability(4096).rarity(Rarity.EPIC).fireResistant()));
     public static final RegistryObject<Item> PUMPKIN_NUGGET = ITEMS.register("pumpkin_nugget", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> PUMPKIN_INGOT = ITEMS.register("pumpkin_ingot", () -> new Item(new Item.Properties()));

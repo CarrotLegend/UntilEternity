@@ -20,19 +20,21 @@ import org.spongepowered.asm.mixin.injection.At;
                 "com.eeeab.eeeabsmobs.sever.entity.guling.EntityGulingSentinel",
                 "com.eeeab.eeeabsmobs.sever.entity.guling.EntityNamelessGuardian",
                 "com.eeeab.eeeabsmobs.sever.entity.immortal.EntityImmortal",
-                "com.eeeab.eeeabsmobs.sever.entity.immortal.EntityImmortalExecutioner",
-                "com.eeeab.eeeabsmobs.sever.entity.immortal.EntityImmortalShaman"
+                "com.eeeab.eeeabsmobs.sever.entity.immortal.EntityImmortalExecutioner"
         },
         remap = false)
 public abstract class EeeabTrueChefsKnifeDamageGateMixin {
     @WrapOperation(
-            method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+            method = {
+                    "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+                    "m_6469_(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
+            },
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z",
                     remap = true),
-            remap = true,
-            require = 0)
+            remap = false,
+            require = 1)
     private boolean untilEternity$useExistingUnresistantDamageBranches(
             DamageSource source,
             TagKey<DamageType> tag,
