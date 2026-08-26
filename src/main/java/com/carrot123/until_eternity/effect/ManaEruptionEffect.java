@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 public final class ManaEruptionEffect extends MobEffect {
     public static final int COLOR = 0x7047FF;
-    public static final double ATTRIBUTE_AMOUNT_PER_LEVEL = 1.0D;
+    public static final double ATTRIBUTE_AMOUNT_PER_LEVEL = 0.10D;
     public static final double FOCUS_DAMAGE_AMOUNT_PER_LEVEL = 0.10D;
     public static final String IRONS_SPELL_POWER_UUID =
             "1c73d95a-fafe-38e0-973e-829f64787e33";
@@ -21,7 +21,7 @@ public final class ManaEruptionEffect extends MobEffect {
                 AttributeRegistry.SPELL_POWER.get(),
                 IRONS_SPELL_POWER_UUID,
                 ATTRIBUTE_AMOUNT_PER_LEVEL,
-                AttributeModifier.Operation.ADDITION);
+                AttributeModifier.Operation.MULTIPLY_BASE);
         this.addAttributeModifier(
                 ModAttributes.FOCUS_DAMAGE.get(),
                 FOCUS_DAMAGE_UUID,

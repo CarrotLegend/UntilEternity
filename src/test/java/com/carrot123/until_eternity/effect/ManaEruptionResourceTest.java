@@ -38,15 +38,17 @@ class ManaEruptionResourceTest {
         assertTrue(source.contains(
                 "ModAttributes.FOCUS_DAMAGE.get()"));
         assertEquals(
-                1,
+                0,
                 occurrences(
                         source,
                         "AttributeModifier.Operation.ADDITION"));
         assertEquals(
-                1,
+                2,
                 occurrences(
                         source,
                         "AttributeModifier.Operation.MULTIPLY_BASE"));
+        assertTrue(source.contains(
+                "ATTRIBUTE_AMOUNT_PER_LEVEL = 0.10D"));
         assertTrue(source.contains(
                 "\"1c73d95a-fafe-38e0-973e-829f64787e33\""));
         assertTrue(source.contains(

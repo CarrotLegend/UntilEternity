@@ -32,12 +32,12 @@ class ManaEruptionStackingTest {
     }
 
     @Test
-    void vanillaEffectScalingProducesOnePointPerLevel() {
-        assertEquals(1.0D, ManaEruptionStacking.attributeAmount(0));
-        assertEquals(2.0D, ManaEruptionStacking.attributeAmount(1));
-        assertEquals(5.0D, ManaEruptionStacking.attributeAmount(4));
-        assertEquals(10.0D, ManaEruptionStacking.attributeAmount(9));
-        assertEquals(10.0D, ManaEruptionStacking.attributeAmount(99));
+    void ironsSpellPowerScalingProducesTenPercentPerLevel() {
+        assertEquals(0.10D, ManaEruptionStacking.attributeAmount(0), 1.0E-12D);
+        assertEquals(0.20D, ManaEruptionStacking.attributeAmount(1), 1.0E-12D);
+        assertEquals(0.50D, ManaEruptionStacking.attributeAmount(4), 1.0E-12D);
+        assertEquals(1.00D, ManaEruptionStacking.attributeAmount(9), 1.0E-12D);
+        assertEquals(1.00D, ManaEruptionStacking.attributeAmount(99), 1.0E-12D);
     }
 
     @Test

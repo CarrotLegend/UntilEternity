@@ -53,6 +53,11 @@
   "item.until_eternity.ominous_totem": "恶兆图腾",
   "item.until_eternity.chaos_elixir": "南瓜混沌元剂",
   "item.until_eternity.dark_cage": "黑暗之笼",
+  "item.until_eternity.mob_container": "生物收容器",
+  "tooltip.until_eternity.mob_container.usage": "Shift+右键收容生物，再次右键释放",
+  "tooltip.until_eternity.mob_container.current": "当前已收容：%s",
+  "tooltip.until_eternity.mob_container.empty": "无",
+  "tooltip.until_eternity.mob_container.unknown": "未知生物",
   "item.until_eternity.spawner_fragment": "刷怪笼碎片",
   "item.until_eternity.mithril_gloves": "秘银手套",
   "item.until_eternity.pewter_gloves": "白镴手套",
@@ -76,7 +81,7 @@
   "tooltip.until_eternity.soul_great_sword.rage": "§6右键使用：§r获得 10 秒灵魂之怒。",
   "tooltip.until_eternity.soul_great_sword.rage_attributes": "§6灵魂之怒：§a攻击速度 +0.5，护甲值 +6，盔甲韧性 +1。",
 
-  "enchantment.until_eternity.power": "力量",
+  "enchantment.until_eternity.power": "重破",
   "enchantment.until_eternity.curse_of_hunger": "饥饿诅咒",
   "enchantment.until_eternity.curse_of_short_life": "短命诅咒",
 

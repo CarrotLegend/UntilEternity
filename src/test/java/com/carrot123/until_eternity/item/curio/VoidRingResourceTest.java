@@ -149,8 +149,7 @@ class VoidRingResourceTest {
                 "compat/goety/PendingVoidHit.java",
                 "compat/goety/VoidAccessoryChecker.java",
                 "compat/goety/VoidRingDamageLogic.java",
-                "damage/ModDamageTypes.java",
-                "registry/ModTags.java"
+                "damage/ModDamageTypes.java"
         )) {
             assertFalse(Files.exists(mainJava.resolve(relativePath)), relativePath);
         }

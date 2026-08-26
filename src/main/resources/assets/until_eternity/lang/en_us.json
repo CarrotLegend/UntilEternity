@@ -52,6 +52,11 @@
   "item.until_eternity.ominous_totem": "Ominous Totem",
   "item.until_eternity.chaos_elixir": "Chaos Elixir",
   "item.until_eternity.dark_cage": "Dark Cage",
+  "item.until_eternity.mob_container": "Mob Container",
+  "tooltip.until_eternity.mob_container.usage": "Shift+Right-click to capture a mob; right-click again to release",
+  "tooltip.until_eternity.mob_container.current": "Currently contained: %s",
+  "tooltip.until_eternity.mob_container.empty": "None",
+  "tooltip.until_eternity.mob_container.unknown": "Unknown Mob",
   "item.until_eternity.spawner_fragment": "Spawner Fragment",
   "item.until_eternity.mithril_gloves": "Mithril Gloves",
   "item.until_eternity.pewter_gloves": "Pewter Gloves",
@@ -74,7 +79,7 @@
   "tooltip.until_eternity.soul_great_sword.rage": "\u00a76Right-click: \u00a7rGain Soul Rage for 10 seconds.",
   "tooltip.until_eternity.soul_great_sword.rage_attributes": "\u00a76Soul Rage: \u00a7a+0.5 Attack Speed, +6 Armor, +1 Armor Toughness.",
 
-  "enchantment.until_eternity.power": "Power",
+  "enchantment.until_eternity.power": "Strength",
   "enchantment.until_eternity.curse_of_hunger": "Curse of Hunger",
   "enchantment.until_eternity.curse_of_short_life": "Curse of Short Life",
 

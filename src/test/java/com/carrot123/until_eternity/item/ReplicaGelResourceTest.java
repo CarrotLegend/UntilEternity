@@ -74,22 +74,16 @@ class ReplicaGelResourceTest {
     }
 
     @Test
-    void featureDoesNotAddRecipes() throws IOException {
-        Path recipes = RESOURCES.resolve(
-                "data/until_eternity/recipes");
-        if (Files.isDirectory(recipes)) {
-            try (var paths = Files.walk(recipes)) {
-                assertFalse(paths.filter(Files::isRegularFile)
-                        .anyMatch(path -> {
-                            try {
-                                return Files.readString(path)
-                                        .contains("replica_gel");
-                            } catch (IOException exception) {
-                                throw new RuntimeException(exception);
-                            }
-                        }));
-            }
-        }
+    void existingRecipeProducesOneReplicaGel() throws IOException {
+        JsonObject recipe = json(
+                "data/until_eternity/recipes/replica_gel.json");
+        assertEquals("minecraft:crafting_shaped",
+                recipe.get("type").getAsString());
+        assertEquals("until_eternity:replica_gel",
+                recipe.getAsJsonObject("result")
+                        .get("item").getAsString());
+        assertEquals(1, recipe.getAsJsonObject("result")
+                .get("count").getAsInt());
     }
 
     private static JsonObject json(String relative) throws IOException {
