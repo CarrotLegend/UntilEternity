@@ -77,6 +77,7 @@ class MobContainerResourceTest {
     void itemUsesOneTransactionalFullNbtCaptureAndReleasePath()
             throws IOException {
         String item = source("item/MobContainerItem.java");
+        String events = source("event/MobContainerInteractionHandler.java");
 
         assertTrue(item.contains(
                 "TAG_STORED_ENTITY = \"StoredEntity\""));
@@ -87,8 +88,13 @@ class MobContainerResourceTest {
         assertTrue(item.indexOf("target.save(storedEntity)")
                 < item.indexOf("target.discard()"));
         assertTrue(item.contains("stack.getOrCreateTag().put("));
+        assertTrue(item.contains("storedEntity.copy()"));
         assertTrue(item.indexOf("stack.getOrCreateTag().put(")
                 < item.indexOf("target.discard()"));
+        assertTrue(item.contains("player.getItemInHand(hand)"));
+        assertTrue(item.contains("player.setItemInHand(hand, stack)"));
+        assertTrue(item.contains("player.getInventory().setChanged()"));
+        assertTrue(item.contains("player.inventoryMenu.broadcastChanges()"));
         assertTrue(item.contains("EntityType.loadEntityRecursive("));
         assertTrue(item.contains(
                 "serverLevel.tryAddFreshEntityWithPassengers(restored)"));
@@ -96,8 +102,63 @@ class MobContainerResourceTest {
                 < item.indexOf("stack.removeTagKey(TAG_STORED_ENTITY)"));
         assertFalse(item.contains("EntityType.create("));
         assertFalse(item.contains("setUUID("));
-        assertTrue(item.contains("storedEntity.copy()"));
         assertTrue(item.contains("setDeltaMovement(Vec3.ZERO)"));
+        assertFalse(item.contains("interactLivingEntity("));
+        assertFalse(item.contains("InteractionResult useOn("));
+        assertEquals(1, occurrences(events, "container.tryCapture("));
+        assertEquals(1, occurrences(events, "container.tryRelease("));
+    }
+
+    @Test
+    void forgeEventsOwnInteractionPriorityAndClientsOnlyCancel()
+            throws IOException {
+        String events = source("event/MobContainerInteractionHandler.java");
+        String item = source("item/MobContainerItem.java");
+
+        assertTrue(events.contains(
+                "PlayerInteractEvent.EntityInteractSpecific event"));
+        assertTrue(events.contains(
+                "PlayerInteractEvent.EntityInteract event"));
+        assertTrue(events.contains(
+                "PlayerInteractEvent.RightClickBlock event"));
+        assertEquals(3, occurrences(events,
+                "@SubscribeEvent(priority = EventPriority.HIGHEST)"));
+        assertEquals(2, occurrences(events,
+                "handleCaptureInteraction(event, event.getTarget())"));
+        assertTrue(events.contains("event.setCanceled(true)"));
+        assertTrue(events.contains(
+                "InteractionResult.sidedSuccess("));
+        assertTrue(events.indexOf("cancelInteraction(event, player)")
+                < events.indexOf("if (player.level().isClientSide)"));
+        assertFalse(events.contains(".save("));
+        assertFalse(events.contains(".discard("));
+        assertFalse(events.contains("loadEntityRecursive"));
+        assertFalse(events.contains("removeTagKey"));
+        assertFalse(item.contains("isCreative"));
+        assertFalse(item.contains("instabuild"));
+        assertFalse(item.contains("SpawnPlacements"));
+        assertFalse(item.contains("MobSpawnType"));
+        assertFalse(item.contains("Difficulty"));
+    }
+
+    @Test
+    void releasePlacementUsesEntityDimensionsAndOneSharedCollisionPath()
+            throws IOException {
+        String item = source("item/MobContainerItem.java");
+
+        assertTrue(item.contains("RELEASE_EPSILON = 0.01D"));
+        assertTrue(item.contains(
+                "new double[]{0.0D, 0.5D, 1.0D, 1.5D, 2.0D}"));
+        assertTrue(item.contains("entity.getBbWidth() / 2.0D"));
+        assertTrue(item.contains("entity.getBbHeight()"));
+        assertTrue(item.contains("face.getNormal()"));
+        assertTrue(item.contains("level.hasChunksAt(min, max)"));
+        assertTrue(item.contains(
+                "level.getWorldBorder().isWithinBounds(bounds)"));
+        assertEquals(1, occurrences(item,
+                "level.noCollision(entity, bounds)"));
+        assertEquals(1, occurrences(item,
+                "serverLevel.tryAddFreshEntityWithPassengers(restored)"));
     }
 
     @Test
