@@ -82,6 +82,7 @@
   "enchantment.until_eternity.power": "Strength",
   "enchantment.until_eternity.curse_of_hunger": "Curse of Hunger",
   "enchantment.until_eternity.curse_of_short_life": "Curse of Short Life",
+  "enchantment.until_eternity.useless_curse": "Useless Curse",
 
   "advancements.until_eternity.root.title": "Until Eternity",
   "advancements.until_eternity.root.description": "Obliterate Divinity,Surpass the Divine,Until Eternity.",
@@ -124,6 +125,7 @@
   "enchantment.until_eternity.plenitude.desc": "Each level reduces the mana cost of spells cast with this staff by 5%.",
   "enchantment.until_eternity.curse_of_hunger.desc": "Increase satiety consumption rate by 5% per level.",
   "enchantment.until_eternity.curse_of_short_life.desc": "Reduces durability by 1 point when in use.",
+  "enchantment.until_eternity.useless_curse.desc": "Exactly what it says. It does absolutely nothing.",
   "affix.until_eternity.ancient": "Ancient",
   "affix.until_eternity.newborn": "Newborn",
   "affix.until_eternity.decadent": "Decadent",

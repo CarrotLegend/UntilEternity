@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 public final class ChefRankAnvilEvents {
 
     private static final int LEVEL_COST = 1;
+    private static final int BADGE_COST = 1;
 
     private ChefRankAnvilEvents() {
     }
@@ -25,36 +26,36 @@ public final class ChefRankAnvilEvents {
     public static void onAnvilUpdate(
             AnvilUpdateEvent event
     ) {
-        ItemStack left = event.getLeft();
-        ItemStack right = event.getRight();
+        ItemStack armor = event.getLeft();
+        ItemStack badge = event.getRight();
 
-        if (!ChefRankHelper.isChefArmor(left)) {
+        if (!ChefRankHelper.isChefArmor(armor)) {
             return;
         }
 
         ChefRank targetRank =
-                ChefRankHelper.getRankForBadge(right);
+                ChefRankHelper.getRankForBadge(badge);
 
         if (targetRank == ChefRank.NONE) {
             return;
         }
 
         ChefRank currentRank =
-                ChefRankHelper.getRank(left);
+                ChefRankHelper.getRank(armor);
 
-        if (targetRank.id() != currentRank.id() + 1) {
+        if (targetRank.id()
+                != currentRank.id() + 1) {
             return;
         }
 
-        ItemStack output = left.copy();
+        ItemStack output = armor.copy();
         output.setCount(1);
-
         ChefRankHelper.setRank(
                 output,
                 targetRank
         );
 
-        event.setMaterialCost(1);
+        event.setMaterialCost(BADGE_COST);
         event.setCost(LEVEL_COST);
         event.setOutput(output);
     }

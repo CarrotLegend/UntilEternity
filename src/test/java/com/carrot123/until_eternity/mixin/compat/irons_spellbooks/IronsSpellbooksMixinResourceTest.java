@@ -35,6 +35,7 @@ class IronsSpellbooksMixinResourceTest {
 
         assertEquals(Set.of(
                 "ItemStackHoverNameMixin",
+                "ChefRankAnvilMixin",
                 "FoodDataMixin",
                 "ManaEruptionStackingMixin",
                 "SoulGreatSwordItemMixin",
@@ -76,6 +77,7 @@ class IronsSpellbooksMixinResourceTest {
                 "compat.irons_spellbooks.ServerPlayerEventsMixin",
                 "compat.irons_spellbooks.TeleportationAmuletItemMixin",
                 "compat.thirst.PlayerThirstMixin",
+                "compat.thirst.ThirstReflectionCompatMixin",
                 "compat.legendary_monsters.LegendaryMonstersTrueChefsKnifeMixin"
         ), mixins);
         Set<String> clientMixins = new HashSet<>();

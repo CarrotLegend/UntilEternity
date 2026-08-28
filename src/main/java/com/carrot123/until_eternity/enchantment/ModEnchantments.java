@@ -21,6 +21,7 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> PLENITUDE = ENCHANTMENTS.register("plenitude", PlenitudeEnchantment::new);
     public static final RegistryObject<Enchantment> CURSE_OF_HUNGER = ENCHANTMENTS.register("curse_of_hunger", CurseOfHungerEnchantment::new);
     public static final RegistryObject<Enchantment> CURSE_OF_SHORT_LIFE = ENCHANTMENTS.register("curse_of_short_life", CurseOfShortLifeEnchantment::new);
+    public static final RegistryObject<Enchantment> USELESS_CURSE = ENCHANTMENTS.register("useless_curse", UselessCurseEnchantment::new);
 
     public static void register(IEventBus eventBus) {
         ENCHANTMENTS.register(eventBus);

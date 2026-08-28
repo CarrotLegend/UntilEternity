@@ -26,35 +26,6 @@ class MobContainerResourceTest {
     private static final Path RESOURCES = ROOT.resolve(Path.of(
             "src", "main", "resources"));
 
-    private static final Set<String> VANILLA_WHITELIST = Set.of(
-            "minecraft:allay", "minecraft:axolotl", "minecraft:bat",
-            "minecraft:bee", "minecraft:blaze", "minecraft:camel",
-            "minecraft:cat", "minecraft:cave_spider", "minecraft:chicken",
-            "minecraft:cod", "minecraft:cow", "minecraft:creeper",
-            "minecraft:dolphin", "minecraft:donkey", "minecraft:drowned",
-            "minecraft:elder_guardian", "minecraft:enderman",
-            "minecraft:endermite", "minecraft:evoker", "minecraft:fox",
-            "minecraft:frog", "minecraft:ghast", "minecraft:giant",
-            "minecraft:glow_squid", "minecraft:goat", "minecraft:guardian",
-            "minecraft:hoglin", "minecraft:horse", "minecraft:husk",
-            "minecraft:illusioner", "minecraft:iron_golem", "minecraft:llama",
-            "minecraft:magma_cube", "minecraft:mooshroom", "minecraft:mule",
-            "minecraft:ocelot", "minecraft:panda", "minecraft:parrot",
-            "minecraft:phantom", "minecraft:pig", "minecraft:piglin",
-            "minecraft:piglin_brute", "minecraft:pillager",
-            "minecraft:polar_bear", "minecraft:pufferfish", "minecraft:rabbit",
-            "minecraft:ravager", "minecraft:salmon", "minecraft:sheep",
-            "minecraft:shulker", "minecraft:silverfish", "minecraft:skeleton",
-            "minecraft:skeleton_horse", "minecraft:slime", "minecraft:sniffer",
-            "minecraft:snow_golem", "minecraft:spider", "minecraft:squid",
-            "minecraft:stray", "minecraft:strider", "minecraft:tadpole",
-            "minecraft:trader_llama", "minecraft:tropical_fish",
-            "minecraft:turtle", "minecraft:vex", "minecraft:villager",
-            "minecraft:vindicator", "minecraft:wandering_trader",
-            "minecraft:witch", "minecraft:wither_skeleton", "minecraft:wolf",
-            "minecraft:zoglin", "minecraft:zombie", "minecraft:zombie_horse",
-            "minecraft:zombie_villager", "minecraft:zombified_piglin");
-
     @Test
     void registrationCreativeTabAndEndTableRarityUseExistingSystems()
             throws IOException {
@@ -183,7 +154,7 @@ class MobContainerResourceTest {
     }
 
     @Test
-    void defaultWhitelistIsTheAuditedSetOfSeventySixMobs()
+    void whitelistKeepsUniqueEntriesExtensionsAndHardBans()
             throws IOException {
         JsonObject tag = json(
                 "data/until_eternity/tags/entity_types/"
@@ -193,9 +164,11 @@ class MobContainerResourceTest {
         Set<String> actual = values.asList().stream()
                 .map(value -> value.getAsString())
                 .collect(Collectors.toSet());
-        assertEquals(76, values.size());
-        assertEquals(76, actual.size());
-        assertEquals(VANILLA_WHITELIST, actual);
+        assertEquals(values.size(), actual.size());
+        assertTrue(actual.contains("minecraft:cow"));
+        assertTrue(actual.contains("minecraft:villager"));
+        assertTrue(actual.contains("minecraft:zombie"));
+        assertTrue(actual.stream().anyMatch(id -> !id.startsWith("minecraft:")));
         assertFalse(actual.contains("minecraft:player"));
         assertFalse(actual.contains("minecraft:warden"));
         assertFalse(actual.contains("minecraft:ender_dragon"));

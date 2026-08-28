@@ -78,6 +78,7 @@ class VoidRingResourceTest {
 
         assertEquals(Set.of(
                 "ItemStackHoverNameMixin",
+                "ChefRankAnvilMixin",
                 "FoodDataMixin",
                 "ManaEruptionStackingMixin",
                 "SoulGreatSwordItemMixin",
@@ -119,6 +120,7 @@ class VoidRingResourceTest {
                 "compat.irons_spellbooks.ServerPlayerEventsMixin",
                 "compat.irons_spellbooks.TeleportationAmuletItemMixin",
                 "compat.thirst.PlayerThirstMixin",
+                "compat.thirst.ThirstReflectionCompatMixin",
                 "compat.legendary_monsters.LegendaryMonstersTrueChefsKnifeMixin"
         ), mixins);
         assertFalse(Files.exists(Path.of(

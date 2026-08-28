@@ -84,6 +84,7 @@
   "enchantment.until_eternity.power": "重破",
   "enchantment.until_eternity.curse_of_hunger": "饥饿诅咒",
   "enchantment.until_eternity.curse_of_short_life": "短命诅咒",
+  "enchantment.until_eternity.useless_curse": "无用诅咒",
 
   "advancements.until_eternity.root.title": "直至永恒",
   "advancements.until_eternity.root.description": "破灭神性，超越神明，直至永恒",
@@ -127,6 +128,7 @@
   "enchantment.until_eternity.power.desc": "每级提升15%的攻击伤害，但降低0.1攻击速度。",
   "enchantment.until_eternity.curse_of_hunger.desc": "每级增加 5% 饱食度消耗。",
   "enchantment.until_eternity.curse_of_short_life.desc": "使用时每秒减少 1 点耐久度。",
+  "enchantment.until_eternity.useless_curse.desc": "字面意思，没有任何效果。",
   "affix.until_eternity.ancient": "古老的",
   "affix.until_eternity.newborn": "新生的",
   "affix.until_eternity.decadent": "颓废的",
