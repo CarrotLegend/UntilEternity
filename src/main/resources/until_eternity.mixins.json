@@ -7,7 +7,6 @@
   "refmap": "until_eternity.refmap.json",
   "mixins": [
     "ItemStackHoverNameMixin",
-    "ChefRankAnvilMixin",
     "FoodDataMixin",
     "ManaEruptionStackingMixin",
     "SoulGreatSwordItemMixin",
