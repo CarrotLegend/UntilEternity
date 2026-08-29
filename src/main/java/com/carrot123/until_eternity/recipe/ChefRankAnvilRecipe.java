@@ -24,15 +24,17 @@ public final class ChefRankAnvilRecipe implements Recipe<Container> {
     }
 
     @Override
-    public boolean matches(Container container, Level level) {
-        if (container.getContainerSize() < 2) {
-            return false;
-        }
-
+    public boolean matches(
+            Container container,
+            Level level
+    ) {
         ItemStack armor = container.getItem(0);
         ItemStack badge = container.getItem(1);
 
-        return ChefRankHelper.canUpgrade(armor, badge);
+        return ChefRankHelper.canUpgrade(
+                armor,
+                badge
+        );
     }
 
     @Override
@@ -40,25 +42,19 @@ public final class ChefRankAnvilRecipe implements Recipe<Container> {
             Container container,
             RegistryAccess registryAccess
     ) {
-        if (container.getContainerSize() < 2) {
-            return ItemStack.EMPTY;
-        }
+        ItemStack armor =
+                container.getItem(0);
 
-        ItemStack armor = container.getItem(0);
-        ItemStack badge = container.getItem(1);
-
-        if (!ChefRankHelper.canUpgrade(armor, badge)) {
-            return ItemStack.EMPTY;
-        }
+        ItemStack badge =
+                container.getItem(1);
 
         ChefRank targetRank =
-                ChefRankHelper.getRankForBadge(badge);
+                ChefRankHelper.getRankForBadge(
+                        badge
+                );
+        ItemStack result =
+                armor.copy();
 
-        if (targetRank == ChefRank.NONE) {
-            return ItemStack.EMPTY;
-        }
-
-        ItemStack result = armor.copy();
         result.setCount(1);
 
         ChefRankHelper.setRank(

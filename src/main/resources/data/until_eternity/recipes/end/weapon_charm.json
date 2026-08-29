@@ -1,0 +1,64 @@
+{
+  "type": "until_eternity:end_crafting",
+  "pattern": [
+    "&d#d&",
+    "&SgD&",
+    "EsFHL",
+    "IGdAa",
+    "&dCd&"
+  ],
+  "key": {
+    "L": {
+      "item": "irons_spellbooks:legionnaire_flamberge"
+    },
+    "C": {
+      "item": "splendour_ablaze_epoch:celes_terral_sword"
+    },
+    "S": {
+      "item": "born_in_chaos_v1:soulbane"
+    },
+    "E": {
+      "item": "goety_revelation:ender_keeper_sword"
+    },
+    "I": {
+      "item": "cataclysm:the_incinerator"
+    },
+    "G": {
+      "item": "goety_revelation:gungnir"
+    },
+    "g": {
+      "item": "eeeabsmobs:guardian_axe"
+    },
+    "s": {
+      "item": "simplyswords:sunfire"
+    },
+    "H": {
+      "item": "simplyswords:harbinger"
+    },
+    "F": {
+      "item": "until_eternity:finalite_ingot"
+    },
+    "D": {
+      "item": "aquamirae:divider"
+    },
+    "#": {
+      "item": "legendary_monsters:soul_great_sword"
+    },
+    "A": {
+      "item": "enigmaticaddons:astral_spear"
+    },
+    "&": {
+      "item": "minecraft:gold_ingot"
+    },
+    "d": {
+      "item": "born_in_chaos_v1:dark_metal_ingot"
+    },
+    "a": {
+      "item": "simplyswords:awakened_lichblade"
+    }
+  },
+  "result": {
+    "item": "enigmaticdelicacy:weapon_charm",
+    "count": 1
+  }
+}
