@@ -1,26 +1,29 @@
 package com.carrot123.until_eternity.event;
 
-import com.carrot123.until_eternity.compat.eternalcareer.ChefRank;
-import com.carrot123.until_eternity.compat.eternalcareer.ChefRankHelper;
+import com.carrot123.until_eternity.recipe.ChefRankAnvilRecipe;
+import com.carrot123.until_eternity.recipe.ModRecipeTypes;
 import com.carrot123.until_eternity.until_eternity;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Optional;
+
 @Mod.EventBusSubscriber(
         modid = until_eternity.MODID,
         bus = Mod.EventBusSubscriber.Bus.FORGE
 )
 public final class ChefRankAnvilEvents {
-
-    private static final int LEVEL_COST = 1;
-    private static final int BADGE_COST = 1;
 
     private ChefRankAnvilEvents() {
     }
@@ -29,42 +32,64 @@ public final class ChefRankAnvilEvents {
     public static void onAnvilUpdate(
             AnvilUpdateEvent event
     ) {
-        ItemStack armor = event.getLeft();
-        ItemStack badge = event.getRight();
+        Player player = event.getPlayer();
 
-        if (!ChefRankHelper.isChefArmor(armor)) {
+        if (player == null) {
             return;
         }
 
-        ChefRank targetRank =
-                ChefRankHelper.getRankForBadge(
-                        badge
+        Level level = player.level();
+
+        Optional<ChefRankAnvilRecipe> recipeOptional =
+                findRecipe(
+                        level,
+                        event.getLeft(),
+                        event.getRight()
                 );
 
-        if (targetRank == ChefRank.NONE) {
+        if (recipeOptional.isEmpty()) {
             return;
         }
 
-        ChefRank currentRank =
-                ChefRankHelper.getRank(
-                        armor
+        ChefRankAnvilRecipe recipe =
+                recipeOptional.get();
+
+        SimpleContainer input =
+                createInput(
+                        event.getLeft(),
+                        event.getRight()
                 );
 
-        if (targetRank.id()
-                != currentRank.id() + 1) {
+        ItemStack output =
+                recipe.assemble(
+                        input,
+                        level.registryAccess()
+                );
+
+        if (output.isEmpty()) {
             return;
         }
 
-        ItemStack output = armor.copy();
-        output.setCount(1);
+        String name = event.getName();
 
-        ChefRankHelper.setRank(
-                output,
-                targetRank
+        if (name != null) {
+            if (name.isEmpty()) {
+                output.resetHoverName();
+            } else {
+                output.setHoverName(
+                        Component.literal(name)
+                );
+            }
+        }
+
+        event.setCost(
+                recipe.getLevelCost()
         );
 
-        event.setMaterialCost(BADGE_COST);
-        event.setCost(LEVEL_COST);
+        event.setMaterialCost(
+                recipe.getMaterialCost()
+        );
+
         event.setOutput(output);
     }
 
@@ -78,71 +103,62 @@ public final class ChefRankAnvilEvents {
             return;
         }
 
-        ItemStack armor = event.getLeft();
-        ItemStack badge = event.getRight();
-        ItemStack output = event.getOutput();
+        Level level = player.level();
 
-        if (!isChefRankUpgradeResult(
-                armor,
-                badge,
-                output
-        )) {
+        Optional<ChefRankAnvilRecipe> recipeOptional =
+                findRecipe(
+                        level,
+                        event.getLeft(),
+                        event.getRight()
+                );
+
+        if (recipeOptional.isEmpty()) {
             return;
         }
 
-        menu.repairItemCountCost = BADGE_COST;
+        ChefRankAnvilRecipe recipe =
+                recipeOptional.get();
+
+        menu.repairItemCountCost =
+                recipe.getMaterialCost();
     }
 
-    private static boolean isChefRankUpgradeResult(
-            ItemStack armor,
-            ItemStack badge,
-            ItemStack output
+    private static Optional<ChefRankAnvilRecipe> findRecipe(
+            Level level,
+            ItemStack left,
+            ItemStack right
     ) {
-
-        if (!ChefRankHelper.isChefArmor(armor)) {
-            return false;
-        }
-
-        if (output == null
-                || output.isEmpty()) {
-            return false;
-        }
-
-        if (output.getCount() != 1) {
-            return false;
-        }
-
-        if (!ChefRankHelper.isChefArmor(output)) {
-            return false;
-        }
-
-        if (!ItemStack.isSameItem(
-                armor,
-                output
-        )) {
-            return false;
-        }
-
-        ChefRank targetRank =
-                ChefRankHelper.getRankForBadge(
-                        badge
+        SimpleContainer input =
+                createInput(
+                        left,
+                        right
                 );
 
-        if (targetRank == ChefRank.NONE) {
-            return false;
-        }
-
-        ChefRank currentRank =
-                ChefRankHelper.getRank(
-                        armor
+        return level.getRecipeManager()
+                .getRecipeFor(
+                        ModRecipeTypes.CHEF_RANK_ANVIL.get(),
+                        input,
+                        level
                 );
+    }
 
-        if (targetRank.id()
-                != currentRank.id() + 1) {
-            return false;
-        }
+    private static SimpleContainer createInput(
+            ItemStack left,
+            ItemStack right
+    ) {
+        SimpleContainer input =
+                new SimpleContainer(2);
 
-        return ChefRankHelper.getRank(output)
-                == targetRank;
+        input.setItem(
+                0,
+                left.copy()
+        );
+
+        input.setItem(
+                1,
+                right.copy()
+        );
+
+        return input;
     }
 }
