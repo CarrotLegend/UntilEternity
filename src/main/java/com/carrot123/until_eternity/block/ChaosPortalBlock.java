@@ -1,5 +1,8 @@
 package com.carrot123.until_eternity.block;
 
+import com.carrot123.until_eternity.client.portal.PortalVisualTracker;
+import com.carrot123.until_eternity.client.portal.PortalVisualType;
+import com.carrot123.until_eternity.event.ChaosPortalEvents;
 import com.carrot123.until_eternity.particle.ModParticles;
 import com.carrot123.until_eternity.worldgen.PortalShape;
 import net.minecraft.core.BlockPos;
@@ -64,8 +67,15 @@ public class ChaosPortalBlock extends Block {
 
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        // Teleport is handled entirely by ChaosPortalEvents — see that class
-        // for the full vanilla handleInsidePortal + handleNetherPortal logic.
+        if (!entity.canChangeDimensions()) {
+            return;
+        }
+        if (level.isClientSide) {
+            PortalVisualTracker.markIfLocalPlayer(entity, PortalVisualType.CHAOS);
+            entity.handleInsidePortal(pos);
+            return;
+        }
+        ChaosPortalEvents.entityInside(level, pos, entity);
     }
 
     @Override

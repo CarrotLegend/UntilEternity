@@ -1,6 +1,7 @@
-package com.carrot123.until_eternity.mixin.compat.eeeabsmobs;
+package com.carrot123.until_eternity.mixin.client;
 
-import com.carrot123.until_eternity.compat.eeeabsmobs.ImmortalPortalHandler;
+import com.carrot123.until_eternity.client.portal.PortalVisualTracker;
+import com.carrot123.until_eternity.client.portal.PortalVisualType;
 import com.eeeab.eeeabsmobs.sever.block.BlockErosionPortal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -12,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = BlockErosionPortal.class, remap = false)
-abstract class BlockErosionPortalMixin {
+abstract class BlockErosionPortalVisualMixin {
 
     @Inject(
             method = {
@@ -24,23 +25,24 @@ abstract class BlockErosionPortalMixin {
             require = 1,
             remap = false
     )
-    private void untilEternity$handleImmortalPortal(
+    private void untilEternity$handleImmortalPortalVisual(
             BlockState state,
             Level level,
             BlockPos pos,
             Entity entity,
             CallbackInfo callbackInfo
     ) {
-        if (level.isClientSide) {
-            return;
-        }
-
         if (!entity.canChangeDimensions()) {
             callbackInfo.cancel();
             return;
         }
 
-        ImmortalPortalHandler.entityInside(level, pos, entity);
+        PortalVisualTracker.markIfLocalPlayer(
+                entity,
+                PortalVisualType.IMMORTAL
+        );
+
+        entity.handleInsidePortal(pos);
         callbackInfo.cancel();
     }
 }

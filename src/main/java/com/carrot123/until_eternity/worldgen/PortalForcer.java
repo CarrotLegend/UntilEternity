@@ -18,10 +18,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.border.WorldBorder;
-import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.entity.ai.village.poi.PoiManager;
+import net.minecraft.world.entity.ai.village.poi.PoiRecord;
 import net.minecraft.world.level.levelgen.Heightmap;
 
-import javax.annotation.Nullable;
+import java.util.Comparator;
 import java.util.Optional;
 
 public class PortalForcer {
@@ -37,58 +38,37 @@ public class PortalForcer {
         this.level = level;
     }
 
-    /**
-     * Search for an existing chaos portal near pos.
-     * Synchronously loads chunks then does a 3D scan (XZ spiral, Y outward from center).
-     */
+    /** Search for an existing chaos portal near pos using the vanilla POI path. */
     public Optional<BlockUtil.FoundRectangle> findPortalAround(BlockPos pos, WorldBorder border) {
-        int searchRadius = 128;
-        // 同步加载 chunk（强制等待 FULL 状态）
-        int cr = (searchRadius >> 4) + 1;
-        ChunkPos centerCp = new ChunkPos(pos);
-        for (int dx = -cr; dx <= cr; dx++) {
-            for (int dz = -cr; dz <= cr; dz++) {
-                this.level.getChunkSource().getChunk(
-                        centerCp.x + dx, centerCp.z + dz, ChunkStatus.FULL, true);
-            }
-        }
-        // 3D 搜索：XZ 螺旋，每处 Y 从中心向外扩展
-        int yCenter = pos.getY();
-        int yMin = Math.max(this.level.getMinBuildHeight(), yCenter - 64);
-        int yMax = Math.min(this.level.getMaxBuildHeight() - 1, yCenter + 64);
-        int yRange = Math.min(64, Math.max(yCenter - yMin, yMax - yCenter));
-        BlockPos.MutableBlockPos mut = new BlockPos.MutableBlockPos();
-        for (BlockPos.MutableBlockPos xz : BlockPos.spiralAround(
-                new BlockPos(pos.getX(), yCenter, pos.getZ()),
-                searchRadius, Direction.EAST, Direction.SOUTH)) {
-            if (!border.isWithinBounds(xz)) continue;
-            // Y 从中心向外搜索（dy=0, -1, +1, -2, +2, ...）
-            for (int dy = 0; dy <= yRange; dy++) {
-                for (int sign = -1; sign <= 1; sign += 2) {
-                    int y = yCenter + dy * sign;
-                    if (dy == 0 && sign == 1) continue; // dy=0 只检查一次
-                    if (y < yMin || y > yMax) continue;
-                    mut.set(xz.getX(), y, xz.getZ());
-                    Optional<BlockUtil.FoundRectangle> found = tryExpandPortal(mut);
-                    if (found.isPresent()) return found;
-                }
-            }
-        }
-        return Optional.empty();
-    }
+        PoiManager poiManager = this.level.getPoiManager();
+        poiManager.ensureLoadedAndValid(this.level, pos, SEARCH_RADIUS);
+        Optional<PoiRecord> portal = poiManager.getInSquare(
+                        holder -> holder.is(ModPoiTypes.CHAOS_PORTAL_KEY),
+                        pos,
+                        SEARCH_RADIUS,
+                        PoiManager.Occupancy.ANY)
+                .filter(record -> border.isWithinBounds(record.getPos()))
+                .sorted(Comparator.<PoiRecord>comparingDouble(
+                                record -> record.getPos().distSqr(pos))
+                        .thenComparingInt(record -> record.getPos().getY()))
+                .filter(record -> {
+                    BlockState state = this.level.getBlockState(record.getPos());
+                    return state.is(ModBlocks.CHAOS_PORTAL.get())
+                            && state.hasProperty(BlockStateProperties.HORIZONTAL_AXIS);
+                })
+                .findFirst();
 
-    private Optional<BlockUtil.FoundRectangle> tryExpandPortal(BlockPos.MutableBlockPos pos) {
-        BlockState state = this.level.getBlockState(pos);
-        if (state.is(ModBlocks.CHAOS_PORTAL.get()) && state.hasProperty(BlockStateProperties.HORIZONTAL_AXIS)) {
+        return portal.map(record -> {
+            BlockPos portalPos = record.getPos();
             this.level.getChunkSource().addRegionTicket(
-                    TicketType.PORTAL, new ChunkPos(pos), TICKET_RADIUS, pos);
-            return Optional.of(BlockUtil.getLargestRectangleAround(
-                    pos.immutable(),
+                    TicketType.PORTAL, new ChunkPos(portalPos), TICKET_RADIUS, portalPos);
+            BlockState state = this.level.getBlockState(portalPos);
+            return BlockUtil.getLargestRectangleAround(
+                    portalPos,
                     state.getValue(BlockStateProperties.HORIZONTAL_AXIS),
                     21, Direction.Axis.Y, 21,
-                    p -> this.level.getBlockState(p) == state));
-        }
-        return Optional.empty();
+                    candidate -> this.level.getBlockState(candidate) == state);
+        });
     }
 
     /**

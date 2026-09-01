@@ -10,6 +10,7 @@ import com.carrot123.until_eternity.event.EnchantmentEventHandler;
 import com.carrot123.until_eternity.item.ModCreativeModeTabs;
 import com.carrot123.until_eternity.item.ModItems;
 import com.carrot123.until_eternity.worldgen.ModFeatures;
+import com.carrot123.until_eternity.worldgen.ModPoiTypes;
 import com.carrot123.until_eternity.loot.ModLootModifiers;
 import com.carrot123.until_eternity.particle.ModParticles;
 import com.carrot123.until_eternity.recipe.ModRecipeSerializers;
@@ -55,6 +56,7 @@ public class until_eternity
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
         ModBlocks.register(modEventBus);
+        ModPoiTypes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModItems.register(modEventBus);
         ModEnchantments.register(modEventBus);

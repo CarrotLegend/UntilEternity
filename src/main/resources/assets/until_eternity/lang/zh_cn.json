@@ -166,5 +166,6 @@
   "jei.until_eternity.end_crafting.nbt_transfer_conflict": "请先移走物品栏中 NBT 不符合要求的冲突物品，再转移此配方。",
   "attribute.name.until_eternity.focus_damage": "聚晶伤害",
   
-  "structure.until_eternity.immortal_duel_arena": "不朽者角斗场"
+  "structure.until_eternity.immortal_duel_arena": "不朽者角斗场",
+  "structure.until_eternity.chaos_bell_tower": "混沌钟楼"
 }

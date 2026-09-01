@@ -53,7 +53,12 @@
   ],
   "client": [
     "client.FontRainbowMixin",
+    "client.GuiPortalOverlayMixin",
     "client.HorrorHuntSelectedItemNameMixin",
+    "client.NetherPortalVisualMixin",
+    "client.BlockErosionPortalVisualMixin",
+    "client.NetherPortalVisualMixin",
+    "client.GuiPortalOverlayMixin",
     "compat.irons_spellbooks.SpellWheelOverlayMixin",
     "compat.irons_spellbooks.TooltipsUtilsMixin"
   ],
