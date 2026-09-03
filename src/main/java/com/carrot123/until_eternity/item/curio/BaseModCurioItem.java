@@ -17,13 +17,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * Common Curios implementation for item-owned, slot-independent definitions.
- *
- * <p>Definitions do not depend on a slot name or index. Modifier instances use
- * the stable UUID supplied by Curios for the equipped slot plus the definition
- * key, allowing duplicate items in different slots to stack without collisions.</p>
- */
 public class BaseModCurioItem extends Item implements ICurioItem {
     private final ResourceLocation itemId;
     private final List<CurioAttributeSpec> modifierSpecs;

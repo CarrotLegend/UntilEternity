@@ -46,28 +46,27 @@ public enum CurioAttributeProfile {
     EMPOWERED_SHIELD("empowered_shield", shieldSpecs(6.0D, 2.0D)),
     COSMIC_AEGIS("cosmic_aegis", shieldSpecs(8.0D, 4.0D)),
     PROOF_OF_SPURNER("proof_of_spurner", List.of(
-            spec(() -> Attributes.ATTACK_DAMAGE,
-                    "attack_damage", 2.0D, AttributeModifier.Operation.MULTIPLY_TOTAL),
-            spec(() -> Attributes.ATTACK_SPEED,
-                    "attack_speed", 0.15D, AttributeModifier.Operation.MULTIPLY_TOTAL),
-            spec(() -> PuffishAttributesCompat.resolve(PuffishAttributesCompat.KNOCKBACK),
-                    "knockback", 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL),
-            spec(() -> Attributes.MAX_HEALTH,
-                    "max_health", 100.0D, AttributeModifier.Operation.ADDITION),
-            spec(() -> Attributes.ARMOR,
-                    "armor", 8.0D, AttributeModifier.Operation.ADDITION),
-            spec(() -> Attributes.ARMOR_TOUGHNESS,
-                    "armor_toughness", 4.0D, AttributeModifier.Operation.ADDITION),
-            spec(() -> GoetyRevelationAttributesCompat.resolve(
-                            GoetyRevelationAttributesCompat.DAMAGE_RESISTANCE),
-                    "damage_resistance", 0.70D, AttributeModifier.Operation.MULTIPLY_TOTAL),
-            spec(() -> PuffishAttributesCompat.resolve(
-                            PuffishAttributesCompat.ARMOR_SHRED),
-                    "armor_shred", 1.0D, AttributeModifier.Operation.MULTIPLY_BASE),
-            spec(() -> PuffishAttributesCompat.resolve(
-                            PuffishAttributesCompat.PROTECTION_SHRED),
-                    "protection_shred", 0.50D, AttributeModifier.Operation.MULTIPLY_BASE)
-    ));
+        spec(() -> Attributes.MAX_HEALTH,
+                "max_health", 1200.0D, AttributeModifier.Operation.ADDITION),
+        spec(() -> Attributes.ARMOR,
+                "armor", 12.0D, AttributeModifier.Operation.ADDITION),
+        spec(() -> Attributes.ARMOR_TOUGHNESS,
+                "armor_toughness", 6.0D, AttributeModifier.Operation.ADDITION),
+        spec(() -> Attributes.ATTACK_SPEED,
+                "attack_speed", 0.15D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+        spec(() -> PuffishAttributesCompat.resolve(
+                        PuffishAttributesCompat.KNOCKBACK),
+                "knockback", 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+        spec(() -> GoetyRevelationAttributesCompat.resolve(
+                        GoetyRevelationAttributesCompat.DAMAGE_RESISTANCE),
+                "damage_resistance", 0.70D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+        spec(() -> PuffishAttributesCompat.resolve(
+                        PuffishAttributesCompat.ARMOR_SHRED),
+                "armor_shred", 1.0D, AttributeModifier.Operation.MULTIPLY_BASE),
+        spec(() -> PuffishAttributesCompat.resolve(
+                        PuffishAttributesCompat.PROTECTION_SHRED),
+                "protection_shred", 0.50D, AttributeModifier.Operation.MULTIPLY_BASE)
+));
 
     private static final String MOD_ID = "until_eternity";
     private final ResourceLocation itemId;

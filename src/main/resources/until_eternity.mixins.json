@@ -50,6 +50,8 @@
     "compat.irons_spellbooks.AlchemistCauldronScrollMixin",
     "compat.thirst.PlayerThirstMixin",
     "compat.thirst.ThirstReflectionCompatMixin",
+    "compat.borninchaos.KrampusAttackProcedureMixin",
+    "compat.borninchaos.KrampusHenchmanAttackProcedureMixin",
     "compat.legendary_monsters.LegendaryMonstersTrueChefsKnifeMixin"
   ],
   "client": [

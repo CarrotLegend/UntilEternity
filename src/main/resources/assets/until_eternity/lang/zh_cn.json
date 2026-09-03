@@ -165,6 +165,19 @@
   "jei.until_eternity.end_crafting": "终末合成",
   "jei.until_eternity.end_crafting.nbt_transfer_conflict": "请先移走物品栏中 NBT 不符合要求的冲突物品，再转移此配方。",
   "attribute.name.until_eternity.focus_damage": "聚晶伤害",
+  "tooltip.until_eternity.proof_of_spurner.lore1": "§6你现在拥有了能蔑视§c§o§l众神§r§6的力量......",
+  "tooltip.until_eternity.proof_of_spurner.lore2": "§6哪怕是§c§o§l死亡§r§6也无法带走你。",
+  "tooltip.until_eternity.proof_of_spurner.attributes_header": "§7佩戴神性饰物时：",
+
+  "tooltip.until_eternity.proof_of_spurner.all_damage": "§9+240% 全部伤害",
+  "tooltip.until_eternity.proof_of_spurner.max_health": "§9+1200 最大生命值",
+  "tooltip.until_eternity.proof_of_spurner.armor": "§9+12 护甲值",
+  "tooltip.until_eternity.proof_of_spurner.armor_toughness": "§9+6 盔甲韧性",
+  "tooltip.until_eternity.proof_of_spurner.attack_speed": "§9+15% 攻击速度",
+  "tooltip.until_eternity.proof_of_spurner.knockback": "§9+100% 击退",
+  "tooltip.until_eternity.proof_of_spurner.damage_resistance": "§9+70% 伤害抗性",
+  "tooltip.until_eternity.proof_of_spurner.armor_shred": "§9+100% 护甲削减",
+  "tooltip.until_eternity.proof_of_spurner.protection_shred": "§9+50% 保护削减",
   
   "structure.until_eternity.immortal_duel_arena": "不朽者角斗场",
   "structure.until_eternity.chaos_bell_tower": "混沌钟楼"

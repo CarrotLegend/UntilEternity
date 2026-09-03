@@ -17,6 +17,7 @@ import com.carrot123.until_eternity.item.curio.PewterGlovesItem;
 import com.carrot123.until_eternity.item.curio.VoidRingItem;
 import com.carrot123.until_eternity.item.curio.WarpedRingItem;
 import com.carrot123.until_eternity.item.curio.charm.DivineSoulLampItem;
+import com.carrot123.until_eternity.item.curio.ProofOfSpurnerItem;
 import com.carrot123.until_eternity.until_eternity;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 
@@ -99,11 +100,7 @@ public class ModItems {
                     new Item.Properties().stacksTo(1).fireResistant(),
                     ImmuneCurioItem.CurioType.LIMITED,
                     CurioAttributeProfile.EMPOWERED_SHIELD));
-    public static final RegistryObject<Item> PROOF_OF_SPURNER = ITEMS.register("proof_of_spurner",
-            () -> new ImmuneCurioItem(
-                    new Item.Properties().stacksTo(1).fireResistant(),
-                    ImmuneCurioItem.CurioType.ALL,
-                    CurioAttributeProfile.PROOF_OF_SPURNER));
+    public static final RegistryObject<Item> PROOF_OF_SPURNER = ITEMS.register("proof_of_spurner", ProofOfSpurnerItem::new);
     public static final RegistryObject<Item> CRYSTAL_OF_DRAWN_BOW = ITEMS.register("crystal_of_drawn_bow", () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SWORD_WRAITH = ITEMS.register("sword_wraith", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> WROUGHT_IRON = ITEMS.register("wrought_iron", () -> new Item(new Item.Properties()));
