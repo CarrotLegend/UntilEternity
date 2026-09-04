@@ -40,6 +40,7 @@
     "compat.goety.ServerLevelFocusEntityTickMixin",
     "compat.goety.IceBouquetTrapBlockEntityMixin",
     "compat.goety.IceBouquetDamageSourceMixin",
+    "compat.goety.ModDamageSourceCompatMixin",
     "compat.goetyrevelation.QuietusStarPropertiesMixin",
     "compat.irons_spellbooks.AbstractSpellCastingContextMixin",
     "compat.irons_spellbooks.AbstractSpellMixin",
@@ -52,7 +53,11 @@
     "compat.thirst.ThirstReflectionCompatMixin",
     "compat.borninchaos.KrampusAttackProcedureMixin",
     "compat.borninchaos.KrampusHenchmanAttackProcedureMixin",
-    "compat.legendary_monsters.LegendaryMonstersTrueChefsKnifeMixin"
+    "compat.legendary_monsters.LegendaryMonstersTrueChefsKnifeMixin",
+    "compat.ftbquests.RewardClaimAllAccessor",
+    "compat.ftbquests.RewardClaimAllPersistenceMixin",
+    "compat.ftbquests.RandomRewardMixin",
+    "compat.ftbquests.LootRewardMixin"
   ],
   "client": [
     "client.FontRainbowMixin",
