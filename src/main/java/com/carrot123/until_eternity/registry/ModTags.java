@@ -13,6 +13,8 @@ public final class ModTags {
     public static final class EntityTypes {
         public static final TagKey<EntityType<?>> MOB_CONTAINER_WHITELIST =
                 create(until_eternity.MODID, "mob_container_whitelist");
+        public static final TagKey<EntityType<?>> PASSIVE_MOBS =
+                create(until_eternity.MODID, "passive_mobs");
         public static final TagKey<EntityType<?>> BOSS =
                 create("c", "boss");
 

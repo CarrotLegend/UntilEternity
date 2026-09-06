@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,7 +32,8 @@ import net.minecraft.world.phys.HitResult;
 
 @SuppressWarnings("null")
 public class FinalIngotPickaxe extends PickaxeItem {
-    private static final int UNBREAKABLE_BREAK_COOLDOWN = 10;
+    private static final int AREA_BREAK_COOLDOWN = 10;
+    private static final float FINAL_PICKAXE_SPEED_MULTIPLIER = 12.0F;
 
     public FinalIngotPickaxe(
             Tier tier,
@@ -59,24 +61,27 @@ public class FinalIngotPickaxe extends PickaxeItem {
             return super.useOn(context);
         }
 
+        if (player.getCooldowns().isOnCooldown(this)) {
+            return InteractionResult.FAIL;
+        }
+
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
 
-        if (!isUnbreakable(level, pos)) {
-            return super.useOn(context);
-        }
+        BlockState state = level.getBlockState(pos);
 
-        if (player.getCooldowns().isOnCooldown(this)) {
-            return InteractionResult.FAIL;
+        if (state.isAir()) {
+            return InteractionResult.PASS;
         }
 
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
 
-        boolean destroyed = tryBreakUnbreakableBlock(
+        boolean destroyed = tryBreakArea(
                 level,
                 pos,
+                context.getClickedFace(),
                 player
         );
 
@@ -112,9 +117,12 @@ public class FinalIngotPickaxe extends PickaxeItem {
         }
 
         BlockHitResult blockHit = (BlockHitResult) hit;
+
         BlockPos pos = blockHit.getBlockPos();
 
-        if (!isUnbreakable(level, pos)) {
+        BlockState state = level.getBlockState(pos);
+
+        if (state.isAir()) {
             return InteractionResultHolder.pass(stack);
         }
 
@@ -122,9 +130,10 @@ public class FinalIngotPickaxe extends PickaxeItem {
             return InteractionResultHolder.success(stack);
         }
 
-        boolean destroyed = tryBreakUnbreakableBlock(
+        boolean destroyed = tryBreakArea(
                 level,
                 pos,
+                blockHit.getDirection(),
                 player
         );
 
@@ -133,17 +142,102 @@ public class FinalIngotPickaxe extends PickaxeItem {
                 : InteractionResultHolder.fail(stack);
     }
 
-    private static boolean isUnbreakable(
+    private boolean tryBreakArea(
             Level level,
-            BlockPos pos
+            BlockPos center,
+            Direction clickedFace,
+            Player player
     ) {
-        BlockState state = level.getBlockState(pos);
-
-        if (state.isAir()) {
+        if (!(level instanceof ServerLevel serverLevel)) {
             return false;
         }
 
-        return state.getDestroySpeed(level, pos) < 0.0F;
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return false;
+        }
+
+        if (player.getCooldowns().isOnCooldown(this)) {
+            return false;
+        }
+
+        BlockState centerState =
+                serverLevel.getBlockState(center);
+
+        if (centerState.isAir()) {
+            return false;
+        }
+
+        if (SummoningRitualsCompat.isIndestructibleAltar(
+                centerState
+        )) {
+            boolean destroyed =
+                    breakSingleBlock(
+                            serverLevel,
+                            center,
+                            serverPlayer
+                    );
+
+            if (destroyed) {
+                player.getCooldowns().addCooldown(
+                        this,
+                        AREA_BREAK_COOLDOWN
+                );
+            }
+
+            return destroyed;
+        }
+        boolean destroyedAny = false;
+
+        if (breakSingleBlock(
+                serverLevel,
+                center,
+                serverPlayer
+        )) {
+            destroyedAny = true;
+        }
+
+        Direction.Axis axis =
+                clickedFace.getAxis();
+
+        for (int firstOffset = -1;
+             firstOffset <= 1;
+             firstOffset++) {
+
+            for (int secondOffset = -1;
+                 secondOffset <= 1;
+                 secondOffset++) {
+
+                if (firstOffset == 0
+                        && secondOffset == 0) {
+                    continue;
+                }
+
+                BlockPos targetPos =
+                        getAreaPosition(
+                                center,
+                                axis,
+                                firstOffset,
+                                secondOffset
+                        );
+
+                if (breakSingleBlock(
+                        serverLevel,
+                        targetPos,
+                        serverPlayer
+                )) {
+                    destroyedAny = true;
+                }
+            }
+        }
+
+        if (destroyedAny) {
+            player.getCooldowns().addCooldown(
+                    this,
+                    AREA_BREAK_COOLDOWN
+            );
+        }
+
+        return destroyedAny;
     }
 
     public boolean tryBreakUnbreakableBlock(
@@ -163,13 +257,62 @@ public class FinalIngotPickaxe extends PickaxeItem {
             return false;
         }
 
-        BlockState originalState = serverLevel.getBlockState(pos);
-
-        if (originalState.isAir()) {
+        BlockState state = serverLevel.getBlockState(pos);
+        if (state.isAir()
+                || state.getDestroySpeed(serverLevel, pos) >= 0.0F) {
             return false;
         }
 
-        if (originalState.getDestroySpeed(serverLevel, pos) >= 0.0F) {
+        boolean destroyed = breakSingleBlock(
+                serverLevel,
+                pos,
+                serverPlayer
+        );
+        if (destroyed) {
+            player.getCooldowns().addCooldown(
+                    this,
+                    AREA_BREAK_COOLDOWN
+            );
+        }
+        return destroyed;
+    }
+
+    private static BlockPos getAreaPosition(
+            BlockPos center,
+            Direction.Axis axis,
+            int firstOffset,
+            int secondOffset
+    ) {
+        return switch (axis) {
+            case X -> center.offset(
+                    0,
+                    firstOffset,
+                    secondOffset
+            );
+
+            case Y -> center.offset(
+                    firstOffset,
+                    0,
+                    secondOffset
+            );
+
+            case Z -> center.offset(
+                    firstOffset,
+                    secondOffset,
+                    0
+            );
+        };
+    }
+
+    private boolean breakSingleBlock(
+            ServerLevel serverLevel,
+            BlockPos pos,
+            ServerPlayer serverPlayer
+    ) {
+        BlockState originalState =
+                serverLevel.getBlockState(pos);
+
+        if (originalState.isAir()) {
             return false;
         }
 
@@ -182,10 +325,11 @@ public class FinalIngotPickaxe extends PickaxeItem {
 
         if (isIndestructibleAltar) {
             previousItemEntities =
-                    SummoningRitualsCompat.snapshotNearbyItemEntities(
-                            serverLevel,
-                            pos
-                    );
+                    SummoningRitualsCompat
+                            .snapshotNearbyItemEntities(
+                                    serverLevel,
+                                    pos
+                            );
         } else {
             previousItemEntities = Set.of();
         }
@@ -212,21 +356,46 @@ public class FinalIngotPickaxe extends PickaxeItem {
                     );
         }
 
-        player.getCooldowns().addCooldown(
-                this,
-                UNBREAKABLE_BREAK_COOLDOWN
-        );
-
         return true;
     }
+    @Override
+    public float getDestroySpeed(
+            @Nonnull ItemStack stack,
+            @Nonnull BlockState state
+    ) {
+        float vanillaSpeed =
+                super.getDestroySpeed(
+                        stack,
+                        state
+                );
 
+        float hardness =
+                state.getBlock()
+                        .defaultDestroyTime();
+        if (hardness < 0.0F) {
+            return vanillaSpeed;
+        }
+        if (hardness >= 1.0F) {
+            return Math.max(
+                    vanillaSpeed,
+                    FINAL_PICKAXE_SPEED_MULTIPLIER
+                            * hardness
+            );
+        }
+        return Math.max(
+                vanillaSpeed,
+                FINAL_PICKAXE_SPEED_MULTIPLIER
+        );
+    }
     @Override
     public boolean canBeDepleted() {
         return false;
     }
 
     @Override
-    public boolean isBarVisible(@Nonnull ItemStack stack) {
+    public boolean isBarVisible(
+            @Nonnull ItemStack stack
+    ) {
         return false;
     }
 
@@ -238,15 +407,21 @@ public class FinalIngotPickaxe extends PickaxeItem {
             @Nonnull TooltipFlag flag
     ) {
         tooltip.add(
-                Component.translatable("item.unbreakable")
-                        .withStyle(ChatFormatting.BLUE)
+                Component.translatable(
+                                "item.unbreakable"
+                        )
+                        .withStyle(
+                                ChatFormatting.BLUE
+                        )
         );
 
         tooltip.add(
                 Component.translatable(
                                 "item.until_eternity.final_ingot_pickaxe.desc"
                         )
-                        .withStyle(ChatFormatting.GOLD)
+                        .withStyle(
+                                ChatFormatting.GOLD
+                        )
         );
 
         super.appendHoverText(
@@ -258,7 +433,9 @@ public class FinalIngotPickaxe extends PickaxeItem {
     }
 
     @Override
-    public boolean isEnchantable(@Nonnull ItemStack stack) {
+    public boolean isEnchantable(
+            @Nonnull ItemStack stack
+    ) {
         return true;
     }
 }

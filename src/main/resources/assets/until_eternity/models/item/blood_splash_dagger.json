@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "until_eternity:item/blood_splash_dagger"
+  }
+}

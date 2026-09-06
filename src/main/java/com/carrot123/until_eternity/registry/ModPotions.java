@@ -10,6 +10,12 @@ import net.minecraftforge.registries.RegistryObject;
 
 public final class ModPotions {
     public static final String DISPLAY_NAME = "until_eternity.mana_eruption";
+    public static final String DIRTY_BLOOD_DISPLAY_NAME = "until_eternity.dirty_blood";
+    public static final String EVIL_BLOOD_DISPLAY_NAME = "until_eternity.evil_blood";
+    public static final String TRUE_BLOOD_DISPLAY_NAME = "until_eternity.true_blood";
+    public static final int DIRTY_BLOOD_COLOR = 0x4A0909;
+    public static final int EVIL_BLOOD_COLOR = 0x3B124F;
+    public static final int TRUE_BLOOD_COLOR = 0xE61919;
     public static final int LONG_DURATION = 20 * 60 * 10;
     public static final int STRONG_DURATION = 20 * 60 * 5;
 
@@ -35,6 +41,21 @@ public final class ModPotions {
                                     ModMobEffects.MANA_ERUPTION.get(),
                                     STRONG_DURATION,
                                     1)));
+
+    public static final RegistryObject<Potion> DIRTY_BLOOD =
+            POTIONS.register(
+                    "dirty_blood",
+                    () -> new Potion(DIRTY_BLOOD_DISPLAY_NAME));
+
+    public static final RegistryObject<Potion> EVIL_BLOOD =
+            POTIONS.register(
+                    "evil_blood",
+                    () -> new Potion(EVIL_BLOOD_DISPLAY_NAME));
+
+    public static final RegistryObject<Potion> TRUE_BLOOD =
+            POTIONS.register(
+                    "true_blood",
+                    () -> new Potion(TRUE_BLOOD_DISPLAY_NAME));
 
     private ModPotions() {
     }

@@ -1,16 +1,21 @@
 package com.carrot123.until_eternity.compat.mixin;
 
-import net.minecraftforge.fml.loading.FMLLoader;
+import java.util.List;
+import java.util.Set;
+
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
-import java.util.List;
-import java.util.Set;
+import net.minecraftforge.fml.loading.FMLLoader;
 
 public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
+
     private static final String MOWZIES_MOBS_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.mowziesmobs.";
+
+    private static final String SUMMONING_RITUALS_COMPAT =
+            "com.carrot123.until_eternity.mixin.compat.summoningrituals.";
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -22,15 +27,30 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
     }
 
     @Override
-    public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+    public boolean shouldApplyMixin(
+            String targetClassName,
+            String mixinClassName
+    ) {
         if (mixinClassName.startsWith(MOWZIES_MOBS_COMPAT)) {
-            return FMLLoader.getLoadingModList().getModFileById("mowziesmobs") != null;
+            return isModLoaded("mowziesmobs");
         }
+
+        if (mixinClassName.startsWith(SUMMONING_RITUALS_COMPAT)) {
+            return isModLoaded("summoningrituals");
+        }
+
         return true;
     }
 
+    private static boolean isModLoaded(String modId) {
+        return FMLLoader.getLoadingModList().getModFileById(modId) != null;
+    }
+
     @Override
-    public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
+    public void acceptTargets(
+            Set<String> myTargets,
+            Set<String> otherTargets
+    ) {
     }
 
     @Override
@@ -43,7 +63,8 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
             String targetClassName,
             ClassNode targetClass,
             String mixinClassName,
-            IMixinInfo mixinInfo) {
+            IMixinInfo mixinInfo
+    ) {
     }
 
     @Override
@@ -51,6 +72,7 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
             String targetClassName,
             ClassNode targetClass,
             String mixinClassName,
-            IMixinInfo mixinInfo) {
+            IMixinInfo mixinInfo
+    ) {
     }
 }

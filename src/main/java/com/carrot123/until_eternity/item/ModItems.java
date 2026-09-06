@@ -110,6 +110,9 @@ public class ModItems {
             () -> new TrueChefsKnifeItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
     public static final RegistryObject<Item> ANCIENT_NETHERITE_BLADE = ITEMS.register("ancient_netherite_blade", () -> new SwordItem(ModTiers.ANCIENT_NETHERITE_BLADE, 0, -1.8F, new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> CALAMITY_DAGGER = ITEMS.register("calamity_dagger", () -> new SwordItem(ModTiers.CALAMITY_DAGGER, 0, -1.8F, new Item.Properties().fireResistant()));
+    public static final RegistryObject<BloodSplashDaggerItem> BLOOD_SPLASH_DAGGER =
+            ITEMS.register("blood_splash_dagger",
+                    () -> new BloodSplashDaggerItem(new Item.Properties().rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> TATTERED_CLOAK = ITEMS.register("tattered_cloak", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> WITHER_FRAGMENT = ITEMS.register("wither_fragment", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BROKEN_CROWN = ITEMS.register("broken_crown", () -> new Item(new Item.Properties()));
@@ -117,7 +120,7 @@ public class ModItems {
     public static final RegistryObject<Item> VIBRANT_AMETHYST = ITEMS.register("vibrant_amethyst", () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> MONSTERS_SCYTHE = ITEMS.register("monsters_scythe", () -> new MonstersScythe(ModTiers.MONSTERS_SCYTHE, 0, -3.2F, new Item.Properties().durability(3270).fireResistant()));
     public static final RegistryObject<Item> SNOW_SPEAR = ITEMS.register("snow_spear", () -> new SnowSpear(Tiers.NETHERITE, -2.5F, new Item.Properties().durability(2031).rarity(Rarity.RARE).fireResistant()));
-    public static final RegistryObject<Item> FINAL_INGOT_PICKAXE = ITEMS.register("final_ingot_pickaxe", () -> new FinalIngotPickaxe(ModTiers.FINAL_INGOT, 0, -2.8F, new Item.Properties().durability(4096).rarity(Rarity.EPIC).fireResistant()));
+    public static final RegistryObject<Item> FINAL_INGOT_PICKAXE = ITEMS.register("final_ingot_pickaxe", () -> new FinalIngotPickaxe(ModTiers.FINAL_INGOT, 103, -2.4F, new Item.Properties().durability(4096).rarity(Rarity.EPIC).fireResistant()));
     public static final RegistryObject<Item> PUMPKIN_NUGGET = ITEMS.register("pumpkin_nugget", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> PUMPKIN_INGOT = ITEMS.register("pumpkin_ingot", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> IMFULL = ITEMS.register("imfull", () -> new Item(new Item.Properties()));

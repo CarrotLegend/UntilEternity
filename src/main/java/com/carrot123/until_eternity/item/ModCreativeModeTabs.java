@@ -55,6 +55,16 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.IMMORTAL_ESSENCE.get());
                 output.accept(ModItems.TRUE_CHEFS_KNIFE.get());
                 output.accept(ModItems.CALAMITY_DAGGER.get());
+                output.accept(ModItems.BLOOD_SPLASH_DAGGER.get());
+                output.accept(PotionUtils.setPotion(
+                    new ItemStack(Items.POTION),
+                    ModPotions.DIRTY_BLOOD.get()));
+                output.accept(PotionUtils.setPotion(
+                    new ItemStack(Items.POTION),
+                    ModPotions.EVIL_BLOOD.get()));
+                output.accept(PotionUtils.setPotion(
+                    new ItemStack(Items.POTION),
+                    ModPotions.TRUE_BLOOD.get()));
                 output.accept(ModItems.ANCIENT_NETHERITE_BLADE.get());
                 output.accept(ModItems.TATTERED_CLOAK.get());
                 output.accept(ModItems.WITHER_FRAGMENT.get());
