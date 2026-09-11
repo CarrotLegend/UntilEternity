@@ -56,7 +56,13 @@
     "compat.ftbquests.RewardClaimAllAccessor",
     "compat.ftbquests.RewardClaimAllPersistenceMixin",
     "compat.ftbquests.RandomRewardMixin",
-    "compat.ftbquests.LootRewardMixin"
+    "compat.ftbquests.LootRewardMixin",
+    "compat.splendourablazeepoch.CangyaoxingIdlePerformanceMixin",
+    "compat.splendourablazeepoch.XuanyinfangzunHurtPerformanceMixin",
+    "compat.splendourablazeepoch.WordbulletTickPerformanceMixin",
+    "compat.splendourablazeepoch.BlastProcedurePerformanceMixin",
+    "compat.splendourablazeepoch.AlchemypageTickPerformanceMixin",
+    "compat.splendourablazeepoch.ZhenyantongshuaiPerformanceMixin"
   ],
   "client": [
     "client.BloodPotionColorMixin",
