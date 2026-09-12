@@ -10,6 +10,7 @@ import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 import java.util.UUID;
 
@@ -111,8 +112,9 @@ public class EnchantmentEventHandler {
             return CuriosApi.getCuriosInventory(player).map(handler -> {
                 for (var slotEntry : handler.getCurios().entrySet()) {
                     var stacksHandler = slotEntry.getValue();
-                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                        if (hasCurseOfHunger(stacksHandler.getStacks().getStackInSlot(i))) {
+                    IDynamicStackHandler stacks = stacksHandler.getStacks();
+                    for (int i = 0; i < stacks.getSlots(); i++) {
+                        if (hasCurseOfHunger(stacks.getStackInSlot(i))) {
                             return true;
                         }
                     }
@@ -139,8 +141,9 @@ public class EnchantmentEventHandler {
             CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
                 for (var slotEntry : handler.getCurios().entrySet()) {
                     var stacksHandler = slotEntry.getValue();
-                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
+                    IDynamicStackHandler stacks = stacksHandler.getStacks();
+                    for (int i = 0; i < stacks.getSlots(); i++) {
+                        ItemStack stack = stacks.getStackInSlot(i);
                         damageShortLifeStack(stack, player);
                     }
                 }

@@ -1,7 +1,7 @@
 package com.carrot123.until_eternity.item;
 
-import com.carrot123.until_eternity.until_eternity;
 import com.carrot123.until_eternity.registry.ModPotions;
+import com.carrot123.until_eternity.until_eternity;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -107,6 +107,7 @@ public class ModCreativeModeTabs {
                 output.accept(PotionUtils.setPotion(
                     new ItemStack(Items.POTION),
                     ModPotions.MANA_ERUPTION_STRONG.get()));
+                output.accept(ModItems.CELESTIAL_ONION.get());
             }).build());
 
     public static void register(IEventBus eventBus) {

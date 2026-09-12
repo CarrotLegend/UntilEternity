@@ -1,12 +1,16 @@
 package com.carrot123.until_eternity.event;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.carrot123.until_eternity.item.curio.ImmuneCurioItem;
 import com.carrot123.until_eternity.item.curio.LifeCapItem;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
@@ -26,16 +30,21 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
+import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 import com.carrot123.until_eternity.item.ModItems;
 
 
 public class CurioEventHandler {
+
+    private static final Map<UUID, Long> PENDING_CURIO_RECHECK =
+            new ConcurrentHashMap<>();
 
     private static final Set<MobEffect> LIMITED_IMMUNE_EFFECTS = Set.of(
             MobEffects.WEAKNESS, MobEffects.POISON, MobEffects.MOVEMENT_SLOWDOWN,
@@ -91,7 +100,9 @@ public void onLivingDeath(LivingDeathEvent event) {
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
-        Player player = event.player;
+        if (!(event.player instanceof ServerPlayer player)) return;
+
+        processPendingCurioRecheck(player);
 
         if (player.isOnFire() && hasAnyImmuneCurio(player)) {
             player.clearFire();
@@ -120,12 +131,17 @@ public void onLivingDeath(LivingDeathEvent event) {
 
     @SubscribeEvent
     public void onCurioChange(CurioChangeEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
-        if (player.level().isClientSide) return;
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
-        // 清除负面效果（免疫饰品）
-        if (hasAnyImmuneCurio(player)) {
-            clearExistingImmuneEffects(player);
+        long earliestRecheck = player.level().getGameTime() + 1L;
+        PENDING_CURIO_RECHECK.merge(
+                player.getUUID(), earliestRecheck, Long::max);
+    }
+
+    @SubscribeEvent
+    public void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            PENDING_CURIO_RECHECK.remove(player.getUUID());
         }
     }
 
@@ -186,8 +202,9 @@ public void onLivingDeath(LivingDeathEvent event) {
         return CuriosApi.getCuriosInventory(player).map(handler -> {
             for (var slotEntry : handler.getCurios().entrySet()) {
                 var stacksHandler = slotEntry.getValue();
-                for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                    if (stacksHandler.getStacks().getStackInSlot(i).getItem() instanceof ImmuneCurioItem)
+                IDynamicStackHandler stacks = stacksHandler.getStacks();
+                for (int i = 0; i < stacks.getSlots(); i++) {
+                    if (stacks.getStackInSlot(i).getItem() instanceof ImmuneCurioItem)
                         return true;
                 }
             }
@@ -199,8 +216,9 @@ public void onLivingDeath(LivingDeathEvent event) {
         return CuriosApi.getCuriosInventory(player).map(handler -> {
             for (var slotEntry : handler.getCurios().entrySet()) {
                 var stacksHandler = slotEntry.getValue();
-                for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                    ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
+                IDynamicStackHandler stacks = stacksHandler.getStacks();
+                for (int i = 0; i < stacks.getSlots(); i++) {
+                    ItemStack stack = stacks.getStackInSlot(i);
                     if (stack.getItem() instanceof ImmuneCurioItem curio) {
                         switch (curio.getCurioType()) {
                             case LIMITED:
@@ -229,13 +247,28 @@ public void onLivingDeath(LivingDeathEvent event) {
         }
     }
 
+    private void processPendingCurioRecheck(ServerPlayer player) {
+        UUID playerId = player.getUUID();
+        Long earliestRecheck = PENDING_CURIO_RECHECK.get(playerId);
+        if (earliestRecheck == null
+                || player.level().getGameTime() < earliestRecheck
+                || !PENDING_CURIO_RECHECK.remove(playerId, earliestRecheck)) {
+            return;
+        }
+
+        if (hasAnyImmuneCurio(player)) {
+            clearExistingImmuneEffects(player);
+        }
+    }
+
     private Optional<LifeCapItem> findLifeCapCurio(Player player) {
     var handler = CuriosApi.getCuriosInventory(player).resolve().orElse(null);
     if (handler == null) return Optional.empty();
     for (var slotEntry : handler.getCurios().entrySet()) {
         var stacksHandler = slotEntry.getValue();
-        for (int i = 0; i < stacksHandler.getSlots(); i++) {
-            ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
+        IDynamicStackHandler stacks = stacksHandler.getStacks();
+        for (int i = 0; i < stacks.getSlots(); i++) {
+            ItemStack stack = stacks.getStackInSlot(i);
             if (stack.getItem() instanceof LifeCapItem lc) return Optional.of(lc);
         }
     }

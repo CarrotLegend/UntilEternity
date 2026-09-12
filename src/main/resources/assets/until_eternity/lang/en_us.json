@@ -188,5 +188,9 @@
   "attribute.name.until_eternity.focus_damage": "Focus Damage",
 
   "structure.until_eternity.immortal_duel_arena": "Immortal's Duel Arena",
-  "structure.until_eternity.chaos_bell_tower": "Chaos Bell Tower"
+  "structure.until_eternity.chaos_bell_tower": "Chaos Bell Tower",
+  "item.until_eternity.celestial_onion": "Celestial Onion",
+  "tooltip.until_eternity.celestial_onion.line1": "Otherworldly power surges through its many layers.",
+  "tooltip.until_eternity.celestial_onion.line2": "Use after reaching the slot limit to permanently gain 1 accessory slot.",
+  "message.until_eternity.celestial_onion.cannot_use": "You cannot withstand the power of another Celestial Onion."
 }

@@ -10,6 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.event.CurioEquipEvent;
+import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 import java.util.List;
 import java.util.Set;
@@ -62,13 +63,14 @@ public final class CurioMutualExclusionHandler {
         return CuriosApi.getCuriosInventory(targetContext.entity()).map(handler -> {
             for (var entry : handler.getCurios().entrySet()) {
                 var stacksHandler = entry.getValue();
-                for (int index = 0; index < stacksHandler.getSlots(); index++) {
+                IDynamicStackHandler stacks = stacksHandler.getStacks();
+                for (int index = 0; index < stacks.getSlots(); index++) {
                     if (entry.getKey().equals(targetContext.identifier())
                             && index == targetContext.index()) {
                         continue;
                     }
 
-                    ItemStack equipped = stacksHandler.getStacks().getStackInSlot(index);
+                    ItemStack equipped = stacks.getStackInSlot(index);
                     if (!equipped.isEmpty()) {
                         ResourceLocation equippedId =
                                 ForgeRegistries.ITEMS.getKey(equipped.getItem());

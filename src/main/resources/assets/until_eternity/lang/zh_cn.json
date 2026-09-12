@@ -192,5 +192,9 @@
   "tooltip.until_eternity.proof_of_spurner.protection_shred": "§9+50% 保护削减",
   
   "structure.until_eternity.immortal_duel_arena": "不朽者角斗场",
-  "structure.until_eternity.chaos_bell_tower": "混沌钟楼"
+  "structure.until_eternity.chaos_bell_tower": "混沌钟楼",
+  "item.until_eternity.celestial_onion": "天体洋葱",
+  "tooltip.until_eternity.celestial_onion.line1": "外星的力量激荡在它的层叠之中",
+  "tooltip.until_eternity.celestial_onion.line2": "栏位数量到达上限后使用，永久增加1配饰栏位。",
+  "message.until_eternity.celestial_onion.cannot_use": "你无法承受另一个天体洋葱的力量。"
 }

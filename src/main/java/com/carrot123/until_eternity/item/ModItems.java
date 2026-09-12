@@ -217,6 +217,8 @@ public class ModItems {
                     0.05, AttributeModifier.Operation.ADDITION, 3));
     public static final RegistryObject<Item> VOID_RING =
             ITEMS.register("void_ring", VoidRingItem::new);
+    public static final RegistryObject<CelestialOnionItem> CELESTIAL_ONION =
+            ITEMS.register("celestial_onion", CelestialOnionItem::new);
 
     private static ResourceLocation goetyRevelationAttribute(String path) {
         return new ResourceLocation("goety_revelation", path);
