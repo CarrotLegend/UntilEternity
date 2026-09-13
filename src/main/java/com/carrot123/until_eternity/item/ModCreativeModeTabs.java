@@ -108,6 +108,7 @@ public class ModCreativeModeTabs {
                     new ItemStack(Items.POTION),
                     ModPotions.MANA_ERUPTION_STRONG.get()));
                 output.accept(ModItems.CELESTIAL_ONION.get());
+                output.accept(ModItems.SPELL_POWER_UPGRADE_ORB.get());
             }).build());
 
     public static void register(IEventBus eventBus) {

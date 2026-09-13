@@ -3,6 +3,7 @@ package com.carrot123.until_eternity.compat.goetyrevelation;
 import com.carrot123.until_eternity.until_eternity;
 import com.carrot123.until_eternity.item.curio.CurioModifierId;
 import com.carrot123.until_eternity.registry.ModAttributes;
+import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -24,6 +25,7 @@ public final class GoetyCurioAttributeCompat {
     private static final String BODY_SLOT = "body";
     private static final String CHARM_SLOT = "charm";
     private static final String BRACELET_SLOT = "bracelet";
+    private static final String HEAD_SLOT = "head";
 
     private static final ResourceLocation FOCUS_BAG_ID =
             new ResourceLocation("goety", "focus_bag");
@@ -37,6 +39,8 @@ public final class GoetyCurioAttributeCompat {
             new ResourceLocation("goety_revelation", "gold_feather");
     private static final ResourceLocation QUIETUS_STAR_ID =
             new ResourceLocation("goety_revelation", "quietus_star");
+    private static final ResourceLocation HALO_OF_THE_END_ID =
+            new ResourceLocation("goety_revelation", "halo_of_the_end");
     private static final ResourceLocation SPELL_POWER_ID =
             new ResourceLocation("goety_revelation", "spell_power");
 
@@ -47,6 +51,10 @@ public final class GoetyCurioAttributeCompat {
     static final double GOLD_FEATHER_FOCUS_DAMAGE = 0.10D;
     static final double GOLD_FEATHER_RANGED_DAMAGE = 0.10D;
     static final double QUIETUS_STAR_FOCUS_DAMAGE = 0.30D;
+    static final double HALO_MELEE_DAMAGE = 1.0D;
+    static final double HALO_RANGED_DAMAGE = 1.0D;
+    static final double HALO_FOCUS_DAMAGE = 1.0D;
+    static final double HALO_SPELL_POWER = 2.4D;
 
     /*
      * The previous implementation wrote these modifiers permanently to player data.
@@ -72,6 +80,21 @@ public final class GoetyCurioAttributeCompat {
 
         ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(event.getItemStack().getItem());
         String slot = event.getSlotContext().identifier();
+        if (HEAD_SLOT.equals(slot) && HALO_OF_THE_END_ID.equals(itemId)) {
+            addModifier(event, PuffishAttributes.MELEE_DAMAGE,
+                    "halo_of_the_end_melee_damage", HALO_MELEE_DAMAGE,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL);
+            addModifier(event, PuffishAttributes.RANGED_DAMAGE,
+                    "halo_of_the_end_ranged_damage", HALO_RANGED_DAMAGE,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL);
+            addModifier(event, ModAttributes.FOCUS_DAMAGE.get(),
+                    "halo_of_the_end_focus_damage", HALO_FOCUS_DAMAGE,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL);
+            addModifier(event, AttributeRegistry.SPELL_POWER.get(),
+                    "halo_of_the_end_spell_power", HALO_SPELL_POWER,
+                    AttributeModifier.Operation.MULTIPLY_BASE);
+            return;
+        }
         if (BRACELET_SLOT.equals(slot)
                 && QUIETUS_STAR_ID.equals(itemId)
                 && event.getItemStack().getCount() == 1) {

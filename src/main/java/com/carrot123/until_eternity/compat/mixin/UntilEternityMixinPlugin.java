@@ -17,6 +17,9 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
     private static final String SUMMONING_RITUALS_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.summoningrituals.";
 
+    private static final String REVELATION_FIX_COMPAT =
+            "com.carrot123.until_eternity.mixin.compat.revelationfix.";
+
     @Override
     public void onLoad(String mixinPackage) {
     }
@@ -37,6 +40,11 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
 
         if (mixinClassName.startsWith(SUMMONING_RITUALS_COMPAT)) {
             return isModLoaded("summoningrituals");
+        }
+
+        if (mixinClassName.startsWith(REVELATION_FIX_COMPAT)) {
+            return isModLoaded("goety_revelation")
+                    && isModLoaded("revelationfix");
         }
 
         return true;

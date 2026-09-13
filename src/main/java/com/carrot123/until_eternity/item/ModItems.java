@@ -219,6 +219,7 @@ public class ModItems {
             ITEMS.register("void_ring", VoidRingItem::new);
     public static final RegistryObject<CelestialOnionItem> CELESTIAL_ONION =
             ITEMS.register("celestial_onion", CelestialOnionItem::new);
+    public static final RegistryObject<Item> SPELL_POWER_UPGRADE_ORB = ITEMS.register("spell_power_upgrade_orb", () -> new Item(new Item.Properties()));
 
     private static ResourceLocation goetyRevelationAttribute(String path) {
         return new ResourceLocation("goety_revelation", path);
