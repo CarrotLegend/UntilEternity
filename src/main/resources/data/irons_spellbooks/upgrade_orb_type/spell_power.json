@@ -1,0 +1,9 @@
+{
+  "amount": 0.1,
+  "attribute": "irons_spellbooks:spell_power",
+  "containerItem": {
+    "Count": 1,
+    "id": "until_eternity:spell_power_upgrade_orb"
+  },
+  "operation": "MULTIPLY_BASE"
+}

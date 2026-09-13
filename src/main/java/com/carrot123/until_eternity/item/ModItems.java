@@ -20,6 +20,11 @@ import com.carrot123.until_eternity.item.curio.charm.DivineSoulLampItem;
 import com.carrot123.until_eternity.item.curio.ProofOfSpurnerItem;
 import com.carrot123.until_eternity.until_eternity;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
+import io.redspace.ironsspellbooks.item.UpgradeOrbItem;
+import io.redspace.ironsspellbooks.item.armor.UpgradeOrbType;
+import io.redspace.ironsspellbooks.registries.UpgradeOrbTypeRegistry;
+
+import net.minecraft.resources.ResourceKey;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -219,8 +224,19 @@ public class ModItems {
             ITEMS.register("void_ring", VoidRingItem::new);
     public static final RegistryObject<CelestialOnionItem> CELESTIAL_ONION =
             ITEMS.register("celestial_onion", CelestialOnionItem::new);
-    public static final RegistryObject<Item> SPELL_POWER_UPGRADE_ORB = ITEMS.register("spell_power_upgrade_orb", () -> new Item(new Item.Properties()));
+    public static final ResourceKey<UpgradeOrbType> SPELL_POWER_ORB_TYPE =
+        ResourceKey.create(
+                UpgradeOrbTypeRegistry.UPGRADE_ORB_REGISTRY_KEY,
+                new ResourceLocation("until_eternity", "spell_power")
+        );
 
+    public static final RegistryObject<Item> SPELL_POWER_UPGRADE_ORB = ITEMS.register(
+        "spell_power_upgrade_orb",
+        () -> new UpgradeOrbItem(
+                new Item.Properties(),
+                SPELL_POWER_ORB_TYPE
+        )
+        );
     private static ResourceLocation goetyRevelationAttribute(String path) {
         return new ResourceLocation("goety_revelation", path);
     }
