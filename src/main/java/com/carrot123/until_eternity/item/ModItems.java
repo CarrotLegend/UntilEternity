@@ -18,6 +18,7 @@ import com.carrot123.until_eternity.item.curio.VoidRingItem;
 import com.carrot123.until_eternity.item.curio.WarpedRingItem;
 import com.carrot123.until_eternity.item.curio.charm.DivineSoulLampItem;
 import com.carrot123.until_eternity.item.curio.ProofOfSpurnerItem;
+import com.carrot123.until_eternity.item.lore.LoreBookItem;
 import com.carrot123.until_eternity.until_eternity;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.item.UpgradeOrbItem;
@@ -145,7 +146,23 @@ public class ModItems {
             ITEMS.register("dying_fury", DyingFuryItem::new);
     public static final RegistryObject<Item> HORROR_HUNT =
             ITEMS.register("horror_hunt", HorrorHuntItem::new);
+    public static final RegistryObject<RandomLootGeneratorItem> RANDOM_LOOT_GENERATOR =
+            ITEMS.register("random_loot_generator", RandomLootGeneratorItem::new);
     public static final RegistryObject<Item> ROCK = ITEMS.register("rock", AncientRockItem::new);
+    public static final RegistryObject<Item> MINER_LOG = ITEMS.register("miner_log",
+            () -> new LoreBookItem(LoreBookItem.Type.MINER_LOG));
+    public static final RegistryObject<Item> DAMP_DIARY = ITEMS.register("damp_diary",
+            () -> new LoreBookItem(LoreBookItem.Type.DAMP_DIARY));
+    public static final RegistryObject<Item> TORN_PAPER_1 = ITEMS.register("torn_paper_1",
+            () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_1));
+    public static final RegistryObject<Item> TORN_PAPER_2 = ITEMS.register("torn_paper_2",
+            () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_2));
+    public static final RegistryObject<Item> TORN_PAPER_3 = ITEMS.register("torn_paper_3",
+            () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_3));
+    public static final RegistryObject<Item> TORN_PAPER_4 = ITEMS.register("torn_paper_4",
+            () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_4));
+    public static final RegistryObject<Item> TORN_PAPER_5 = ITEMS.register("torn_paper_5",
+            () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_5));
 
     // Iron's Spells 'n Spellbooks Curios
     public static final RegistryObject<Item> EMPOWERED_RING =

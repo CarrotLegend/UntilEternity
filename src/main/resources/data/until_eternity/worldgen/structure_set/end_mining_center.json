@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "until_eternity:end_mining_center",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 20,
+    "separation": 11,
+    "salt": 186492739,
+    "spread_type": "triangular"
+  }
+}

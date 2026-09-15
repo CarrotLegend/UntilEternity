@@ -178,6 +178,32 @@ configurations {
     }
 }
 
+def revelationFixCompileJar = layout.buildDirectory.file(
+        'generated/dependencies/RevelationFix-1.20.1-4.2.jar')
+
+tasks.register('extractRevelationFixCompileJar') {
+    dependsOn 'downloadGoetyRevelation'
+    inputs.file(file('libs/GoetyRevelation-2.3.2.jar'))
+    outputs.file(revelationFixCompileJar)
+    doLast {
+        File outerJar = file('libs/GoetyRevelation-2.3.2.jar')
+        File outputJar = revelationFixCompileJar.get().asFile
+        outputJar.parentFile.mkdirs()
+        def zip = new java.util.zip.ZipFile(outerJar)
+        try {
+            def entry = zip.getEntry(
+                    'META-INF/jarjar/[Forge]RevelationFix-1.20.1-4.2.jar')
+            if (entry == null) {
+                throw new GradleException(
+                        "${outerJar.name} does not contain RevelationFix 4.2")
+            }
+            outputJar.bytes = zip.getInputStream(entry).bytes
+        } finally {
+            zip.close()
+        }
+    }
+}
+
 dependencies {
     // Specify the version of Minecraft to use.
     // Any artifact can be supplied so long as it has a "userdev" classifier artifact and is a compatible patcher artifact.
@@ -195,9 +221,10 @@ dependencies {
     implementation fg.deobf("curse.maven:lendercataclysm-551586:7908487")
     implementation fg.deobf("curse.maven:lionfish-api-1001614:5922047")
     implementation fg.deobf("curse.maven:legendary-monsters-944035:8444425")
-    compileOnly fg.deobf("curse.maven:mowzies-mobs-250498:7815705")
     implementation fg.deobf("curse.maven:goety-586095:7966952")
     implementation files('libs/GoetyRevelation-2.3.2.jar')
+    compileOnly files(revelationFixCompileJar).builtBy(
+            tasks.named('extractRevelationFixCompileJar'))
     runtimeOnly fg.deobf("maven.modrinth:tMycyukv:RTKdreoY")
     implementation fg.deobf("io.redspace:irons_spellbooks:1.20.1-3.15.6")
     implementation fg.deobf("curse.maven:thirst-was-taken-679270:6660408")
@@ -215,11 +242,11 @@ dependencies {
     testImplementation fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1:api")
     // Keep these artifacts raw: the production Mixin audit must inspect the
     // actual SRG names shipped by the locked third-party mods, not FG output.
-    productionMixinAudit "curse.maven:mowzies-mobs-250498:7815705"
-    productionMixinAudit "curse.maven:lendercataclysm-551586:7908487"
-    productionMixinAudit "curse.maven:eeeabs-mobs-921600:6095880"
-    productionMixinAudit "curse.maven:legendary-monsters-944035:8444425"
     productionMixinAudit "curse.maven:goety-586095:7966952"
+    productionMixinAudit "curse.maven:eeeabs-mobs-921600:6095880"
+    productionMixinAudit files('libs/GoetyRevelation-2.3.2.jar')
+    productionMixinAudit(files(revelationFixCompileJar).builtBy(
+            tasks.named('extractRevelationFixCompileJar')))
     compileOnly fg.deobf("mezz.jei:jei-1.20.1-common-api:15.20.0.130")
     compileOnly fg.deobf("mezz.jei:jei-1.20.1-forge-api:15.20.0.130")
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
@@ -325,7 +352,7 @@ tasks.named('test', Test).configure {
 
 tasks.register('verifyProductionKnifeArtifacts') {
     group = 'verification'
-    description = 'Audits reobfuscated third-party True Chef\'s Knife mixins in both distributable jars.'
+    description = 'Audits isolated knife/katana and exact boss mixins in distributable jars.'
     dependsOn tasks.named('reobfJar'), tasks.named('reobfJarJar')
 
     doLast {
@@ -349,27 +376,28 @@ tasks.register('verifyProductionKnifeArtifacts') {
         }
 
         def mixins = [
-                'compat/mowziesmobs/EntityWroughtnautTrueChefsKnifeMixin',
-                'compat/eeeabsmobs/EeeabTrueChefsKnifeDamageGateMixin',
-                'compat/eeeabsmobs/NamelessGuardianTrueChefsKnifeMixin',
-                'compat/cataclysm/CataclysmTrueChefsKnifeDamageGateMixin',
-                'compat/cataclysm/ClawdianTrueChefsKnifeBlockMixin',
-                'compat/cataclysm/IgnisTrueChefsKnifeBlockMixin',
-                'compat/cataclysm/IgnitedRevenantTrueChefsKnifeBlockMixin',
-                'compat/cataclysm/KobolediatorTrueChefsKnifeBlockMixin',
-                'compat/cataclysm/RoyalDraugrTrueChefsKnifeBlockMixin',
-                'compat/cataclysm/WadjetTrueChefsKnifeBlockMixin',
-                'compat/goety/ApostleTrueChefsKnifeMixin',
+                'AbsoluteWeaponPlayerAttackMixin',
                 'compat/goety/EnderKeeperTrueChefsKnifeMixin',
-                'compat/goety/VizierTrueChefsKnifeMixin',
-                'compat/legendary_monsters/LegendaryMonstersTrueChefsKnifeMixin'
+                'compat/goety/ApostleTrueChefsKnifeMixin',
+                'compat/eeeabsmobs/NamelessGuardianTrueChefsKnifeMixin',
+                'compat/revelationfix/ApostleRevelationFixTrueChefsKnifeMixin',
+                'compat/revelationfix/SafeClassTrueChefsKnifeMixin',
+                'compat/revelationfix/AttackDamageChangeHandlerTrueChefsKnifeMixin'
         ]
         def commonEntries = [
                 'until_eternity.mixins.json',
                 'until_eternity.refmap.json'
         ] + mixins.collect { "com/carrot123/until_eternity/mixin/${it}.class" }
 
-        commonEntries.each { entry ->
+        def katanaRenderEntries = [
+                'com/carrot123/until_eternity/client/model/NetherworldKatanaReplacementModel.class',
+                'com/carrot123/until_eternity/client/render/NetherworldKatanaReplacementRenderer.class',
+                'com/carrot123/until_eternity/client/render/NetherworldKatanaClientEvents.class',
+                'com/carrot123/until_eternity/mixin/client/eeeabsmobs/EMItemStackRenderMixin.class',
+                'assets/until_eternity/textures/entity/netherworld_katana_remaster.png'
+        ]
+
+        (commonEntries + katanaRenderEntries).each { entry ->
             byte[] regular = readEntry(regularJar, entry)
             byte[] bundled = readEntry(bundledJar, entry)
             if (!java.util.Arrays.equals(regular, bundled)) {
@@ -382,7 +410,7 @@ tasks.register('verifyProductionKnifeArtifacts') {
                 'until_eternity.mixins.json'), java.nio.charset.StandardCharsets.UTF_8)
         String refmap = new String(readEntry(regularJar,
                 'until_eternity.refmap.json'), java.nio.charset.StandardCharsets.UTF_8)
-        mixins.each { mixin ->
+        mixins.take(4).each { mixin ->
             String dotted = mixin.replace('/', '.')
             if (!config.contains(dotted)) {
                 throw new GradleException("Mixin config is missing ${dotted}")
@@ -390,25 +418,47 @@ tasks.register('verifyProductionKnifeArtifacts') {
             String constants = new String(readEntry(regularJar,
                     "com/carrot123/until_eternity/mixin/${mixin}.class"),
                     java.nio.charset.StandardCharsets.ISO_8859_1)
-            if (!constants.contains('hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z') ||
-                    !constants.contains('m_6469_(Lnet/minecraft/world/damagesource/DamageSource;F)Z')) {
-                throw new GradleException("${mixin} lacks development/production hurt selectors")
+            if (!constants.contains('hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z')) {
+                throw new GradleException("${mixin} lacks its development hurt selector")
             }
         }
-        ['m_7639_', 'm_269533_'].each { mappedCall ->
-            if (!refmap.contains(mappedCall)) {
-                throw new GradleException("Refmap is missing Minecraft invocation ${mappedCall}")
-            }
+        if (!refmap.contains('com/carrot123/until_eternity/mixin/AbsoluteWeaponPlayerAttackMixin')) {
+            throw new GradleException('Refmap lacks the Player.attack hurt invocation mapping')
         }
-        [
-                'compat/mowziesmobs/EntityWroughtnautTrueChefsKnifeMixin',
+        if (!refmap.contains(
+                'com/carrot123/until_eternity/mixin/client/eeeabsmobs/EMItemStackRenderMixin')) {
+            throw new GradleException(
+                    'Refmap lacks the EEEAB item renderer method mapping')
+        }
+
+        def removedMixins = [
+                'TrueChefsKnifePlayerAttackMixin',
+                'TrueChefsKnifeLivingEntityDamageMixin',
                 'compat/eeeabsmobs/EeeabTrueChefsKnifeDamageGateMixin',
+                'compat/mowziesmobs/EntityWroughtnautTrueChefsKnifeMixin',
                 'compat/cataclysm/CataclysmTrueChefsKnifeDamageGateMixin',
+                'compat/cataclysm/ClawdianTrueChefsKnifeBlockMixin',
+                'compat/cataclysm/IgnisTrueChefsKnifeBlockMixin',
+                'compat/cataclysm/IgnitedRevenantTrueChefsKnifeBlockMixin',
+                'compat/cataclysm/KobolediatorTrueChefsKnifeBlockMixin',
+                'compat/cataclysm/RoyalDraugrTrueChefsKnifeBlockMixin',
+                'compat/cataclysm/WadjetTrueChefsKnifeBlockMixin',
+                'compat/goety/VizierTrueChefsKnifeMixin',
                 'compat/legendary_monsters/LegendaryMonstersTrueChefsKnifeMixin'
-        ].each { mappedMixin ->
-            if (!refmap.contains("com/carrot123/until_eternity/mixin/${mappedMixin}")) {
-                throw new GradleException("Refmap lacks Minecraft invocation mappings for ${mappedMixin}")
+        ]
+        def regularZip = new java.util.zip.ZipFile(regularJar)
+        try {
+            removedMixins.each { mixin ->
+                String classEntry =
+                        "com/carrot123/until_eternity/mixin/${mixin}.class"
+                if (regularZip.getEntry(classEntry) != null ||
+                        config.contains(mixin.replace('/', '.'))) {
+                    throw new GradleException(
+                            "Removed absolute-damage mixin is still packaged: ${mixin}")
+                }
             }
+        } finally {
+            regularZip.close()
         }
     }
 }

@@ -88,6 +88,7 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.DIVINE_SOUL_LAMP.get());
                 output.accept(ModItems.DYING_FURY.get());
                 output.accept(ModItems.HORROR_HUNT.get());
+                output.accept(ModItems.RANDOM_LOOT_GENERATOR.get());
                 output.accept(ModItems.EMPOWERED_RING.get());
                 output.accept(ModItems.ADVANCED_EMPOWERED_RING.get());
                 output.accept(ModItems.AETHERLIGHT_RING.get());
@@ -101,6 +102,13 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.RING_OF_WARPED_COOLING.get());
                 output.accept(ModItems.VOID_RING.get());
                 output.accept(ModItems.ROCK.get());
+                output.accept(ModItems.MINER_LOG.get());
+                output.accept(ModItems.DAMP_DIARY.get());
+                output.accept(ModItems.TORN_PAPER_1.get());
+                output.accept(ModItems.TORN_PAPER_2.get());
+                output.accept(ModItems.TORN_PAPER_3.get());
+                output.accept(ModItems.TORN_PAPER_4.get());
+                output.accept(ModItems.TORN_PAPER_5.get());
                 output.accept(PotionUtils.setPotion(
                     new ItemStack(Items.POTION),
                     ModPotions.MANA_ERUPTION_LONG.get()));

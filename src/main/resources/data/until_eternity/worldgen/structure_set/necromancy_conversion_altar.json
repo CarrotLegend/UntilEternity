@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "until_eternity:necromancy_conversion_altar",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 18,
+    "separation": 7,
+    "salt": 186492757,
+    "spread_type": "linear"
+  }
+}

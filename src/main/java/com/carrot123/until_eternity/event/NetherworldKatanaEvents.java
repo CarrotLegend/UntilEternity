@@ -32,20 +32,12 @@ public final class NetherworldKatanaEvents {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingDamage(LivingDamageEvent event) {
         LivingEntity target = event.getEntity();
-        float amount = event.getAmount();
         if (target.level().isClientSide
-                || !Float.isFinite(amount)
-                || amount <= 0.0F
                 || !(event.getSource().getEntity() instanceof Player player)
                 || event.getSource().getDirectEntity() != player
                 || target == player
                 || !isNetherworldKatana(player.getMainHandItem())) {
             return;
-        }
-
-        boolean wasScarred = target.hasEffect(ModMobEffects.IMMORTAL_SCAR.get());
-        if (wasScarred) {
-            event.setAmount(ImmortalScarCombatLogic.doubleDamage(amount));
         }
 
         if (ImmortalScarCombatLogic.shouldApply(

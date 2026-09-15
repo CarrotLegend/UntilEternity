@@ -1,0 +1,15 @@
+{
+  "name": "until_eternity:necromancy_conversion_altar/start_pool",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "until_eternity:altar_of_conversion",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

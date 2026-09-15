@@ -1,0 +1,90 @@
+package com.carrot123.until_eternity.combat;
+
+import com.carrot123.until_eternity.compat.ScopedValueStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.function.Supplier;
+
+/** Player.attack identity used by the katana's existing RevelationFix event path. */
+public final class NetherworldKatanaAttackContext {
+    public static final ResourceLocation WEAPON_ID =
+            new ResourceLocation("eeeabsmobs", "netherworld_katana");
+    private static final ScopedValueStack<Attack> ACTIVE = new ScopedValueStack<>();
+
+    private NetherworldKatanaAttackContext() {
+    }
+
+    public static boolean withAttack(Player player, Entity target, DamageSource source,
+                                     float originalDamage, Supplier<Boolean> action) {
+        LivingEntity victim = resolveVictim(target);
+        ResourceLocation weaponId = ForgeRegistries.ITEMS.getKey(
+                player.getMainHandItem().getItem());
+        boolean eligible = !player.level().isClientSide
+                && victim != null
+                && victim.isAlive()
+                && !victim.isRemoved()
+                && !victim.isSpectator()
+                && WEAPON_ID.equals(weaponId)
+                && source.is(DamageTypes.PLAYER_ATTACK)
+                && source.getEntity() == player
+                && source.getDirectEntity() == player;
+        return ACTIVE.withValue(
+                new Attack(player, victim, source, originalDamage, eligible), action);
+    }
+
+    public static boolean matches(LivingEntity victim, DamageSource source) {
+        Attack attack = ACTIVE.current(null);
+        return attack != null
+                && attack.eligible
+                && attack.victim == victim
+                && attack.source == source
+                && source.getEntity() == attack.player
+                && source.getDirectEntity() == attack.player;
+    }
+
+    public static boolean claimSplit(LivingEntity victim, DamageSource source) {
+        Attack attack = ACTIVE.current(null);
+        if (!matches(victim, source) || attack.splitClaimed) {
+            return false;
+        }
+        attack.splitClaimed = true;
+        return true;
+    }
+
+    private static LivingEntity resolveVictim(Entity target) {
+        if (target instanceof LivingEntity livingEntity) {
+            return livingEntity;
+        }
+        if (target instanceof PartEntity<?> part
+                && part.getParent() instanceof LivingEntity livingParent) {
+            return livingParent;
+        }
+        return null;
+    }
+
+    private static final class Attack {
+        private final Player player;
+        private final LivingEntity victim;
+        private final DamageSource source;
+        @SuppressWarnings("unused")
+        private final float originalDamage;
+        private final boolean eligible;
+        private boolean splitClaimed;
+
+        private Attack(Player player, LivingEntity victim, DamageSource source,
+                       float originalDamage, boolean eligible) {
+            this.player = player;
+            this.victim = victim;
+            this.source = source;
+            this.originalDamage = originalDamage;
+            this.eligible = eligible;
+        }
+    }
+}

@@ -38,6 +38,9 @@ public final class NetherworldKatanaTooltipEvents {
             tooltip.add(formattedCriticalChance);
         }
         tooltip.add(Component.translatable(
+                "tooltip.until_eternity.netherworld_katana.unavoidable")
+                .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable(
                 "tooltip.until_eternity.netherworld_katana.immortal_scar")
                 .withStyle(ChatFormatting.GRAY));
     }

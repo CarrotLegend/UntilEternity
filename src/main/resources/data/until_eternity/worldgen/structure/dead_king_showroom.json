@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#until_eternity:has_structure/dead_king_showroom",
+  "step": "underground_decoration",
+  "terrain_adaptation": "beard_box",
+  "spawn_overrides": {},
+  "start_pool": "until_eternity:dead_king_showroom/start_pool",
+  "size": 1,
+  "start_height": {
+    "absolute": -27
+  },
+  "max_distance_from_center": 80,
+  "use_expansion_hack": false
+}

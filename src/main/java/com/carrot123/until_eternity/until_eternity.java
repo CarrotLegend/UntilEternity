@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import com.carrot123.until_eternity.block.ModBlocks;
 import com.carrot123.until_eternity.block.entity.ModBlockEntities;
 import com.carrot123.until_eternity.enchantment.ModEnchantments;
+import com.carrot123.until_eternity.compat.revelationfix.RevelationFixAbsoluteDamageBootstrap;
 import com.carrot123.until_eternity.event.CurioEventHandler;
 import com.carrot123.until_eternity.event.EnchantmentEventHandler;
 import com.carrot123.until_eternity.item.ModCreativeModeTabs;
@@ -76,6 +77,7 @@ public class until_eternity
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new CurioEventHandler());
         MinecraftForge.EVENT_BUS.register(new EnchantmentEventHandler());
+        RevelationFixAbsoluteDamageBootstrap.registerIfLoaded();
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);

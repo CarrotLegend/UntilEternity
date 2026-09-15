@@ -11,8 +11,8 @@ import net.minecraftforge.fml.loading.FMLLoader;
 
 public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
 
-    private static final String MOWZIES_MOBS_COMPAT =
-            "com.carrot123.until_eternity.mixin.compat.mowziesmobs.";
+    private static final String AETHER_COMPAT =
+            "com.carrot123.until_eternity.mixin.compat.aether.";
 
     private static final String SUMMONING_RITUALS_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.summoningrituals.";
@@ -34,8 +34,8 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
             String targetClassName,
             String mixinClassName
     ) {
-        if (mixinClassName.startsWith(MOWZIES_MOBS_COMPAT)) {
-            return isModLoaded("mowziesmobs");
+        if (mixinClassName.startsWith(AETHER_COMPAT)) {
+            return isModLoaded("aether");
         }
 
         if (mixinClassName.startsWith(SUMMONING_RITUALS_COMPAT)) {
