@@ -127,6 +127,13 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    maven {
+        name = 'Bawnorton Releases'
+        url = 'https://maven.bawnorton.com/releases'
+        content {
+            includeGroup 'com.github.bawnorton.mixinsquared'
+        }
+    }
     maven { url 'https://maven.aliyun.com/repository/public' }
     maven { url 'https://maven.minecraftforge.net/' }
     maven { url 'https://maven.puffish.net' }
@@ -236,6 +243,12 @@ dependencies {
     implementation(jarJar(
             "io.github.llamalad7:mixinextras-forge:0.5.0")) {
         jarJar.ranged(it, "[0.5.0,)")
+    }
+    compileOnly(annotationProcessor(
+            "com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.7-beta.3"))
+    implementation(jarJar(
+            "com.github.bawnorton.mixinsquared:mixinsquared-forge:0.3.7-beta.3")) {
+        jarJar.ranged(it, "[0.3.7-beta.3,)")
     }
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
@@ -380,6 +393,7 @@ tasks.register('verifyProductionKnifeArtifacts') {
                 'compat/goety/EnderKeeperTrueChefsKnifeMixin',
                 'compat/goety/ApostleTrueChefsKnifeMixin',
                 'compat/eeeabsmobs/NamelessGuardianTrueChefsKnifeMixin',
+                'compat/revelationfix/ApostleRevelationFixStateTrueChefsKnifeMixin',
                 'compat/revelationfix/ApostleRevelationFixTrueChefsKnifeMixin',
                 'compat/revelationfix/SafeClassTrueChefsKnifeMixin',
                 'compat/revelationfix/AttackDamageChangeHandlerTrueChefsKnifeMixin'
@@ -404,7 +418,13 @@ tasks.register('verifyProductionKnifeArtifacts') {
                 throw new GradleException("Production jars disagree for ${entry}")
             }
         }
-        readEntry(bundledJar, 'META-INF/jarjar/metadata.json')
+        String jarJarMetadata = new String(readEntry(bundledJar,
+                'META-INF/jarjar/metadata.json'), java.nio.charset.StandardCharsets.UTF_8)
+        if (!jarJarMetadata.contains('mixinsquared-forge') ||
+                !jarJarMetadata.contains('0.3.7-beta.3')) {
+            throw new GradleException(
+                    'Bundled jar lacks the locked MixinSquared dependency')
+        }
 
         String config = new String(readEntry(regularJar,
                 'until_eternity.mixins.json'), java.nio.charset.StandardCharsets.UTF_8)

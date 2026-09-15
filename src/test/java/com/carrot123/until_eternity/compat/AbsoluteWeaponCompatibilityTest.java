@@ -75,6 +75,7 @@ class AbsoluteWeaponCompatibilityTest {
                 "compat.goety.EnderKeeperTrueChefsKnifeMixin",
                 "compat.goety.ApostleTrueChefsKnifeMixin",
                 "compat.eeeabsmobs.NamelessGuardianTrueChefsKnifeMixin",
+                "compat.revelationfix.ApostleRevelationFixStateTrueChefsKnifeMixin",
                 "compat.revelationfix.ApostleRevelationFixTrueChefsKnifeMixin",
                 "compat.revelationfix.SafeClassTrueChefsKnifeMixin",
                 "compat.revelationfix.AttackDamageChangeHandlerTrueChefsKnifeMixin")));
@@ -85,17 +86,37 @@ class AbsoluteWeaponCompatibilityTest {
                 "com.Polarice3.Goety.common.entities.boss.Apostle");
         assertMixinTarget("mixin/compat/eeeabsmobs/NamelessGuardianTrueChefsKnifeMixin",
                 "com.eeeab.eeeabsmobs.sever.entity.guling.EntityNamelessGuardian");
-        AnnotationNode mixin = annotation(own(
-                "mixin/compat/revelationfix/ApostleRevelationFixTrueChefsKnifeMixin"));
-        assertTrue(mixin.values.toString().contains("-2400"));
-
+        ClassNode goetyRevelation = own(
+                "mixin/compat/revelationfix/ApostleRevelationFixStateTrueChefsKnifeMixin");
         ClassNode rfApostle = own(
                 "mixin/compat/revelationfix/ApostleRevelationFixTrueChefsKnifeMixin");
+        assertTrue(annotation(goetyRevelation).values.toString().contains("1500"));
+        assertTrue(annotation(rfApostle).values.toString().contains("1500"));
+
+        assertEquals(4, annotationTargets(rfApostle,
+                "com.mega.revelationfix.mixin.goety.ApollyonMixin"));
+        assertEquals(4, annotationTargets(rfApostle, "m_21153_(F)V"));
+        assertEquals(4, annotationTargets(rfApostle, "@MixinSquared:Handler"));
         assertEquals(1, annotationTargets(rfApostle,
                 "Apostle;revelaionfix$getHitCooldown()I"));
         assertEquals(1, annotationTargets(rfApostle,
+                "ApollyonAbilityHelper;allTitlesApostle_1_20_1$getHitCooldown()I"));
+        assertEquals(1, annotationTargets(rfApostle,
                 "ForgeConfigSpec$ConfigValue;get()Ljava/lang/Object;"));
         assertEquals(1, annotationTargets(rfApostle, "Math;min(FF)F"));
+
+        assertEquals(2, annotationTargets(goetyRevelation,
+                "com.mega.revelationfix.mixin.gr.ApostleMixin"));
+        assertEquals(1, annotationTargets(goetyRevelation,
+                "allTitlesApostle_1_20_1$getHitCooldown()I"));
+        assertEquals(1, annotationTargets(goetyRevelation,
+                "allTitleApostle$getTitleNumber()I"));
+        assertEquals(2, annotationTargets(goetyRevelation,
+                "@MixinSquared:Handler"));
+
+        ClassNode plugin = own("compat/mixin/UntilEternityMixinPlugin");
+        assertEquals(1, allCalls(plugin, "init"));
+        assertEquals(1, allCalls(plugin, "reOrderExtensions"));
     }
 
     @Test
@@ -181,6 +202,12 @@ class AbsoluteWeaponCompatibilityTest {
                 "net/minecraftforge/common/ForgeConfigSpec$ConfigValue", "get",
                 "()Ljava/lang/Object;"));
         assertEquals(2, calls(setHealth, "java/lang/Math", "min", "(FF)F"));
+
+        ClassNode replacementState = nestedClass(nested,
+                "com/mega/revelationfix/mixin/gr/ApostleMixin.class");
+        assertNotNull(method(replacementState,
+                "allTitlesApostle_1_20_1$getHitCooldown"));
+        assertNotNull(method(replacementState, "allTitleApostle$getTitleNumber"));
     }
 
     private static void verifyContext(ClassNode node, boolean marker) {

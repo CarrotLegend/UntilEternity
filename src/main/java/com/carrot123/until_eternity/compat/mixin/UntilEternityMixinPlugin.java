@@ -3,6 +3,7 @@ package com.carrot123.until_eternity.compat.mixin;
 import java.util.List;
 import java.util.Set;
 
+import com.bawnorton.mixinsquared.MixinSquaredBootstrap;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -22,6 +23,7 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
+        MixinSquaredBootstrap.init();
     }
 
     @Override
@@ -63,6 +65,7 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public List<String> getMixins() {
+        MixinSquaredBootstrap.reOrderExtensions();
         return null;
     }
 

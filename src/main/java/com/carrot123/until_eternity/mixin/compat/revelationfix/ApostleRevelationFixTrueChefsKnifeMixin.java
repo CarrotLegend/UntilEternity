@@ -1,8 +1,8 @@
 package com.carrot123.until_eternity.mixin.compat.revelationfix;
 
 import com.Polarice3.Goety.common.entities.boss.Apostle;
+import com.bawnorton.mixinsquared.TargetHandler;
 import com.carrot123.until_eternity.combat.TrueChefsKnifeAbsoluteDamageContext;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,27 +12,16 @@ import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import z1gned.goetyrevelation.config.ModConfig;
 
-/** Runs after RevelationFix (-2324) and narrows its Apollyon gates to this attack. */
+/** Targets RevelationFix's merged Apostle#setHealth implementation directly. */
 @Pseudo
 @Mixin(targets = "com.Polarice3.Goety.common.entities.boss.Apostle",
-        priority = -2400, remap = false)
+        priority = 1500, remap = false)
 public abstract class ApostleRevelationFixTrueChefsKnifeMixin {
-    @ModifyReturnValue(
-            method = "allTitlesApostle_1_20_1$getHitCooldown()I",
-            at = @At("RETURN"), require = 1)
-    private int untilEternity$ignoreGoetyHitCooldown(int original) {
-        return untilEternity$isKnifeActive() ? 0 : original;
-    }
-
-    @ModifyReturnValue(
-            method = "allTitleApostle$getTitleNumber()I",
-            at = @At("RETURN"), require = 1)
-    private int untilEternity$hideTitleTwelve(int original) {
-        return untilEternity$isKnifeActive() ? 0 : original;
-    }
-
+    @TargetHandler(
+            mixin = "com.mega.revelationfix.mixin.goety.ApollyonMixin",
+            name = "m_21153_(F)V")
     @WrapOperation(
-            method = {"setHealth(F)V", "m_21153_(F)V"},
+            method = "@MixinSquared:Handler",
             at = @At(value = "INVOKE",
                     target = "Lcom/Polarice3/Goety/common/entities/boss/Apostle;revelaionfix$getHitCooldown()I",
                     remap = false),
@@ -42,8 +31,25 @@ public abstract class ApostleRevelationFixTrueChefsKnifeMixin {
         return untilEternity$isKnifeActive() ? 0 : original.call(instance);
     }
 
+    @TargetHandler(
+            mixin = "com.mega.revelationfix.mixin.goety.ApollyonMixin",
+            name = "m_21153_(F)V")
     @WrapOperation(
-            method = {"setHealth(F)V", "m_21153_(F)V"},
+            method = "@MixinSquared:Handler",
+            at = @At(value = "INVOKE",
+                    target = "Lz1gned/goetyrevelation/util/ApollyonAbilityHelper;allTitlesApostle_1_20_1$getHitCooldown()I",
+                    remap = false),
+            remap = false, require = 1, expect = 1, allow = 1)
+    private int untilEternity$ignoreGoetyRevelationHitCooldown(
+            Object instance, Operation<Integer> original) {
+        return untilEternity$isKnifeActive() ? 0 : original.call(instance);
+    }
+
+    @TargetHandler(
+            mixin = "com.mega.revelationfix.mixin.goety.ApollyonMixin",
+            name = "m_21153_(F)V")
+    @WrapOperation(
+            method = "@MixinSquared:Handler",
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraftforge/common/ForgeConfigSpec$ConfigValue;get()Ljava/lang/Object;",
                     remap = false),
@@ -56,8 +62,11 @@ public abstract class ApostleRevelationFixTrueChefsKnifeMixin {
                 : result;
     }
 
+    @TargetHandler(
+            mixin = "com.mega.revelationfix.mixin.goety.ApollyonMixin",
+            name = "m_21153_(F)V")
     @WrapOperation(
-            method = {"setHealth(F)V", "m_21153_(F)V"},
+            method = "@MixinSquared:Handler",
             at = @At(value = "INVOKE", target = "Ljava/lang/Math;min(FF)F"),
             remap = false, require = 2, expect = 2, allow = 2)
     private float untilEternity$removeFinalFloatCaps(
