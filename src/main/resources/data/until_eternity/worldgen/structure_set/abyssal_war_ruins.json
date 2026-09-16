@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "until_eternity:abyssal_war_ruins",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 56,
+    "separation": 24,
+    "salt": 214673917,
+    "spread_type": "linear"
+  }
+}

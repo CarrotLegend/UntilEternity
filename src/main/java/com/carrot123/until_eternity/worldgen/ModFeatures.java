@@ -2,7 +2,9 @@ package com.carrot123.until_eternity.worldgen;
 
 import com.carrot123.until_eternity.until_eternity;
 import com.carrot123.until_eternity.worldgen.feature.ChaosTreeFeature;
+import com.carrot123.until_eternity.worldgen.feature.ConfigurableStructureTemplateFeature;
 import com.carrot123.until_eternity.worldgen.feature.StructureTemplateFeature;
+import com.carrot123.until_eternity.worldgen.feature.StructureTemplateFeatureConfiguration;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -19,6 +21,12 @@ public class ModFeatures {
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> CHAOS_TREE =
             FEATURES.register("chaos_tree",
                     () -> new ChaosTreeFeature(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<StructureTemplateFeatureConfiguration>>
+            STRUCTURE_TEMPLATE = FEATURES.register(
+                    "structure_template",
+                    ConfigurableStructureTemplateFeature::new
+            );
     
     public static final RegistryObject<Feature<?>> STATUE =
             FEATURES.register(

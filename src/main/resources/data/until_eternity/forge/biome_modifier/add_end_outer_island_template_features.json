@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#until_eternity:end_outer_islands",
+  "features": [
+    "until_eternity:void_lamp",
+    "until_eternity:void_extraction_tower"
+  ],
+  "step": "surface_structures"
+}

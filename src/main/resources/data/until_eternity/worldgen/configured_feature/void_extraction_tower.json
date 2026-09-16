@@ -1,0 +1,9 @@
+{
+  "type": "until_eternity:structure_template",
+  "config": {
+    "template": "until_eternity:void_extraction_tower",
+    "rotation": "random",
+    "mirror": "none",
+    "offset": [0, 0, 0]
+  }
+}

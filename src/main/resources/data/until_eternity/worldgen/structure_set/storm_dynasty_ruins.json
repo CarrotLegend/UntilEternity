@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "until_eternity:storm_dynasty_ruins",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 48,
+    "separation": 20,
+    "salt": 214673901,
+    "spread_type": "linear"
+  }
+}
