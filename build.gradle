@@ -407,7 +407,7 @@ tasks.register('verifyProductionKnifeArtifacts') {
                 'com/carrot123/until_eternity/client/model/NetherworldKatanaReplacementModel.class',
                 'com/carrot123/until_eternity/client/render/NetherworldKatanaReplacementRenderer.class',
                 'com/carrot123/until_eternity/client/render/NetherworldKatanaClientEvents.class',
-                'com/carrot123/until_eternity/mixin/client/eeeabsmobs/EMItemStackRenderMixin.class',
+                'com/carrot123/until_eternity/mixin/client/eeeabsmobs/ItemNetherworldKatanaMixin.class',
                 'assets/until_eternity/textures/entity/netherworld_katana_remaster.png'
         ]
 
@@ -445,10 +445,10 @@ tasks.register('verifyProductionKnifeArtifacts') {
         if (!refmap.contains('com/carrot123/until_eternity/mixin/AbsoluteWeaponPlayerAttackMixin')) {
             throw new GradleException('Refmap lacks the Player.attack hurt invocation mapping')
         }
-        if (!refmap.contains(
-                'com/carrot123/until_eternity/mixin/client/eeeabsmobs/EMItemStackRenderMixin')) {
+        if (!config.contains(
+                'client.eeeabsmobs.ItemNetherworldKatanaMixin')) {
             throw new GradleException(
-                    'Refmap lacks the EEEAB item renderer method mapping')
+                    'Mixin config lacks the EEEAB item renderer replacement')
         }
 
         def removedMixins = [

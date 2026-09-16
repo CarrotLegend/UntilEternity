@@ -3,6 +3,7 @@ package com.carrot123.until_eternity.registry;
 import com.carrot123.until_eternity.effect.ManaEruptionEffect;
 import com.carrot123.until_eternity.effect.ImmortalScarEffect;
 import com.carrot123.until_eternity.effect.CookingFrenzyEffect;
+import com.carrot123.until_eternity.effect.VoidCorrosionEffect;
 import com.carrot123.until_eternity.until_eternity;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -22,6 +23,9 @@ public final class ModMobEffects {
 
     public static final RegistryObject<MobEffect> COOKING_FRENZY =
             MOB_EFFECTS.register("cooking_frenzy", CookingFrenzyEffect::new);
+
+    public static final RegistryObject<MobEffect> VOID_CORROSION =
+            MOB_EFFECTS.register("void_corrosion", VoidCorrosionEffect::new);
 
     private ModMobEffects() {
     }

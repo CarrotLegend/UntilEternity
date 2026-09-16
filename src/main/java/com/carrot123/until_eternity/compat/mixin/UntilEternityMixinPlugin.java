@@ -21,6 +21,9 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
     private static final String REVELATION_FIX_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.revelationfix.";
 
+    private static final String MOWZIES_MOBS_COMPAT =
+            "com.carrot123.until_eternity.mixin.compat.mowziesmobs.";
+
     @Override
     public void onLoad(String mixinPackage) {
         MixinSquaredBootstrap.init();
@@ -47,6 +50,10 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
         if (mixinClassName.startsWith(REVELATION_FIX_COMPAT)) {
             return isModLoaded("goety_revelation")
                     && isModLoaded("revelationfix");
+        }
+
+        if (mixinClassName.startsWith(MOWZIES_MOBS_COMPAT)) {
+            return isModLoaded("mowziesmobs");
         }
 
         return true;

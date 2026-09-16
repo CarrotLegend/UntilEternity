@@ -26,6 +26,7 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.BLOOD_COPPER_INGOT.get());
                 output.accept(ModItems.DRAGONBREATH_INGOT.get());
                 output.accept(ModItems.ELEMENTAL_CORE.get());
+                output.accept(ModItems.TAINTED_ABYSSAL_HEART.get());
                 output.accept(ModItems.REPLICA_GEL.get());
                 output.accept(ModItems.FINALITE_INGOT.get());
                 output.accept(ModItems.FINAL_KEY.get());
@@ -41,6 +42,7 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.SATURATED_WATER_PARTICLE.get());
                 output.accept(ModItems.SATURATED_WOOD_PARTICLE.get());
                 output.accept(ModItems.ELEMENTAL_GAUNTLET.get());
+                output.accept(ModItems.VOID_GRIP.get());
                 output.accept(ModItems.REAPER_TOOTH_NECKLACE.get());
                 output.accept(ModItems.SAND_SHARK_TOOTH_NECKLACE.get());
                 output.accept(ModItems.REGENERATOR.get());

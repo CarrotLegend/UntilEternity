@@ -2,6 +2,8 @@ package com.carrot123.until_eternity.compat.revelationfix;
 
 import com.carrot123.until_eternity.combat.AbsoluteDamageMath;
 import com.carrot123.until_eternity.combat.TrueChefsKnifeAbsoluteDamageContext;
+import com.carrot123.until_eternity.effect.VoidCorrosionDamageLogic;
+import com.carrot123.until_eternity.registry.ModMobEffects;
 import com.mega.revelationfix.safe.DamageSourceInterface;
 import com.mega.revelationfix.safe.entity.LivingEventEC;
 import net.minecraft.world.damagesource.DamageSource;
@@ -47,6 +49,11 @@ public final class TrueChefsKnifeDamageHandler {
         event.setCanceled(false);
         markBypassAll(source);
         float damage = TrueChefsKnifeAbsoluteDamageContext.originalDamage(target, source);
+        if (target.hasEffect(ModMobEffects.VOID_CORROSION.get())
+                && TrueChefsKnifeAbsoluteDamageContext
+                .claimVoidCorrosionAmplification(target, source)) {
+            damage = VoidCorrosionDamageLogic.amplifyIncomingDamage(damage);
+        }
         if (Float.isFinite(damage) && damage > 0.0F
                 && TrueChefsKnifeAbsoluteDamageContext.claimSplit(target, source)) {
             AbsoluteDamageMath.Split split = AbsoluteDamageMath.split(

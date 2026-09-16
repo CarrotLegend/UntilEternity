@@ -1,8 +1,8 @@
 package com.carrot123.until_eternity.client.screen.book;
 
-import net.minecraft.resources.ResourceLocation;
-
 import java.util.List;
+
+import net.minecraft.resources.ResourceLocation;
 
 public record BookDefinition(
         String titleKey,
@@ -18,12 +18,25 @@ public record BookDefinition(
         int textColor,
         int pageColor,
         boolean showPageNumber,
+
+        boolean twoPageSpread,
+        int pageGap,
+
         List<BookPageData> pages
 ) {
     public BookDefinition {
         pages = List.copyOf(pages);
+
         if (pages.isEmpty()) {
-            throw new IllegalArgumentException("A lore book needs at least one page");
+            throw new IllegalArgumentException(
+                    "A lore book needs at least one page"
+            );
+        }
+
+        if (pageGap < 0) {
+            throw new IllegalArgumentException(
+                    "Page gap cannot be negative"
+            );
         }
     }
 }

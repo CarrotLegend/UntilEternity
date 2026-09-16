@@ -92,6 +92,28 @@ public final class TrueChefsKnifeAbsoluteDamageContext {
         return true;
     }
 
+    public static boolean claimVoidCorrosionAmplification(
+            LivingEntity victim,
+            DamageSource source
+    ) {
+        Attack attack = ACTIVE.current(null);
+        if (!matches(victim, source)
+                || attack.voidCorrosionAmplified) {
+            return false;
+        }
+        attack.voidCorrosionAmplified = true;
+        return true;
+    }
+
+    public static boolean wasVoidCorrosionAmplified(
+            LivingEntity victim,
+            DamageSource source
+    ) {
+        Attack attack = ACTIVE.current(null);
+        return matches(victim, source)
+                && attack.voidCorrosionAmplified;
+    }
+
     private static LivingEntity resolveVictim(Entity target) {
         if (target instanceof LivingEntity livingEntity) {
             return livingEntity;
@@ -110,6 +132,7 @@ public final class TrueChefsKnifeAbsoluteDamageContext {
         private final float originalDamage;
         private final boolean eligible;
         private boolean splitClaimed;
+        private boolean voidCorrosionAmplified;
 
         private Attack(Player player, LivingEntity victim, DamageSource source,
                        float originalDamage, boolean eligible) {

@@ -15,6 +15,7 @@ import com.carrot123.until_eternity.item.curio.LifeCapItem;
 import com.carrot123.until_eternity.item.curio.MithrilGlovesItem;
 import com.carrot123.until_eternity.item.curio.PewterGlovesItem;
 import com.carrot123.until_eternity.item.curio.VoidRingItem;
+import com.carrot123.until_eternity.item.curio.VoidGripItem;
 import com.carrot123.until_eternity.item.curio.WarpedRingItem;
 import com.carrot123.until_eternity.item.curio.charm.DivineSoulLampItem;
 import com.carrot123.until_eternity.item.curio.ProofOfSpurnerItem;
@@ -48,6 +49,12 @@ public class ModItems {
     public static final RegistryObject<Item> DRAGONBREATH_INGOT = ITEMS.register("dragonbreath_ingot", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BLOOD_COPPER_INGOT = ITEMS.register("blood_copper_ingot", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> ELEMENTAL_CORE = ITEMS.register("elemental_core", () -> new Item(new Item.Properties().rarity(Rarity.RARE).fireResistant()));
+    public static final RegistryObject<Item> TAINTED_ABYSSAL_HEART = ITEMS.register(
+            "tainted_abyssal_heart",
+            () -> new Item(new Item.Properties()
+                    .rarity(Rarity.EPIC)
+                    .stacksTo(1)
+                    .fireResistant()));
     public static final RegistryObject<ReplicaGelItem> REPLICA_GEL =
             ITEMS.register("replica_gel", ReplicaGelItem::new);
     public static final RegistryObject<Item> SATURATED_GOLD_PARTICLE = ITEMS.register("saturated_gold_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
@@ -75,6 +82,12 @@ public class ModItems {
             () -> new AttributeCurioItem(
                     new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(),
                     CurioAttributeProfile.ELEMENTAL_GAUNTLET));
+    public static final RegistryObject<Item> VOID_GRIP = ITEMS.register(
+            "void_grip",
+            () -> new VoidGripItem(new Item.Properties()
+                    .rarity(Rarity.EPIC)
+                    .stacksTo(1)
+                    .fireResistant()));
     public static final RegistryObject<Item> REAPER_TOOTH_NECKLACE = ITEMS.register("reaper_tooth_necklace",
             () -> new AttributeCurioItem(
                     new Item.Properties().stacksTo(1).rarity(Rarity.EPIC),

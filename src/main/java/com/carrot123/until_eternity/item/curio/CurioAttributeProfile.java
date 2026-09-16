@@ -21,6 +21,16 @@ public enum CurioAttributeProfile {
             spec(() -> ForgeMod.ENTITY_REACH.get(),
                     "entity_reach", 0.1D, AttributeModifier.Operation.ADDITION)
     )),
+    VOID_GRIP("void_grip", List.of(
+            spec(() -> PuffishAttributesCompat.resolve(PuffishAttributesCompat.MELEE_DAMAGE),
+                    "melee_damage", 0.45D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+            spec(() -> Attributes.ATTACK_SPEED,
+                    "attack_speed", 0.25D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+            spec(() -> PuffishAttributesCompat.resolve(PuffishAttributesCompat.KNOCKBACK),
+                    "knockback", 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+            spec(() -> ForgeMod.ENTITY_REACH.get(),
+                    "entity_reach", 2.0D, AttributeModifier.Operation.ADDITION)
+    )),
     REAPER_TOOTH_NECKLACE("reaper_tooth_necklace", List.of(
             spec(() -> PuffishAttributesCompat.resolve(PuffishAttributesCompat.MELEE_DAMAGE),
                     "melee_damage", 0.20D, AttributeModifier.Operation.MULTIPLY_TOTAL),

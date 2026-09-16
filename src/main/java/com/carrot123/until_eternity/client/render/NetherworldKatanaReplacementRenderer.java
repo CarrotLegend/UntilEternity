@@ -4,6 +4,7 @@ import com.carrot123.until_eternity.client.model.NetherworldKatanaReplacementMod
 import com.carrot123.until_eternity.until_eternity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -48,6 +49,7 @@ public final class NetherworldKatanaReplacementRenderer
         poseStack.pushPose();
 
         try {
+
             poseStack.translate(0.5F, 0.5F, 0.5F);
             poseStack.scale(0.5F, -0.5F, -0.5F);
 
@@ -63,6 +65,14 @@ public final class NetherworldKatanaReplacementRenderer
                             0.0F,
                             -1.5708F
                     )
+            );
+
+            poseStack.mulPose(
+                    Axis.ZP.rotationDegrees(180.0F)
+            );
+
+            poseStack.mulPose(
+                    Axis.ZP.rotationDegrees(90.0F)
             );
 
             VertexConsumer consumer =

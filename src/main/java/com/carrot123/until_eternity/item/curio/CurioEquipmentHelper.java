@@ -35,6 +35,20 @@ public final class CurioEquipmentHelper {
                 .orElse(0);
     }
 
+    public static boolean isEquippedInSlot(
+            LivingEntity entity,
+            Item targetItem,
+            String slotIdentifier
+    ) {
+        if (entity == null || targetItem == null || slotIdentifier == null) {
+            return false;
+        }
+        return CuriosApi.getCuriosInventory(entity)
+                .map(handler -> handler.getCurios().get(slotIdentifier))
+                .map(handler -> countIn(handler.getStacks(), targetItem, null) > 0)
+                .orElse(false);
+    }
+
     private static int countIn(
             IDynamicStackHandler stacks,
             Item targetItem,
