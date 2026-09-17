@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BBB",
+    "BDB",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bedrock"
+    },
+    "D": {
+      "item": "goety_revelation:dimensional_will"
+    }
+  },
+  "result": {
+    "item": "until_eternity:true_bedrock",
+    "count": 1
+  }
+}

@@ -259,14 +259,21 @@ public class ModItems {
                 UpgradeOrbTypeRegistry.UPGRADE_ORB_REGISTRY_KEY,
                 new ResourceLocation("until_eternity", "spell_power")
         );
-
     public static final RegistryObject<Item> SPELL_POWER_UPGRADE_ORB = ITEMS.register(
         "spell_power_upgrade_orb",
         () -> new UpgradeOrbItem(
                 new Item.Properties(),
                 SPELL_POWER_ORB_TYPE
-        )
-        );
+        ));
+        public static final RegistryObject<Item> TRUE_BEDROCK =
+            ITEMS.register(
+                    "true_bedrock",
+                    () -> new TrueBedrockItem(
+                            new Item.Properties()
+                                    .stacksTo(1)
+                                    .rarity(Rarity.EPIC)
+                                    .fireResistant()
+        ));
     private static ResourceLocation goetyRevelationAttribute(String path) {
         return new ResourceLocation("goety_revelation", path);
     }

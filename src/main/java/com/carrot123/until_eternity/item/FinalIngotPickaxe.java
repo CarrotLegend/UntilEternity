@@ -13,27 +13,38 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @SuppressWarnings("null")
 public class FinalIngotPickaxe extends PickaxeItem {
     private static final int AREA_BREAK_COOLDOWN = 10;
     private static final float FINAL_PICKAXE_SPEED_MULTIPLIER = 12.0F;
+
+    private static final ResourceLocation EROSION_DEEPSLATE_BRICKS_ID =
+            new ResourceLocation(
+                    "eeeabsmobs",
+                    "erosion_deepslate_bricks"
+            );
 
     public FinalIngotPickaxe(
             Tier tier,
@@ -186,6 +197,7 @@ public class FinalIngotPickaxe extends PickaxeItem {
 
             return destroyed;
         }
+
         boolean destroyedAny = false;
 
         if (breakSingleBlock(
@@ -268,12 +280,14 @@ public class FinalIngotPickaxe extends PickaxeItem {
                 pos,
                 serverPlayer
         );
+
         if (destroyed) {
             player.getCooldowns().addCooldown(
                     this,
                     AREA_BREAK_COOLDOWN
             );
         }
+
         return destroyed;
     }
 
@@ -321,6 +335,9 @@ public class FinalIngotPickaxe extends PickaxeItem {
                         originalState
                 );
 
+        Item guaranteedSelfDrop =
+                getGuaranteedSelfDrop(originalState);
+
         Set<UUID> previousItemEntities;
 
         if (isIndestructibleAltar) {
@@ -354,10 +371,55 @@ public class FinalIngotPickaxe extends PickaxeItem {
                             pos,
                             previousItemEntities
                     );
+        } else if (guaranteedSelfDrop != null) {
+            /*
+             * Bedrock and EEEAB's Erosion Deepslate Bricks normally do not
+             * produce a usable block drop when destroyed. The Finalite
+             * Pickaxe explicitly guarantees one corresponding block item.
+             */
+            Block.popResource(
+                    serverLevel,
+                    pos,
+                    new ItemStack(guaranteedSelfDrop)
+            );
         }
 
         return true;
     }
+
+    @Nullable
+    private static Item getGuaranteedSelfDrop(
+            BlockState state
+    ) {
+        if (state.is(Blocks.BEDROCK)) {
+            return Items.BEDROCK;
+        }
+
+        ResourceLocation blockId =
+                ForgeRegistries.BLOCKS.getKey(
+                        state.getBlock()
+                );
+
+        if (!EROSION_DEEPSLATE_BRICKS_ID.equals(blockId)) {
+            return null;
+        }
+
+        if (!ForgeRegistries.ITEMS.containsKey(
+                EROSION_DEEPSLATE_BRICKS_ID
+        )) {
+            return null;
+        }
+
+        Item item =
+                ForgeRegistries.ITEMS.getValue(
+                        EROSION_DEEPSLATE_BRICKS_ID
+                );
+
+        return item == null || item == Items.AIR
+                ? null
+                : item;
+    }
+
     @Override
     public float getDestroySpeed(
             @Nonnull ItemStack stack,
@@ -372,9 +434,11 @@ public class FinalIngotPickaxe extends PickaxeItem {
         float hardness =
                 state.getBlock()
                         .defaultDestroyTime();
+
         if (hardness < 0.0F) {
             return vanillaSpeed;
         }
+
         if (hardness >= 1.0F) {
             return Math.max(
                     vanillaSpeed,
@@ -382,11 +446,13 @@ public class FinalIngotPickaxe extends PickaxeItem {
                             * hardness
             );
         }
+
         return Math.max(
                 vanillaSpeed,
                 FINAL_PICKAXE_SPEED_MULTIPLIER
         );
     }
+
     @Override
     public boolean canBeDepleted() {
         return false;
@@ -417,7 +483,25 @@ public class FinalIngotPickaxe extends PickaxeItem {
 
         tooltip.add(
                 Component.translatable(
-                                "item.until_eternity.final_ingot_pickaxe.desc"
+                                "item.until_eternity.final_ingot_pickaxe.desc1"
+                        )
+                        .withStyle(
+                                ChatFormatting.GOLD
+                        )
+        );
+
+        tooltip.add(
+                Component.translatable(
+                                "item.until_eternity.final_ingot_pickaxe.desc2"
+                        )
+                        .withStyle(
+                                ChatFormatting.GOLD
+                        )
+        );
+
+        tooltip.add(
+                Component.translatable(
+                                "item.until_eternity.final_ingot_pickaxe.desc3"
                         )
                         .withStyle(
                                 ChatFormatting.GOLD

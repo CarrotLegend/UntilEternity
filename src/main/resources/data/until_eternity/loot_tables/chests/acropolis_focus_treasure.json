@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "goety_cataclysm:ashen_breath_focus",
+          "name": "goety:water_jet_focus",
           "weight": 80
         },
         {

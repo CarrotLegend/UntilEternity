@@ -24,6 +24,12 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
     private static final String MOWZIES_MOBS_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.mowziesmobs.";
 
+    private static final String ENIGMATIC_LEGACY_COMPAT =
+            "com.carrot123.until_eternity.mixin.compat.enigmaticlegacy.";
+
+    private static final String ENIGMATIC_DELICACY_COMPAT =
+            "com.carrot123.until_eternity.mixin.compat.enigmaticdelicacy.";
+
     @Override
     public void onLoad(String mixinPackage) {
         MixinSquaredBootstrap.init();
@@ -54,6 +60,15 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
 
         if (mixinClassName.startsWith(MOWZIES_MOBS_COMPAT)) {
             return isModLoaded("mowziesmobs");
+        }
+
+        if (mixinClassName.startsWith(ENIGMATIC_LEGACY_COMPAT)) {
+            return isModLoaded("enigmaticlegacy");
+        }
+
+        if (mixinClassName.startsWith(ENIGMATIC_DELICACY_COMPAT)) {
+            return isModLoaded("enigmaticlegacy")
+                    && isModLoaded("enigmaticdelicacy");
         }
 
         return true;

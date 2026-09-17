@@ -60,7 +60,9 @@
   "item.until_eternity.snow_spear": "Frostbitten",
   "item.until_eternity.snow_spear.desc": "Deals %s FrozenDamage",
   "item.until_eternity.final_ingot_pickaxe": "Finalite Pickaxe",
-  "item.until_eternity.final_ingot_pickaxe.desc": "Shift + Right-click to break bedrock",
+  "item.until_eternity.final_ingot_pickaxe.desc1": "Sneak-right-click to break blocks in a 3x3 area",
+  "item.until_eternity.final_ingot_pickaxe.desc2": "Can break normally unbreakable blocks",
+  "item.until_eternity.final_ingot_pickaxe.desc3": "Bedrock, Erosion Deepslate Bricks, and Indestructible Altars drop items when broken",
   "item.until_eternity.pumpkin_nugget": "Pumpkin Nugget",
   "item.until_eternity.pumpkin_ingot": "Pumpkin Ingot",
   "item.until_eternity.imfull": "I'm full!",
@@ -273,5 +275,11 @@
 
   "structure.until_eternity.dead_king_showroom": "Dead King's Showroom",
   "structure.until_eternity.end_mining_center": "End Mineral Mining Center",
-  "structure.until_eternity.necromancy_conversion_altar": "Necromancy Conversion Altar"
+  "structure.until_eternity.necromancy_conversion_altar": "Necromancy Conversion Altar",
+  "structure.until_eternity.abyssal_war_ruins": "Abyssal War Ruins",
+  "structure.until_eternity.immortal_seal_altar_ruins": "Immortal Seal Altar Ruins",
+  "structure.until_eternity.storm_dynasty_ruins": "Storm Dynasty Ruins",
+  "enchantment.until_eternity.armor_rend": "Armor Rend",
+  "enchantment.until_eternity.armor_rend.desc": "Deals 10% more melee damage per level to targets with more than 5 armor.",
+  "tooltip.until_eternity.cursed_scroll.attack_speed": "§6+%1$s §dAttack Speed"
 }

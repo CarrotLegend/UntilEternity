@@ -49,7 +49,6 @@ public final class NetherworldKatanaReplacementRenderer
         poseStack.pushPose();
 
         try {
-
             poseStack.translate(0.5F, 0.5F, 0.5F);
             poseStack.scale(0.5F, -0.5F, -0.5F);
 
@@ -72,7 +71,7 @@ public final class NetherworldKatanaReplacementRenderer
             );
 
             poseStack.mulPose(
-                    Axis.ZP.rotationDegrees(90.0F)
+                    Axis.YP.rotationDegrees(270.0F)
             );
 
             VertexConsumer consumer =
@@ -116,3 +115,4 @@ public final class NetherworldKatanaReplacementRenderer
         return model;
     }
 }
+

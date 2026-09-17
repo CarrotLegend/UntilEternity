@@ -114,6 +114,27 @@ public final class TrueChefsKnifeAbsoluteDamageContext {
                 && attack.voidCorrosionAmplified;
     }
 
+    public static Player attacker(LivingEntity victim, DamageSource source) {
+        Attack attack = ACTIVE.current(null);
+        return matches(victim, source) ? attack.player : null;
+    }
+
+    public static boolean claimArmorRendAmplification(
+            LivingEntity victim, DamageSource source) {
+        Attack attack = ACTIVE.current(null);
+        if (!matches(victim, source) || attack.armorRendAmplified) {
+            return false;
+        }
+        attack.armorRendAmplified = true;
+        return true;
+    }
+
+    public static boolean wasArmorRendAmplified(
+            LivingEntity victim, DamageSource source) {
+        Attack attack = ACTIVE.current(null);
+        return matches(victim, source) && attack.armorRendAmplified;
+    }
+
     private static LivingEntity resolveVictim(Entity target) {
         if (target instanceof LivingEntity livingEntity) {
             return livingEntity;
@@ -133,6 +154,7 @@ public final class TrueChefsKnifeAbsoluteDamageContext {
         private final boolean eligible;
         private boolean splitClaimed;
         private boolean voidCorrosionAmplified;
+        private boolean armorRendAmplified;
 
         private Attack(Player player, LivingEntity victim, DamageSource source,
                        float originalDamage, boolean eligible) {
