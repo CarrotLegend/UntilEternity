@@ -1,4 +1,5 @@
 {
+    "replace": false,
     "entities": [
         "minecraft:player"
     ],
@@ -8,6 +9,7 @@
         "body",
         "magic_ring",
         "warped_ring",
-        "hands"
+        "hands",
+        "belt"
     ]
 }

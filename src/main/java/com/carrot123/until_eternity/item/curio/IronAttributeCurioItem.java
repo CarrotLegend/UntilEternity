@@ -40,8 +40,11 @@ public class IronAttributeCurioItem extends BaseModCurioItem {
         if (slotContext == null || slotContext.entity() == null) {
             return true;
         }
-        return CurioEquipmentHelper.countEquippedExcept(
-                slotContext.entity(), this, stack) < maxEquipped;
+        return CurioEquipmentHelper.countEquippedExceptSlot(
+                slotContext.entity(),
+                this,
+                slotContext.identifier(),
+                slotContext.index()) < maxEquipped;
     }
 
     @Override

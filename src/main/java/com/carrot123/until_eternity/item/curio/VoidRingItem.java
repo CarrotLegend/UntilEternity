@@ -48,7 +48,10 @@ public final class VoidRingItem extends BaseModCurioItem {
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         return slotContext == null
                 || slotContext.entity() == null
-                || CurioEquipmentHelper.countEquipped(
-                        slotContext.entity(), this) < MAX_EQUIPPED;
+                || CurioEquipmentHelper.countEquippedExceptSlot(
+                        slotContext.entity(),
+                        this,
+                        slotContext.identifier(),
+                        slotContext.index()) < MAX_EQUIPPED;
     }
 }

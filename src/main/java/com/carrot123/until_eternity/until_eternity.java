@@ -19,16 +19,20 @@ import com.carrot123.until_eternity.recipe.ModRecipeSerializers;
 import com.carrot123.until_eternity.recipe.ModRecipeTypes;
 import com.carrot123.until_eternity.menu.ModMenuTypes;
 import com.carrot123.until_eternity.client.screen.EndCraftingTableScreen;
-import net.minecraft.client.gui.screens.MenuScreens;
 import com.carrot123.until_eternity.registry.ModMobEffects;
 import com.carrot123.until_eternity.registry.ModAttributes;
 import com.carrot123.until_eternity.registry.ModPotions;
+
+import com.carrot123.until_eternity.network.ModNetworking;
+
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Blocks;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -42,93 +46,180 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(until_eternity.MODID)
-public class until_eternity
-{
-    // Define mod id in a common place for everything to reference
-    public static final String MODID = "until_eternity";
-    // Directly reference a slf4j logger
-    public static final Logger LOGGER = LogUtils.getLogger();
+public class until_eternity {
 
-    public until_eternity(FMLJavaModLoadingContext context)
-    {
-        IEventBus modEventBus = context.getModEventBus();
+    public static final String MODID =
+            "until_eternity";
 
-        // Register the commonSetup method for modloading
-        modEventBus.addListener(this::commonSetup);
-        ModBlocks.register(modEventBus);
-        ModPoiTypes.register(modEventBus);
-        ModBlockEntities.register(modEventBus);
-        ModItems.register(modEventBus);
-        ModEnchantments.register(modEventBus);
-        ModParticles.register(modEventBus);
-        ModCreativeModeTabs.register(modEventBus);
-        ModLootModifiers.register(modEventBus);
-        ModRecipeSerializers.register(modEventBus);
-        ModRecipeTypes.register(modEventBus);
-        ModMenuTypes.register(modEventBus);
-        ModAttributes.register(modEventBus);
-        ModMobEffects.register(modEventBus);
-        ModPotions.register(modEventBus);
-        ModFeatures.register(modEventBus);
+    public static final Logger LOGGER =
+            LogUtils.getLogger();
 
+    public until_eternity(
+            FMLJavaModLoadingContext context
+    ) {
+        IEventBus modEventBus =
+                context.getModEventBus();
 
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new CurioEventHandler());
-        MinecraftForge.EVENT_BUS.register(new EnchantmentEventHandler());
-        RevelationFixAbsoluteDamageBootstrap.registerIfLoaded();
-        EnigmaticLegacyCompat.registerIfLoaded();
+        modEventBus.addListener(
+                this::commonSetup
+        );
+        ModBlocks.register(
+                modEventBus
+        );
+        ModPoiTypes.register(
+                modEventBus
+        );
+        ModBlockEntities.register(
+                modEventBus
+        );
+        ModItems.register(
+                modEventBus
+        );
+        ModEnchantments.register(
+                modEventBus
+        );
+        ModParticles.register(
+                modEventBus
+        );
+        ModCreativeModeTabs.register(
+                modEventBus
+        );
+        ModLootModifiers.register(
+                modEventBus
+        );
+        ModRecipeSerializers.register(
+                modEventBus
+        );
+        ModRecipeTypes.register(
+                modEventBus
+        );
+        ModMenuTypes.register(
+                modEventBus
+        );
+        ModAttributes.register(
+                modEventBus
+        );
+        ModMobEffects.register(
+                modEventBus
+        );
+        ModPotions.register(
+                modEventBus
+        );
+        ModFeatures.register(
+                modEventBus
+        );
 
-        // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
+        MinecraftForge.EVENT_BUS.register(
+                this
+        );
 
-        // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
-        context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        MinecraftForge.EVENT_BUS.register(
+                new CurioEventHandler()
+        );
+
+        MinecraftForge.EVENT_BUS.register(
+                new EnchantmentEventHandler()
+        );
+
+        RevelationFixAbsoluteDamageBootstrap
+                .registerIfLoaded();
+        EnigmaticLegacyCompat
+                .registerIfLoaded();
+
+        modEventBus.addListener(
+                this::addCreative
+        );
+
+        context.registerConfig(
+                ModConfig.Type.COMMON,
+                Config.SPEC
+        );
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
-        // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
+    private void commonSetup(
+            final FMLCommonSetupEvent event
+    ) {
+        LOGGER.info(
+                "HELLO FROM COMMON SETUP"
+        );
 
-        if (Config.logDirtBlock)
-            LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
+        event.enqueueWork(
+                ModNetworking::register
+        );
 
-        LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
+        if (Config.logDirtBlock) {
+            LOGGER.info(
+                    "DIRT BLOCK >> {}",
+                    ForgeRegistries.BLOCKS.getKey(
+                            Blocks.DIRT
+                    )
+            );
+        }
 
-        Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
+        LOGGER.info(
+                Config.magicNumberIntroduction
+                        + Config.magicNumber
+        );
+
+        Config.items.forEach(
+                item ->
+                        LOGGER.info(
+                                "ITEM >> {}",
+                                item.toString()
+                        )
+        );
     }
 
-    // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event)
-    {
-        
+    private void addCreative(
+            BuildCreativeModeTabContentsEvent event
+    ) {
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
-    {
-        // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+    public void onServerStarting(
+            ServerStartingEvent event
+    ) {
+        LOGGER.info(
+                "HELLO from server starting"
+        );
     }
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents
-    {
+    @Mod.EventBusSubscriber(
+            modid = MODID,
+            bus = Mod.EventBusSubscriber.Bus.MOD,
+            value = Dist.CLIENT
+    )
+    public static class ClientModEvents {
+
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event)
-        {
-            // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-            // Chaos portal translucent rendering
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.CHAOS_PORTAL.get(), RenderType.translucent());
-            event.enqueueWork(() -> MenuScreens.register(
-                    ModMenuTypes.END_CRAFTING_TABLE.get(), EndCraftingTableScreen::new));
+        public static void onClientSetup(
+                FMLClientSetupEvent event
+        ) {
+            LOGGER.info(
+                    "HELLO FROM CLIENT SETUP"
+            );
+
+            LOGGER.info(
+                    "MINECRAFT NAME >> {}",
+                    Minecraft.getInstance()
+                            .getUser()
+                            .getName()
+            );
+
+            ItemBlockRenderTypes.setRenderLayer(
+                ModBlocks.CHAOS_PORTAL.get(),
+                RenderType.translucent()
+            );
+
+            event.enqueueWork(
+                () ->
+                    MenuScreens.register(
+                        ModMenuTypes
+                            .END_CRAFTING_TABLE
+                            .get(),
+                        EndCraftingTableScreen::new
+            ));
         }
     }
 }

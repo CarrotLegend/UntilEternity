@@ -42,7 +42,10 @@ public class WarpedRingItem extends BaseModCurioItem {
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         return slotContext == null
                 || slotContext.entity() == null
-                || CurioEquipmentHelper.countEquipped(
-                        slotContext.entity(), this) < maxEquipped;
+                || CurioEquipmentHelper.countEquippedExceptSlot(
+                        slotContext.entity(),
+                        this,
+                        slotContext.identifier(),
+                        slotContext.index()) < maxEquipped;
     }
 }

@@ -1,9 +1,15 @@
 package com.carrot123.until_eternity.event;
 
 import com.carrot123.until_eternity.item.ModItems;
+import com.carrot123.until_eternity.network.ModNetworking;
+import com.carrot123.until_eternity.network.TrueBedrockActivationS2CPacket;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,6 +26,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 
 import top.theillusivec4.curios.api.CuriosApi;
 
@@ -71,11 +78,8 @@ public final class TrueBedrockEvents {
     public static void onLivingDamage(
             LivingDamageEvent event
     ) {
-        if (!(event.getEntity() instanceof Player player)) {
-            return;
-        }
 
-        if (player.level().isClientSide) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
             return;
         }
 
@@ -110,9 +114,37 @@ public final class TrueBedrockEvents {
                 REVIVE_COOLDOWN_TICKS
         );
 
-        player.level().broadcastEntityEvent(
-                player,
-                (byte) 35
+
+        ServerLevel level =
+                player.serverLevel();
+
+        level.sendParticles(
+                ParticleTypes.TOTEM_OF_UNDYING,
+                player.getX(),
+                player.getY()
+                        + player.getBbHeight() * 0.5D,
+                player.getZ(),
+                30,
+                player.getBbWidth() * 0.5D,
+                player.getBbHeight() * 0.5D,
+                player.getBbWidth() * 0.5D,
+                0.2D
+        );
+
+        level.playSound(
+                null,
+                player.blockPosition(),
+                SoundEvents.TOTEM_USE,
+                player.getSoundSource(),
+                1.0F,
+                1.0F
+        );
+
+        ModNetworking.CHANNEL.send(
+                PacketDistributor.PLAYER.with(
+                        () -> player
+                ),
+                new TrueBedrockActivationS2CPacket()
         );
     }
 
@@ -166,7 +198,6 @@ public final class TrueBedrockEvents {
                 )
                 .isPresent();
     }
-
     private static boolean isImmuneDamage(
             DamageSource source
     ) {

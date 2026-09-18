@@ -20,8 +20,11 @@ public final class VoidGripItem extends AttributeCurioItem {
         return super.canEquip(slotContext, stack)
                 && (slotContext == null
                 || slotContext.entity() == null
-                || CurioEquipmentHelper.countEquippedExcept(
-                        slotContext.entity(), this, stack) < 1);
+                || CurioEquipmentHelper.countEquippedExceptSlot(
+                        slotContext.entity(),
+                        this,
+                        slotContext.identifier(),
+                        slotContext.index()) < 1);
     }
 
     @Override

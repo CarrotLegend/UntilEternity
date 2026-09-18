@@ -49,6 +49,12 @@ public final class ModRecipeSerializers {
                     "chef_rank_anvil",
                     ChefRankAnvilRecipeSerializer::new
             );
+    public static final RegistryObject<RecipeSerializer<NbtStonecuttingRecipe>>
+        NBT_STONECUTTING =
+        RECIPE_SERIALIZERS.register(
+                "nbt_stonecutting",
+                NbtStonecuttingRecipeSerializer::new
+        );
 
     private ModRecipeSerializers() {
     }

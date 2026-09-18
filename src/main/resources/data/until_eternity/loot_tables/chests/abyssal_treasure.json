@@ -149,16 +149,6 @@
           "type": "minecraft:item",
           "name": "enigmaticlegacy:eye_of_nebula",
           "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "enigmaticlegacy:the_cube",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "enigmaticlegacy:enigmatic_item",
-          "weight": 1
         }
       ]
     },

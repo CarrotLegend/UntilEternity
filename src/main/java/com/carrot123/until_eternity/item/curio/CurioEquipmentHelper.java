@@ -14,23 +14,26 @@ public final class CurioEquipmentHelper {
             LivingEntity entity,
             Item targetItem
     ) {
-        return countEquippedExcept(entity, targetItem, null);
+        return countEquippedExceptSlot(entity, targetItem, null, -1);
     }
 
-    public static int countEquippedExcept(
+    public static int countEquippedExceptSlot(
             LivingEntity entity,
             Item targetItem,
-            ItemStack excludedStack
+            String excludedSlotIdentifier,
+            int excludedSlotIndex
     ) {
         if (entity == null || targetItem == null) {
             return 0;
         }
         return CuriosApi.getCuriosInventory(entity)
-                .map(handler -> handler.getCurios().values().stream()
-                        .mapToInt(stacksHandler -> countIn(
-                                stacksHandler.getStacks(),
+                .map(handler -> handler.getCurios().entrySet().stream()
+                        .mapToInt(entry -> countIn(
+                                entry.getKey(),
+                                entry.getValue().getStacks(),
                                 targetItem,
-                                excludedStack))
+                                excludedSlotIdentifier,
+                                excludedSlotIndex))
                         .sum())
                 .orElse(0);
     }
@@ -45,22 +48,47 @@ public final class CurioEquipmentHelper {
         }
         return CuriosApi.getCuriosInventory(entity)
                 .map(handler -> handler.getCurios().get(slotIdentifier))
-                .map(handler -> countIn(handler.getStacks(), targetItem, null) > 0)
+                .map(handler -> countIn(
+                        slotIdentifier,
+                        handler.getStacks(),
+                        targetItem,
+                        null,
+                        -1) > 0)
                 .orElse(false);
     }
 
     private static int countIn(
+            String slotIdentifier,
             IDynamicStackHandler stacks,
             Item targetItem,
-            ItemStack excludedStack
+            String excludedSlotIdentifier,
+            int excludedSlotIndex
     ) {
         int count = 0;
         for (int slot = 0; slot < stacks.getSlots(); slot++) {
+            if (isExcludedSlot(
+                    slotIdentifier,
+                    slot,
+                    excludedSlotIdentifier,
+                    excludedSlotIndex)) {
+                continue;
+            }
             ItemStack equipped = stacks.getStackInSlot(slot);
-            if (equipped != excludedStack && equipped.is(targetItem)) {
+            if (equipped.is(targetItem)) {
                 count += equipped.getCount();
             }
         }
         return count;
+    }
+
+    static boolean isExcludedSlot(
+            String slotIdentifier,
+            int slotIndex,
+            String excludedSlotIdentifier,
+            int excludedSlotIndex
+    ) {
+        return excludedSlotIdentifier != null
+                && excludedSlotIdentifier.equals(slotIdentifier)
+                && excludedSlotIndex == slotIndex;
     }
 }

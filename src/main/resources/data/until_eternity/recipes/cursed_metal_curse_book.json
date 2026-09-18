@@ -1,0 +1,11 @@
+{
+  "type": "until_eternity:nbt_stonecutting",
+  "ingredient": {
+    "item": "goety:cursed_metal_block"
+  },
+  "result": {
+    "item": "minecraft:enchanted_book",
+    "count": 1,
+    "nbt": "{StoredEnchantments:[{id:\"majruszsenchantments:breaking_curse\",lvl:1s},{id:\"until_eternity:curse_of_short_life\",lvl:1s},{id:\"enigmaticlegacy:sorrow\",lvl:1s},{id:\"enigmaticlegacy:nemesis\",lvl:1s},{id:\"majruszsenchantments:corrosion_curse\",lvl:1s},{id:\"minecraft:binding_curse\",lvl:1s},{id:\"majruszsenchantments:slippery_curse\",lvl:1s},{id:\"majruszsenchantments:fatigue_curse\",lvl:1s},{id:\"until_eternity:curse_of_hunger\",lvl:1s},{id:\"until_eternity:useless_curse\",lvl:1s},{id:\"minecraft:vanishing_curse\",lvl:1s}]}"
+  }
+}

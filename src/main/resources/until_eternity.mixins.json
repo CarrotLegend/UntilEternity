@@ -36,6 +36,7 @@
     "compat.goety.ServerLevelFocusEntityTickMixin",
     "compat.goety.IceBouquetTrapBlockEntityMixin",
     "compat.goety.IceBouquetDamageSourceMixin",
+    "compat.goety.IronHideSpellMixin",
     "compat.goetyrevelation.QuietusStarPropertiesMixin",
     "compat.goetyrevelation.CommonEventHandlerPuzzleWhitelistMixin",
     "compat.revelationfix.LivingEntityHaloAttackMixin",
