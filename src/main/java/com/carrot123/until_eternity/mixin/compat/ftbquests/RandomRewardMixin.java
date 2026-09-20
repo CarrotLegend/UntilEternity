@@ -14,20 +14,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 )
 public abstract class RandomRewardMixin {
 
-    private static final String RANDOM =
-            "dev.ftb.mods.ftbquests.quest.reward.RandomReward";
+    private static final String CHOICE =
+            "dev.ftb.mods.ftbquests.quest.reward.ChoiceReward";
+
     @Inject(
             method = "<init>",
             at = @At("TAIL")
     )
-    private void untilEternity$fixRandomRewardDefault(
+    private void untilEternity$defaultClaimAllEnabled(
             CallbackInfo ci
     ) {
-        if (RANDOM.equals(this.getClass().getName())) {
-            ((RewardClaimAllAccessor) (Object) this)
-                    .untilEternity$setExcludeFromClaimAll(false);
+        if (untilEternity$isInstanceOf(this, CHOICE)) {
+            return;
         }
+
+        ((RewardClaimAllAccessor) (Object) this)
+                .untilEternity$setExcludeFromClaimAll(false);
     }
+
     @Inject(
             method = "getExcludeFromClaimAll()Z",
             at = @At("HEAD"),
@@ -42,6 +46,7 @@ public abstract class RandomRewardMixin {
 
         cir.setReturnValue(value);
     }
+
     @Inject(
             method = "isClaimAllHardcoded()Z",
             at = @At("HEAD"),
@@ -50,6 +55,27 @@ public abstract class RandomRewardMixin {
     private void untilEternity$unlockClaimAllOption(
             CallbackInfoReturnable<Boolean> cir
     ) {
+        if (untilEternity$isInstanceOf(this, CHOICE)) {
+            return;
+        }
+
         cir.setReturnValue(false);
+    }
+
+    private static boolean untilEternity$isInstanceOf(
+            Object object,
+            String targetClassName
+    ) {
+        Class<?> type = object.getClass();
+
+        while (type != null) {
+            if (targetClassName.equals(type.getName())) {
+                return true;
+            }
+
+            type = type.getSuperclass();
+        }
+
+        return false;
     }
 }
