@@ -82,4 +82,8 @@ public abstract class RandomRewardMixin {
 
         return false;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d554876ae1b8b60d81cd038f6a1ad41fb19453af
