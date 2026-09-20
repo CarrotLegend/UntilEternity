@@ -17,8 +17,8 @@ public abstract class RewardClaimAllPersistenceMixin {
     private static final String RANDOM =
             "dev.ftb.mods.ftbquests.quest.reward.RandomReward";
 
-    private static final String LOOT =
-            "dev.ftb.mods.ftbquests.quest.reward.LootReward";
+    private static final String CHOICE =
+            "dev.ftb.mods.ftbquests.quest.reward.ChoiceReward";
 
     private static final String NBT_KEY =
             "exclude_from_claim_all";
@@ -37,6 +37,7 @@ public abstract class RewardClaimAllPersistenceMixin {
 
         RewardClaimAllAccessor accessor =
                 (RewardClaimAllAccessor) (Object) this;
+
         nbt.putBoolean(
                 NBT_KEY,
                 accessor.untilEternity$getExcludeFromClaimAll()
@@ -54,22 +55,41 @@ public abstract class RewardClaimAllPersistenceMixin {
         if (!untilEternity$isSupportedReward(this)) {
             return;
         }
-        if (nbt.contains(NBT_KEY)) {
-            return;
-        }
-        String className = this.getClass().getName();
-
-        boolean defaultValue = !RANDOM.equals(className);
 
         RewardClaimAllAccessor accessor =
                 (RewardClaimAllAccessor) (Object) this;
 
-        accessor.untilEternity$setExcludeFromClaimAll(defaultValue);
+        if (nbt.contains(NBT_KEY)) {
+            accessor.untilEternity$setExcludeFromClaimAll(
+                    nbt.getBoolean(NBT_KEY)
+            );
+        } else {
+            accessor.untilEternity$setExcludeFromClaimAll(false);
+        }
     }
 
     private static boolean untilEternity$isSupportedReward(Object reward) {
-        String className = reward.getClass().getName();
+        if (untilEternity$isInstanceOf(reward, CHOICE)) {
+            return false;
+        }
 
-        return RANDOM.equals(className) || LOOT.equals(className);
+        return untilEternity$isInstanceOf(reward, RANDOM);
+    }
+
+    private static boolean untilEternity$isInstanceOf(
+            Object object,
+            String targetClassName
+    ) {
+        Class<?> type = object.getClass();
+
+        while (type != null) {
+            if (targetClassName.equals(type.getName())) {
+                return true;
+            }
+
+            type = type.getSuperclass();
+        }
+
+        return false;
     }
 }

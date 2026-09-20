@@ -3,10 +3,11 @@ package com.carrot123.until_eternity.compat.mixin;
 import java.util.List;
 import java.util.Set;
 
-import com.bawnorton.mixinsquared.MixinSquaredBootstrap;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
+
+import com.bawnorton.mixinsquared.MixinSquaredBootstrap;
 
 import net.minecraftforge.fml.loading.FMLLoader;
 
@@ -29,6 +30,9 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
 
     private static final String ENIGMATIC_DELICACY_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.enigmaticdelicacy.";
+
+    private static final String ENIGMATIC_ADDONS_COMPAT =
+            "com.carrot123.until_eternity.mixin.compat.enigmaticaddons.";
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -69,6 +73,10 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
         if (mixinClassName.startsWith(ENIGMATIC_DELICACY_COMPAT)) {
             return isModLoaded("enigmaticlegacy")
                     && isModLoaded("enigmaticdelicacy");
+        }
+
+        if (mixinClassName.startsWith(ENIGMATIC_ADDONS_COMPAT)) {
+            return isModLoaded("enigmaticaddons");
         }
 
         return true;

@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
         remap = false
 )
 public abstract class LootRewardMixin {
+
     @Inject(
             method = "getExcludeFromClaimAll()Z",
             at = @At("HEAD"),
@@ -25,5 +26,17 @@ public abstract class LootRewardMixin {
                         .untilEternity$getExcludeFromClaimAll();
 
         cir.setReturnValue(value);
+    }
+
+    @Inject(
+            method = "isClaimAllHardcoded()Z",
+            at = @At("HEAD"),
+            cancellable = true,
+            require = 0
+    )
+    private void untilEternity$unlockClaimAllOption(
+            CallbackInfoReturnable<Boolean> cir
+    ) {
+        cir.setReturnValue(false);
     }
 }

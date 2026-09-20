@@ -20,6 +20,7 @@
     "compat.enigmaticlegacy.CursedScrollConfigMixin",
     "compat.enigmaticlegacy.CursedScrollMiningMixin",
     "compat.enigmaticdelicacy.InfinimealCompatMixin",
+    "compat.enigmaticaddons.InsigniaMiningRestrictionMixin",
     "compat.goety.ApostleTrueChefsKnifeMixin",
     "compat.goety.EnderKeeperTrueChefsKnifeMixin",
     "compat.obscure_api.ObscureApiCriticalHitMixin",
