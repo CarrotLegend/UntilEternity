@@ -11,7 +11,8 @@ import com.bawnorton.mixinsquared.MixinSquaredBootstrap;
 
 import net.minecraftforge.fml.loading.FMLLoader;
 
-public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
+public final class UntilEternityMixinPlugin
+        implements IMixinConfigPlugin {
 
     private static final String AETHER_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.aether.";
@@ -34,6 +35,21 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
     private static final String ENIGMATIC_ADDONS_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.enigmaticaddons.";
 
+    private static final String NIGHT_SCROLL_CLASS =
+            "auviotre.enigmatic.addon.contents.items.NightScroll";
+
+    private static final String BERSERK_EMBLEM_CLASS =
+            "com.aizistral.enigmaticlegacy.items.BerserkEmblem";
+
+    private static final String IBETRAYED_INTERFACE =
+            "auviotre/enigmatic/addon/api/items/IBetrayed";
+
+    private static final String IBLESSED_INTERFACE =
+            "auviotre/enigmatic/addon/api/items/IBlessed";
+
+    private static final String ICURSED_INTERFACE =
+            "com/aizistral/enigmaticlegacy/api/items/ICursed";
+
     @Override
     public void onLoad(String mixinPackage) {
         MixinSquaredBootstrap.init();
@@ -53,29 +69,41 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
             return isModLoaded("aether");
         }
 
-        if (mixinClassName.startsWith(SUMMONING_RITUALS_COMPAT)) {
+        if (mixinClassName.startsWith(
+                SUMMONING_RITUALS_COMPAT
+        )) {
             return isModLoaded("summoningrituals");
         }
 
-        if (mixinClassName.startsWith(REVELATION_FIX_COMPAT)) {
+        if (mixinClassName.startsWith(
+                REVELATION_FIX_COMPAT
+        )) {
             return isModLoaded("goety_revelation")
                     && isModLoaded("revelationfix");
         }
 
-        if (mixinClassName.startsWith(MOWZIES_MOBS_COMPAT)) {
+        if (mixinClassName.startsWith(
+                MOWZIES_MOBS_COMPAT
+        )) {
             return isModLoaded("mowziesmobs");
         }
 
-        if (mixinClassName.startsWith(ENIGMATIC_LEGACY_COMPAT)) {
+        if (mixinClassName.startsWith(
+                ENIGMATIC_LEGACY_COMPAT
+        )) {
             return isModLoaded("enigmaticlegacy");
         }
 
-        if (mixinClassName.startsWith(ENIGMATIC_DELICACY_COMPAT)) {
+        if (mixinClassName.startsWith(
+                ENIGMATIC_DELICACY_COMPAT
+        )) {
             return isModLoaded("enigmaticlegacy")
                     && isModLoaded("enigmaticdelicacy");
         }
 
-        if (mixinClassName.startsWith(ENIGMATIC_ADDONS_COMPAT)) {
+        if (mixinClassName.startsWith(
+                ENIGMATIC_ADDONS_COMPAT
+        )) {
             return isModLoaded("enigmaticaddons");
         }
 
@@ -83,7 +111,9 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
     }
 
     private static boolean isModLoaded(String modId) {
-        return FMLLoader.getLoadingModList().getModFileById(modId) != null;
+        return FMLLoader
+                .getLoadingModList()
+                .getModFileById(modId) != null;
     }
 
     @Override
@@ -96,7 +126,17 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
     @Override
     public List<String> getMixins() {
         MixinSquaredBootstrap.reOrderExtensions();
-        return null;
+
+        if (!isModLoaded("enigmaticaddons")) {
+            return null;
+        }
+
+        return List.of(
+                "compat.enigmaticaddons.NightScrollRecognitionMixin",
+                "compat.enigmaticaddons.BerserkEmblemRecognitionMixin",
+                "compat.enigmaticaddons.BlessRingRecognitionMixin",
+                "compat.enigmaticaddons.AddonEventHandlerRecognitionMixin"
+        );
     }
 
     @Override
@@ -115,5 +155,42 @@ public final class UntilEternityMixinPlugin implements IMixinConfigPlugin {
             String mixinClassName,
             IMixinInfo mixinInfo
     ) {
+        if (!isModLoaded("enigmaticaddons")) {
+            return;
+        }
+
+        if (NIGHT_SCROLL_CLASS.equals(targetClassName)) {
+            targetClass.interfaces.remove(
+                    IBETRAYED_INTERFACE
+            );
+
+            addInterface(
+                    targetClass,
+                    ICURSED_INTERFACE
+            );
+
+            addInterface(
+                    targetClass,
+                    IBLESSED_INTERFACE
+            );
+
+            return;
+        }
+
+        if (BERSERK_EMBLEM_CLASS.equals(targetClassName)) {
+            addInterface(
+                    targetClass,
+                    IBLESSED_INTERFACE
+            );
+        }
+    }
+
+    private static void addInterface(
+            ClassNode targetClass,
+            String interfaceName
+    ) {
+        if (!targetClass.interfaces.contains(interfaceName)) {
+            targetClass.interfaces.add(interfaceName);
+        }
     }
 }

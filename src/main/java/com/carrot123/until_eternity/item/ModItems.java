@@ -21,6 +21,7 @@ import com.carrot123.until_eternity.item.curio.charm.DivineSoulLampItem;
 import com.carrot123.until_eternity.item.curio.ProofOfSpurnerItem;
 import com.carrot123.until_eternity.item.lore.LoreBookItem;
 import com.carrot123.until_eternity.until_eternity;
+import com.carrot123.until_eternity.item.curio.HeadChefGlovesItem;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.item.UpgradeOrbItem;
 import io.redspace.ironsspellbooks.item.armor.UpgradeOrbType;
@@ -274,6 +275,11 @@ public class ModItems {
                                     .rarity(Rarity.EPIC)
                                     .fireResistant()
         ));
+    public static final RegistryObject<Item> HEAD_CHEF_GLOVES =
+        ITEMS.register(
+                "head_chef_gloves",
+                HeadChefGlovesItem::new
+        );
     private static ResourceLocation goetyRevelationAttribute(String path) {
         return new ResourceLocation("goety_revelation", path);
     }

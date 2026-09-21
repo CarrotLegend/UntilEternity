@@ -87,6 +87,7 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.DARK_CAGE.get());
                 output.accept(ModItems.MITHRIL_GLOVES.get());
                 output.accept(ModItems.PEWTER_GLOVES.get());
+                output.accept(ModItems.HEAD_CHEF_GLOVES.get());
                 output.accept(ModItems.DIVINE_SOUL_LAMP.get());
                 output.accept(ModItems.DYING_FURY.get());
                 output.accept(ModItems.HORROR_HUNT.get());
