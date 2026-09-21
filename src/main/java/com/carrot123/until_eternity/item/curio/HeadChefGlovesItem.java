@@ -24,19 +24,19 @@ import java.util.UUID;
 
 public final class HeadChefGlovesItem extends BaseModCurioItem {
 
-    private static final ResourceLocation ITEM_ID =
-            new ResourceLocation(
-                    "until_eternity",
-                    "head_chef_gloves"
-            );
-
-    private static final TagKey<Item> KNIVES =
+    public static final TagKey<Item> KNIVES =
             TagKey.create(
                     Registries.ITEM,
                     new ResourceLocation(
                             "farmersdelight",
                             "tools/knives"
                     )
+            );
+
+    private static final ResourceLocation ITEM_ID =
+            new ResourceLocation(
+                    "until_eternity",
+                    "head_chef_gloves"
             );
 
     private static final UUID KNIFE_REACH_MODIFIER_ID =
@@ -89,11 +89,40 @@ public final class HeadChefGlovesItem extends BaseModCurioItem {
             SlotContext slotContext,
             ItemStack stack
     ) {
-        if (!(slotContext.entity() instanceof Player player)
-                || player.level().isClientSide) {
+        if (!(slotContext.entity() instanceof Player player)) {
             return;
         }
 
+        updateKnifeReach(player);
+    }
+
+    @Override
+    public void onEquip(
+            SlotContext slotContext,
+            ItemStack prevStack,
+            ItemStack stack
+    ) {
+        if (!(slotContext.entity() instanceof Player player)) {
+            return;
+        }
+
+        updateKnifeReach(player);
+    }
+
+    @Override
+    public void onUnequip(
+            SlotContext slotContext,
+            ItemStack newStack,
+            ItemStack stack
+    ) {
+        if (!(slotContext.entity() instanceof Player player)) {
+            return;
+        }
+
+        removeKnifeReach(player);
+    }
+
+    private static void updateKnifeReach(Player player) {
         AttributeInstance reach =
                 player.getAttribute(
                         ForgeMod.ENTITY_REACH.get()
@@ -103,38 +132,42 @@ public final class HeadChefGlovesItem extends BaseModCurioItem {
             return;
         }
 
-        if (player.getMainHandItem().is(KNIVES)) {
-            if (reach.getModifier(
-                    KNIFE_REACH_MODIFIER_ID
-            ) == null) {
+        boolean holdingKnife =
+                player.getMainHandItem().is(KNIVES);
+
+        AttributeModifier existing =
+                reach.getModifier(
+                        KNIFE_REACH_MODIFIER_ID
+                );
+
+        if (holdingKnife) {
+            if (existing == null) {
                 reach.addTransientModifier(
                         KNIFE_REACH_MODIFIER
                 );
             }
-        } else {
+        } else if (existing != null) {
             reach.removeModifier(
                     KNIFE_REACH_MODIFIER_ID
             );
         }
     }
 
-    @Override
-    public void onUnequip(
-            SlotContext slotContext,
-            ItemStack newStack,
-            ItemStack stack
+    private static void removeKnifeReach(
+            Player player
     ) {
-        if (!(slotContext.entity() instanceof Player player)
-                || player.level().isClientSide) {
-            return;
-        }
-
         AttributeInstance reach =
                 player.getAttribute(
                         ForgeMod.ENTITY_REACH.get()
                 );
 
-        if (reach != null) {
+        if (reach == null) {
+            return;
+        }
+
+        if (reach.getModifier(
+                KNIFE_REACH_MODIFIER_ID
+        ) != null) {
             reach.removeModifier(
                     KNIFE_REACH_MODIFIER_ID
             );

@@ -1,50 +1,47 @@
 package com.carrot123.until_eternity;
 
-import org.slf4j.Logger;
-
 import com.carrot123.until_eternity.block.ModBlocks;
 import com.carrot123.until_eternity.block.entity.ModBlockEntities;
-import com.carrot123.until_eternity.enchantment.ModEnchantments;
-import com.carrot123.until_eternity.compat.revelationfix.RevelationFixAbsoluteDamageBootstrap;
+import com.carrot123.until_eternity.client.screen.EndCraftingTableScreen;
+import com.carrot123.until_eternity.compat.bettercombat.HeadChefGlovesBetterCombatCompat;
 import com.carrot123.until_eternity.compat.enigmaticlegacy.EnigmaticLegacyCompat;
+import com.carrot123.until_eternity.compat.revelationfix.RevelationFixAbsoluteDamageBootstrap;
+import com.carrot123.until_eternity.enchantment.ModEnchantments;
 import com.carrot123.until_eternity.event.CurioEventHandler;
 import com.carrot123.until_eternity.event.EnchantmentEventHandler;
 import com.carrot123.until_eternity.item.ModCreativeModeTabs;
 import com.carrot123.until_eternity.item.ModItems;
-import com.carrot123.until_eternity.worldgen.ModFeatures;
-import com.carrot123.until_eternity.worldgen.ModPoiTypes;
 import com.carrot123.until_eternity.loot.ModLootModifiers;
+import com.carrot123.until_eternity.menu.ModMenuTypes;
+import com.carrot123.until_eternity.network.ModNetworking;
 import com.carrot123.until_eternity.particle.ModParticles;
 import com.carrot123.until_eternity.recipe.ModRecipeSerializers;
 import com.carrot123.until_eternity.recipe.ModRecipeTypes;
-import com.carrot123.until_eternity.menu.ModMenuTypes;
-import com.carrot123.until_eternity.client.screen.EndCraftingTableScreen;
-import com.carrot123.until_eternity.registry.ModMobEffects;
 import com.carrot123.until_eternity.registry.ModAttributes;
+import com.carrot123.until_eternity.registry.ModMobEffects;
 import com.carrot123.until_eternity.registry.ModPotions;
-
-import com.carrot123.until_eternity.network.ModNetworking;
-
+import com.carrot123.until_eternity.worldgen.ModFeatures;
+import com.carrot123.until_eternity.worldgen.ModPoiTypes;
 import com.mojang.logging.LogUtils;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Blocks;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.slf4j.Logger;
 
 @Mod(until_eternity.MODID)
 public class until_eternity {
@@ -64,48 +61,63 @@ public class until_eternity {
         modEventBus.addListener(
                 this::commonSetup
         );
+
         ModBlocks.register(
                 modEventBus
         );
+
         ModPoiTypes.register(
                 modEventBus
         );
+
         ModBlockEntities.register(
                 modEventBus
         );
+
         ModItems.register(
                 modEventBus
         );
+
         ModEnchantments.register(
                 modEventBus
         );
+
         ModParticles.register(
                 modEventBus
         );
+
         ModCreativeModeTabs.register(
                 modEventBus
         );
+
         ModLootModifiers.register(
                 modEventBus
         );
+
         ModRecipeSerializers.register(
                 modEventBus
         );
+
         ModRecipeTypes.register(
                 modEventBus
         );
+
         ModMenuTypes.register(
                 modEventBus
         );
+
         ModAttributes.register(
                 modEventBus
         );
+
         ModMobEffects.register(
                 modEventBus
         );
+
         ModPotions.register(
                 modEventBus
         );
+
         ModFeatures.register(
                 modEventBus
         );
@@ -124,6 +136,7 @@ public class until_eternity {
 
         RevelationFixAbsoluteDamageBootstrap
                 .registerIfLoaded();
+
         EnigmaticLegacyCompat
                 .registerIfLoaded();
 
@@ -208,18 +221,24 @@ public class until_eternity {
             );
 
             ItemBlockRenderTypes.setRenderLayer(
-                ModBlocks.CHAOS_PORTAL.get(),
-                RenderType.translucent()
+                    ModBlocks.CHAOS_PORTAL.get(),
+                    RenderType.translucent()
             );
 
-            event.enqueueWork(
-                () ->
-                    MenuScreens.register(
+            event.enqueueWork(() -> {
+                MenuScreens.register(
                         ModMenuTypes
-                            .END_CRAFTING_TABLE
-                            .get(),
+                                .END_CRAFTING_TABLE
+                                .get(),
                         EndCraftingTableScreen::new
-            ));
+                );
+
+                if (ModList.get()
+                        .isLoaded("bettercombat")) {
+                    HeadChefGlovesBetterCombatCompat
+                            .register();
+                }
+            });
         }
     }
 }

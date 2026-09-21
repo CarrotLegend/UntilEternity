@@ -189,7 +189,7 @@
   "item.until_eternity.smithing_template.universal.base_slot_description": "Add item to upgrade",
   "item.until_eternity.smithing_template.universal.additions_slot_description": "Add ingot",
   "item.until_eternity.head_chef_gloves": "Head Chef's Gloves",
-  "tooltip.until_eternity.head_chef_gloves.knife_reach": "§6+1 §dKnife Attack Reach"
+  "tooltip.until_eternity.head_chef_gloves.knife_reach": "§6+1 §dKnife Attack Reach",
   "dimension.until_eternity.immortal": "Immortal Dimension",
   "biome.until_eternity.immortal_wasteland": "Immortal Wasteland",
   "block.until_eternity.immortal_altar": "Immortal Altar",
