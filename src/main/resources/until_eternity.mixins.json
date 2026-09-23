@@ -16,6 +16,7 @@
     "SnowSpearPlayerAttackMixin",
     "AbsoluteWeaponPlayerAttackMixin",
     "compat.eeeabsmobs.NamelessGuardianTrueChefsKnifeMixin",
+    "compat.eeeabsmobs.ImmortalSkeletonShieldCooldownMixin",
     "compat.mowziesmobs.WroughtnautTrueChefsKnifeMixin",
     "compat.enigmaticlegacy.CursedScrollConfigMixin",
     "compat.enigmaticlegacy.CursedScrollMiningMixin",

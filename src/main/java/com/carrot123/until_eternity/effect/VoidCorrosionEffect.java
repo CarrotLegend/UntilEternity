@@ -1,11 +1,13 @@
 package com.carrot123.until_eternity.effect;
 
-import com.carrot123.until_eternity.compat.TargetDummyCompat;
-
+import com.carrot123.until_eternity.registry.ModDamageTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 
 public final class VoidCorrosionEffect extends MobEffect {
 
@@ -28,31 +30,38 @@ public final class VoidCorrosionEffect extends MobEffect {
             LivingEntity target,
             int amplifier
     ) {
-        if (target.level().isClientSide) {
-            return;
-        }
-
-        if (TargetDummyCompat.isTargetDummy(target)) {
+        if (!(target.level() instanceof ServerLevel serverLevel)) {
             return;
         }
 
         float amount =
                 VoidCorrosionDamageLogic.periodicDamage(
-                        target.getMaxHealth(),
-                        target.getHealth()
+                        target.getMaxHealth()
                 );
 
         if (amount <= 0.0F) {
             return;
         }
 
-        DamageSource source =
-                target.damageSources().fellOutOfWorld();
+        ServerPlayer attacker = VoidCorrosionSourceTracker.resolve(target);
+        DamageSource source = ModDamageTypes.bypassAll(serverLevel, attacker);
 
         VoidCorrosionDamageContext.hurt(
                 target,
                 source,
                 amount
         );
+    }
+
+    @Override
+    public void removeAttributeModifiers(
+            LivingEntity target,
+            AttributeMap attributes,
+            int amplifier
+    ) {
+        super.removeAttributeModifiers(target, attributes, amplifier);
+        if (!target.hasEffect(this)) {
+            VoidCorrosionSourceTracker.clear(target);
+        }
     }
 }

@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "until_eternity:sacrifice"
+    "until_eternity:sacrifice",
+    "until_eternity:bypass_all"
   ]
 }
