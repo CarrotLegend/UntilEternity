@@ -15,6 +15,8 @@ import net.minecraftforge.registries.RegistryObject;
 public final class ModAttributes {
     public static final String FOCUS_DAMAGE_DESCRIPTION_ID =
             "attribute.name.until_eternity.focus_damage";
+    public static final String ALL_DAMAGE_DESCRIPTION_ID =
+            "attribute.name.until_eternity.all_damage";
 
     public static final DeferredRegister<Attribute> ATTRIBUTES =
             DeferredRegister.create(ForgeRegistries.ATTRIBUTES,
@@ -23,6 +25,13 @@ public final class ModAttributes {
     public static final RegistryObject<Attribute> FOCUS_DAMAGE =
             ATTRIBUTES.register("focus_damage", () -> new RangedAttribute(
                     FOCUS_DAMAGE_DESCRIPTION_ID,
+                    1.0D,
+                    0.0D,
+                    32767.0D).setSyncable(true));
+
+    public static final RegistryObject<Attribute> ALL_DAMAGE =
+            ATTRIBUTES.register("all_damage", () -> new RangedAttribute(
+                    ALL_DAMAGE_DESCRIPTION_ID,
                     1.0D,
                     0.0D,
                     32767.0D).setSyncable(true));
@@ -46,6 +55,7 @@ public final class ModAttributes {
                 EntityAttributeModificationEvent event
         ) {
             event.add(EntityType.PLAYER, FOCUS_DAMAGE.get());
+            event.add(EntityType.PLAYER, ALL_DAMAGE.get());
         }
     }
 }

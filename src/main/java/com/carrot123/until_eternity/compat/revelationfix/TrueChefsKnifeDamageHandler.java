@@ -6,6 +6,7 @@ import com.carrot123.until_eternity.effect.VoidCorrosionDamageLogic;
 import com.carrot123.until_eternity.enchantment.ActualEnchantmentLevel;
 import com.carrot123.until_eternity.enchantment.ArmorRendDamageLogic;
 import com.carrot123.until_eternity.enchantment.ModEnchantments;
+import com.carrot123.until_eternity.event.AllDamageCombatEvents;
 import com.carrot123.until_eternity.registry.ModMobEffects;
 import com.mega.revelationfix.safe.DamageSourceInterface;
 import com.mega.revelationfix.safe.entity.LivingEventEC;
@@ -66,6 +67,10 @@ public final class TrueChefsKnifeDamageHandler {
                 && TrueChefsKnifeAbsoluteDamageContext
                 .claimVoidCorrosionAmplification(target, source)) {
             damage = VoidCorrosionDamageLogic.amplifyIncomingDamage(damage);
+        }
+        if (TrueChefsKnifeAbsoluteDamageContext
+                .claimAllDamageAmplification(target, source)) {
+            damage = AllDamageCombatEvents.amplify(target, source, damage);
         }
         if (Float.isFinite(damage) && damage > 0.0F
                 && TrueChefsKnifeAbsoluteDamageContext.claimSplit(target, source)) {

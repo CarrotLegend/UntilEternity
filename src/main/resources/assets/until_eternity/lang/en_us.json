@@ -200,6 +200,7 @@
   "jei.until_eternity.end_crafting": "End Crafting",
   "jei.until_eternity.end_crafting.nbt_transfer_conflict": "Move conflicting items with incorrect NBT out of your inventory before transferring this recipe.",
   "attribute.name.until_eternity.focus_damage": "Focus Damage",
+  "attribute.name.until_eternity.all_damage": "All Damage",
 
   "structure.until_eternity.immortal_duel_arena": "Immortal's Duel Arena",
   "structure.until_eternity.chaos_bell_tower": "Chaos Bell Tower",

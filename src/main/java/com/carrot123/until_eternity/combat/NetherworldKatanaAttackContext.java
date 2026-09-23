@@ -58,6 +58,22 @@ public final class NetherworldKatanaAttackContext {
         return true;
     }
 
+    public static boolean claimAllDamageAmplification(
+            LivingEntity victim, DamageSource source) {
+        Attack attack = ACTIVE.current(null);
+        if (!matches(victim, source) || attack.allDamageAmplified) {
+            return false;
+        }
+        attack.allDamageAmplified = true;
+        return true;
+    }
+
+    public static boolean wasAllDamageAmplified(
+            LivingEntity victim, DamageSource source) {
+        Attack attack = ACTIVE.current(null);
+        return matches(victim, source) && attack.allDamageAmplified;
+    }
+
     private static LivingEntity resolveVictim(Entity target) {
         if (target instanceof LivingEntity livingEntity) {
             return livingEntity;
@@ -77,6 +93,7 @@ public final class NetherworldKatanaAttackContext {
         private final float originalDamage;
         private final boolean eligible;
         private boolean splitClaimed;
+        private boolean allDamageAmplified;
 
         private Attack(Player player, LivingEntity victim, DamageSource source,
                        float originalDamage, boolean eligible) {

@@ -22,6 +22,7 @@ import com.carrot123.until_eternity.registry.ModMobEffects;
 import com.carrot123.until_eternity.registry.ModPotions;
 import com.carrot123.until_eternity.worldgen.ModFeatures;
 import com.carrot123.until_eternity.worldgen.ModPoiTypes;
+import com.carrot123.until_eternity.compat.legendarymonsters.SandstormCrystalCurioCompat;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -157,10 +158,10 @@ public class until_eternity {
                 "HELLO FROM COMMON SETUP"
         );
 
-        event.enqueueWork(
-                ModNetworking::register
-        );
-
+        event.enqueueWork(() -> {
+                ModNetworking.register();
+                SandstormCrystalCurioCompat.register();
+        });
         if (Config.logDirtBlock) {
             LOGGER.info(
                     "DIRT BLOCK >> {}",

@@ -3,6 +3,7 @@ package com.carrot123.until_eternity.compat.revelationfix;
 import com.carrot123.until_eternity.combat.AbsoluteDamageMath;
 import com.carrot123.until_eternity.combat.NetherworldKatanaAttackContext;
 import com.carrot123.until_eternity.compat.eeeabsmobs.ImmortalScarCombatLogic;
+import com.carrot123.until_eternity.event.AllDamageCombatEvents;
 import com.carrot123.until_eternity.registry.ModMobEffects;
 import com.mega.revelationfix.safe.DamageSourceInterface;
 import com.mega.revelationfix.safe.entity.LivingEventEC;
@@ -43,6 +44,10 @@ public final class NetherworldKatanaDamageHandler {
         float damage = event.getAmount();
         if (target.hasEffect(ModMobEffects.IMMORTAL_SCAR.get())) {
             damage = ImmortalScarCombatLogic.doubleDamage(damage);
+        }
+        if (NetherworldKatanaAttackContext
+                .claimAllDamageAmplification(target, source)) {
+            damage = AllDamageCombatEvents.amplify(target, source, damage);
         }
         if (Float.isFinite(damage) && damage > 0.0F
                 && NetherworldKatanaAttackContext.claimSplit(target, source)) {

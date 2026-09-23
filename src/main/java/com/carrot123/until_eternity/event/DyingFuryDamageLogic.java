@@ -19,26 +19,8 @@ final class DyingFuryDamageLogic {
         return Math.max(0.0D, (double) maxHealth - clampedHealth);
     }
 
-    static double calculateMultiplier(float maxHealth, float currentHealth) {
-        return 1.0D
-                + calculateLostHealth(maxHealth, currentHealth)
+    static double modifierAmount(float maxHealth, float currentHealth) {
+        return calculateLostHealth(maxHealth, currentHealth)
                 * BONUS_PER_MISSING_HEALTH;
-    }
-
-    static float enhanceDamage(
-            float currentAmount,
-            float maxHealth,
-            float currentHealth
-    ) {
-        if (!Float.isFinite(currentAmount) || currentAmount <= 0.0F) {
-            return currentAmount;
-        }
-
-        double modified = (double) currentAmount
-                * calculateMultiplier(maxHealth, currentHealth);
-        if (!Double.isFinite(modified) || modified >= Float.MAX_VALUE) {
-            return Float.MAX_VALUE;
-        }
-        return (float) modified;
     }
 }

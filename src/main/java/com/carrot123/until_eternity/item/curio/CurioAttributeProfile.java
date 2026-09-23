@@ -3,6 +3,7 @@ package com.carrot123.until_eternity.item.curio;
 import com.carrot123.until_eternity.compat.GoetyRevelationAttributesCompat;
 import com.carrot123.until_eternity.compat.PuffishAttributesCompat;
 import com.carrot123.until_eternity.compat.TerraCurioCompat;
+import com.carrot123.until_eternity.registry.ModAttributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.common.ForgeMod;
@@ -56,6 +57,8 @@ public enum CurioAttributeProfile {
     EMPOWERED_SHIELD("empowered_shield", shieldSpecs(6.0D, 2.0D)),
     COSMIC_AEGIS("cosmic_aegis", shieldSpecs(8.0D, 4.0D)),
     PROOF_OF_SPURNER("proof_of_spurner", List.of(
+        spec(ModAttributes.ALL_DAMAGE::get,
+                "all_damage", 2.4D, AttributeModifier.Operation.MULTIPLY_BASE),
         spec(() -> Attributes.MAX_HEALTH,
                 "max_health", 1200.0D, AttributeModifier.Operation.ADDITION),
         spec(() -> Attributes.ARMOR,
