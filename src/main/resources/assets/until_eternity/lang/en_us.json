@@ -290,8 +290,8 @@
   "enchantment.until_eternity.armor_rend": "Armor Rend",
   "enchantment.until_eternity.armor_rend.desc": "Deals 10% more melee damage per level to targets with more than 5 armor.",
   "tooltip.until_eternity.cursed_scroll.attack_speed": "§6+%1$s §dAttack Speed",
-  "tooltip.until_eternity.tarot.orientation.upright": "Upright (Shift + Right-click to reverse)",
-  "tooltip.until_eternity.tarot.orientation.reversed": "Reversed (Shift + Right-click to turn upright)",
+  "tooltip.until_eternity.tarot.orientation.upright": "Upright (Sneak + right-click with this card in your main hand to reverse)",
+  "tooltip.until_eternity.tarot.orientation.reversed": "Reversed (Sneak + right-click with this card in your main hand to turn upright)",
   "tarot_set.until_eternity.journeys_midpoint": "Journey's Midpoint",
   "tarot_set.until_eternity.flash_of_inspiration": "Flash of Inspiration",
   "tarot_set.until_eternity.night_walker": "Night Walker",
@@ -307,6 +307,7 @@
   "tarot_set.until_eternity.celestial": "Celestial",
   "tarot_set.until_eternity.empire": "Empire",
   "tarot_set.until_eternity.death_refusal": "Death Refusal",
+  "tarot_set.until_eternity.foresight": "Foresight",
   "effect.until_eternity.calamity": "Calamity",
   "tooltip.until_eternity.tarot.upright": "Upright",
   "tooltip.until_eternity.tarot.reversed": "Reversed",
@@ -352,5 +353,7 @@
   "tarot_set.until_eternity.empire.desc.0": "Maximum Health +50%",
   "tarot_set.until_eternity.empire.desc.1": "General Damage Resistance +10%",
   "tarot_set.until_eternity.death_refusal.desc.0": "Avoid fatal damage and remain at 1 health",
-  "tarot_set.until_eternity.death_refusal.desc.1": "Cooldown: 180 seconds"
+  "tarot_set.until_eternity.death_refusal.desc.1": "Cooldown: 180 seconds",
+  "tarot_set.until_eternity.foresight.desc.0": "Gain Foresight every 15 seconds",
+  "tarot_set.until_eternity.foresight.desc.1": "Foresight reduces the next incoming damage by 50%"
 }

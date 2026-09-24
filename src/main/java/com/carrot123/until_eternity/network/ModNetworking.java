@@ -39,10 +39,10 @@ public final class ModNetworking {
         );
         CHANNEL.registerMessage(
                 packetId++,
-                TarotCardFlipC2SPacket.class,
-                TarotCardFlipC2SPacket::encode,
-                TarotCardFlipC2SPacket::decode,
-                TarotCardFlipC2SPacket::handle
+                SyncTarotDeckS2CPacket.class,
+                SyncTarotDeckS2CPacket::encode,
+                SyncTarotDeckS2CPacket::decode,
+                SyncTarotDeckS2CPacket::handle
         );
     }
 }

@@ -34,13 +34,51 @@ public final class TarotSetManager {
                 ? STATES.get(player.getUUID()).activeSets : Set.of();
     }
 
+    public static void startForesight(ServerPlayer player) {
+        STATES.computeIfAbsent(player.getUUID(), ignored -> new PlayerState())
+                .foresight.activate(player.serverLevel().getGameTime());
+    }
+
+    public static void stopForesight(ServerPlayer player) {
+        PlayerState state = STATES.get(player.getUUID());
+        if (state != null) {
+            state.foresight.clear();
+        }
+    }
+
+    public static void tickForesight(ServerPlayer player) {
+        PlayerState state = STATES.get(player.getUUID());
+        if (state != null) {
+            state.foresight.tick(player.serverLevel().getGameTime());
+        }
+    }
+
+    public static boolean isForesightReady(ServerPlayer player) {
+        PlayerState state = STATES.get(player.getUUID());
+        if (state == null || !state.activeSets.contains(TarotSetRegistry.id("foresight"))) {
+            return false;
+        }
+        // A deck may have been removed after the most recent periodic scan.
+        refresh(player);
+        return state.activeSets.contains(TarotSetRegistry.id("foresight"))
+                && state.foresight.isReady();
+    }
+
+    public static void consumeForesight(ServerPlayer player) {
+        PlayerState state = STATES.get(player.getUUID());
+        if (state != null) {
+            state.foresight.consume(player.serverLevel().getGameTime());
+        }
+    }
+
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END || !(event.player instanceof ServerPlayer player)) {
             return;
         }
         PlayerState state = STATES.computeIfAbsent(player.getUUID(), ignored -> new PlayerState());
-        if (state.dirty || player.tickCount % 10 == 0) {
+        if (state.dirty || player.tickCount % 10 == 0
+                || state.activeSets.contains(TarotSetRegistry.id("foresight"))) {
             refresh(player);
         }
         for (ResourceLocation id : state.activeSets) {
@@ -148,5 +186,6 @@ public final class TarotSetManager {
         private boolean dirty = true;
         private Map<String, TarotDeckSnapshot> snapshots = Map.of();
         private Set<ResourceLocation> activeSets = Set.of();
+        private final TarotForesightCharge foresight = new TarotForesightCharge();
     }
 }

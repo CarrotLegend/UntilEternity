@@ -304,8 +304,8 @@
   "enchantment.until_eternity.armor_rend": "甲胄撕裂",
   "enchantment.until_eternity.armor_rend.desc": "目标护甲值高于 5 时，每级提高 10% 近战伤害。",
   "tooltip.until_eternity.cursed_scroll.attack_speed": "§6+%1$s §d攻击速度",
-  "tooltip.until_eternity.tarot.orientation.upright": "正位（Shift + 右键切换为逆位）",
-  "tooltip.until_eternity.tarot.orientation.reversed": "逆位（Shift + 右键切换为正位）",
+  "tooltip.until_eternity.tarot.orientation.upright": "正位（主手持牌潜行右键切换为逆位）",
+  "tooltip.until_eternity.tarot.orientation.reversed": "逆位（主手持牌潜行右键切换为正位）",
   "tarot_set.until_eternity.journeys_midpoint": "旅途的中点",
   "tarot_set.until_eternity.flash_of_inspiration": "灵光乍现",
   "tarot_set.until_eternity.night_walker": "夜行者",
@@ -321,6 +321,7 @@
   "tarot_set.until_eternity.celestial": "天体",
   "tarot_set.until_eternity.empire": "帝国",
   "tarot_set.until_eternity.death_refusal": "死亡拒止",
+  "tarot_set.until_eternity.foresight": "先见之明",
   "effect.until_eternity.calamity": "灾厄",
   "tooltip.until_eternity.tarot.upright": "正位",
   "tooltip.until_eternity.tarot.reversed": "逆位",
@@ -366,5 +367,7 @@
   "tarot_set.until_eternity.empire.desc.0": "最大生命 +50%",
   "tarot_set.until_eternity.empire.desc.1": "普通伤害抗性 +10%",
   "tarot_set.until_eternity.death_refusal.desc.0": "受到致命伤害时免于死亡，并保留 1 点生命",
-  "tarot_set.until_eternity.death_refusal.desc.1": "冷却时间：180 秒"
+  "tarot_set.until_eternity.death_refusal.desc.1": "冷却时间：180 秒",
+  "tarot_set.until_eternity.foresight.desc.0": "每 15 秒获得一次预知",
+  "tarot_set.until_eternity.foresight.desc.1": "预知使下一次受到的伤害降低 50%"
 }

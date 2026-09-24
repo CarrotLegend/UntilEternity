@@ -155,6 +155,9 @@ public final class TarotSetEffectManager {
         if (setId.equals(TarotSetRegistry.id("ascetic"))) {
             ASCETIC_STATES.put(player.getUUID(), new AsceticState(gameTime(player) + 100L));
         }
+        if (setId.equals(TarotSetRegistry.id("foresight"))) {
+            TarotSetManager.startForesight(player);
+        }
         if (setId.equals(TarotSetRegistry.id("hero"))) {
             refreshHero(player);
         }
@@ -179,6 +182,9 @@ public final class TarotSetEffectManager {
         if (setId.equals(TarotSetRegistry.id("ascetic"))) {
             ASCETIC_STATES.remove(player.getUUID());
         }
+        if (setId.equals(TarotSetRegistry.id("foresight"))) {
+            TarotSetManager.stopForesight(player);
+        }
     }
 
     private static void tick(ServerPlayer player, ResourceLocation setId) {
@@ -194,6 +200,9 @@ public final class TarotSetEffectManager {
                 state.stacks++;
                 state.nextStackTime += 100L;
             }
+        }
+        if (setId.equals(TarotSetRegistry.id("foresight"))) {
+            TarotSetManager.tickForesight(player);
         }
     }
 
@@ -272,6 +281,14 @@ public final class TarotSetEffectManager {
             }
             if (hasSet(victim, "misfortune")) {
                 triggerMisfortune(victim);
+            }
+            float incoming = event.getAmount();
+            if (!event.isCanceled() && incoming > 0.0F && Float.isFinite(incoming)
+                    && TarotSetManager.isForesightReady(victim)) {
+                event.setAmount(incoming * 0.5F);
+                if (event.getAmount() < incoming) {
+                    TarotSetManager.consumeForesight(victim);
+                }
             }
         }
     }

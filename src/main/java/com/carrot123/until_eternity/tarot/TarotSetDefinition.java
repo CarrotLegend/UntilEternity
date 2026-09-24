@@ -6,17 +6,29 @@ import java.util.Map;
 import java.util.Objects;
 import net.minecraft.resources.ResourceLocation;
 
-public record TarotSetDefinition(ResourceLocation id,
+public record TarotSetDefinition(
+        ResourceLocation id,
         Map<ResourceLocation, TarotCardRequirement> requiredCards,
-        int descriptionLineCount) {
+        int descriptionLineCount
+) {
     public TarotSetDefinition {
         Objects.requireNonNull(id);
-        requiredCards = Map.copyOf(requiredCards);
-        if (requiredCards.isEmpty() || requiredCards.containsValue(null)) {
-            throw new IllegalArgumentException("A tarot set must require at least one card and valid orientations");
+        Objects.requireNonNull(requiredCards);
+
+        if (requiredCards.isEmpty()
+                || requiredCards.entrySet().stream().anyMatch(entry ->
+                entry.getKey() == null || entry.getValue() == null)) {
+            throw new IllegalArgumentException(
+                    "A tarot set must require at least one card and valid orientations"
+            );
         }
+
+        requiredCards = Map.copyOf(requiredCards);
+
         if (descriptionLineCount < 1) {
-            throw new IllegalArgumentException("A tarot set must have at least one description line");
+            throw new IllegalArgumentException(
+                    "A tarot set must have at least one description line"
+            );
         }
     }
 

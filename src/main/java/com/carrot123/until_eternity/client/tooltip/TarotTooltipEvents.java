@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -25,10 +26,12 @@ public final class TarotTooltipEvents {
     private TarotTooltipEvents() {
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
         if (TarotCardHelper.isTarotCard(stack)) {
+            TarotLegacyTooltipFilter.removeOriginalDescription(event.getToolTip(),
+                    stack.getDescriptionId());
             addCardTooltip(stack, event.getToolTip());
         } else if (TarotDeckScanner.isDeck(stack)) {
             addDeckTooltip(stack, event.getToolTip());

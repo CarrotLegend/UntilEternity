@@ -12,6 +12,7 @@ public final class TarotSetRegistry {
             set("flash_of_inspiration", 3, "+the_magician", "+the_star"),
             set("night_walker", 3, "+the_moon", "+the_hermit"),
             set("life_death_boundary", 1, "+death", "+wheel_of_fortune"),
+            set("foresight", 2, "+the_high_priestess", "+wheel_of_fortune"),
             set("iron_wrist", 2, "+the_emperor", "+strength"),
             set("desperado", 3, "-the_fool", "-the_chariot"),
             set("burning_desire", 1, "-the_lovers", "+the_devil"),
