@@ -54,6 +54,17 @@ public enum CurioAttributeProfile {
             spec(() -> Attributes.MAX_HEALTH,
                     "max_health", 0.30D, AttributeModifier.Operation.MULTIPLY_TOTAL)
     )),
+    ANCIENT_SHIELD("ancient_shield", List.of(
+        spec(() -> Attributes.MAX_HEALTH,
+                "max_health",
+                20.0D,
+                AttributeModifier.Operation.ADDITION),
+        spec(() -> PuffishAttributesCompat.resolve(
+                        PuffishAttributesCompat.RESISTANCE),
+                "resistance",
+                0.15D,
+                AttributeModifier.Operation.MULTIPLY_TOTAL)
+        )),
     EMPOWERED_SHIELD("empowered_shield", shieldSpecs(6.0D, 2.0D)),
     COSMIC_AEGIS("cosmic_aegis", shieldSpecs(8.0D, 4.0D)),
     PROOF_OF_SPURNER("proof_of_spurner", List.of(

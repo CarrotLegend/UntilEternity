@@ -280,6 +280,14 @@ public class ModItems {
                 "head_chef_gloves",
                 HeadChefGlovesItem::new
         );
+    public static final RegistryObject<Item> ANCIENT_SHIELD =
+        ITEMS.register(
+                "ancient_shield",
+                () -> new AttributeCurioItem(
+                        new Item.Properties().stacksTo(1),
+                        CurioAttributeProfile.ANCIENT_SHIELD
+                )
+        );
     private static ResourceLocation goetyRevelationAttribute(String path) {
         return new ResourceLocation("goety_revelation", path);
     }

@@ -2,6 +2,7 @@ package com.carrot123.until_eternity.mixin;
 
 import com.carrot123.until_eternity.compat.eternalcareer.ChefRankHelper;
 import com.carrot123.until_eternity.compat.ironsspellbooks.StaffAffixHelper;
+import com.carrot123.until_eternity.tarot.TarotCardHelper;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -44,6 +45,8 @@ public abstract class ItemStackHoverNameMixin {
                         stack,
                         result
                 );
+
+        result = TarotCardHelper.composeHoverName(stack, result);
 
         callback.setReturnValue(result);
     }

@@ -7,7 +7,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 public final class ModNetworking {
 
-    private static final String PROTOCOL_VERSION = "1";
+    private static final String PROTOCOL_VERSION = "2";
 
     public static final SimpleChannel CHANNEL =
             NetworkRegistry.newSimpleChannel(
@@ -36,6 +36,13 @@ public final class ModNetworking {
                 TrueBedrockActivationS2CPacket::encode,
                 TrueBedrockActivationS2CPacket::decode,
                 TrueBedrockActivationS2CPacket::handle
+        );
+        CHANNEL.registerMessage(
+                packetId++,
+                TarotCardFlipC2SPacket.class,
+                TarotCardFlipC2SPacket::encode,
+                TarotCardFlipC2SPacket::decode,
+                TarotCardFlipC2SPacket::handle
         );
     }
 }

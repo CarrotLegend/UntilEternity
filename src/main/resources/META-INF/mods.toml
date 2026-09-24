@@ -141,6 +141,13 @@ description='''${mod_description}'''
     side="BOTH"
 
 [[dependencies.until_eternity]]
+    modId="tarotcards"
+    mandatory=true
+    versionRange="[1.20-1.7.0]"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.until_eternity]]
     modId="goety_revelation"
     mandatory=false
     versionRange="[2.3.2,)"

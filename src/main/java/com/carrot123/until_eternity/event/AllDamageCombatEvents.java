@@ -4,6 +4,7 @@ import com.carrot123.until_eternity.combat.NetherworldKatanaAttackContext;
 import com.carrot123.until_eternity.combat.TrueChefsKnifeAbsoluteDamageContext;
 import com.carrot123.until_eternity.effect.VoidCorrosionDamageContext;
 import com.carrot123.until_eternity.registry.ModAttributes;
+import com.carrot123.until_eternity.tarot.TarotSetEffectManager;
 import com.carrot123.until_eternity.until_eternity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -54,6 +55,7 @@ public final class AllDamageCombatEvents {
             return amount;
         }
         DyingFuryCombatEvents.syncModifier(attacker);
+        TarotSetEffectManager.syncBeforeAllDamage(attacker);
         double multiplier = attacker.getAttributeValue(
                 ModAttributes.ALL_DAMAGE.get());
         if (!Double.isFinite(multiplier)) {

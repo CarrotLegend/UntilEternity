@@ -20,6 +20,8 @@ public final class PuffishAttributesCompat {
     /** Pufferfish's general-purpose percentage damage resistance attribute. */
     public static final ResourceLocation RESISTANCE =
             new ResourceLocation("puffish_attributes", "resistance");
+    public static final ResourceLocation LIFE_STEAL =
+            new ResourceLocation("puffish_attributes", "life_steal");
     public static final ResourceLocation KNOCKBACK =
             new ResourceLocation("puffish_attributes", "knockback");
     public static final ResourceLocation ARMOR_SHRED =

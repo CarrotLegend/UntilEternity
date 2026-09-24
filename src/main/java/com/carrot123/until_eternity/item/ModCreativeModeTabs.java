@@ -121,6 +121,7 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.CELESTIAL_ONION.get());
                 output.accept(ModItems.SPELL_POWER_UPGRADE_ORB.get());
                 output.accept(ModItems.TRUE_BEDROCK.get());
+                output.accept(ModItems.ANCIENT_SHIELD.get());
             }).build());
 
     public static void register(IEventBus eventBus) {

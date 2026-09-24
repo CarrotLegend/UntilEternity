@@ -23,6 +23,8 @@ public final class GoetyRevelationAttributesCompat {
             new ResourceLocation("goety_revelation", "enchantment_piercing");
     public static final ResourceLocation SPELL_COOLDOWN =
             new ResourceLocation("goety_revelation", "spell_cooldown");
+    public static final ResourceLocation CAST_DURATION =
+            new ResourceLocation("goety_revelation", "cast_duration");
     public static final ResourceLocation SPELL_POWER =
             new ResourceLocation("goety_revelation", "spell_power");
     public static final ResourceLocation SPELL_POWER_MULTIPLIER =
