@@ -1,5 +1,6 @@
 package com.carrot123.until_eternity.event;
 
+import com.carrot123.until_eternity.block.ModBlocks;
 import com.carrot123.until_eternity.item.ModItems;
 import com.carrot123.until_eternity.item.FinalIngotPickaxe;
 import com.carrot123.until_eternity.until_eternity;
@@ -38,6 +39,10 @@ public final class FinalIngotPickaxeInteractionEvents {
         Level level = event.getLevel();
         BlockState state = level.getBlockState(event.getPos());
         if (state.isAir() || state.getDestroySpeed(level, event.getPos()) >= 0.0F) {
+            return;
+        }
+
+        if (state.is(ModBlocks.DIVINE_CALCITE.get()) && player.isSpectator()) {
             return;
         }
 

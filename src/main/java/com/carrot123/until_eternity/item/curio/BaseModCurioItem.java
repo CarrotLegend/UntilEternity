@@ -38,7 +38,8 @@ public class BaseModCurioItem extends Item implements ICurioItem {
             UUID slotUuid,
             ItemStack stack
     ) {
-        if (slotContext != null && slotContext.cosmetic()) {
+        if ((slotContext != null && slotContext.cosmetic())
+                || !canApplyModifiers(slotContext, stack)) {
             return ImmutableMultimap.of();
         }
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder =
@@ -55,6 +56,10 @@ public class BaseModCurioItem extends Item implements ICurioItem {
             }
         }
         return builder.build();
+    }
+
+    protected boolean canApplyModifiers(SlotContext slotContext, ItemStack stack) {
+        return true;
     }
 
     public final ResourceLocation getCurioItemId() {

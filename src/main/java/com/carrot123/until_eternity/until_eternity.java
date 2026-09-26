@@ -22,6 +22,7 @@ import com.carrot123.until_eternity.registry.ModMobEffects;
 import com.carrot123.until_eternity.registry.ModPotions;
 import com.carrot123.until_eternity.worldgen.ModFeatures;
 import com.carrot123.until_eternity.worldgen.ModPoiTypes;
+import com.carrot123.until_eternity.worldgen.structure.ModStructureTypes;
 import com.carrot123.until_eternity.compat.legendarymonsters.SandstormCrystalCurioCompat;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -122,6 +123,7 @@ public class until_eternity {
         ModFeatures.register(
                 modEventBus
         );
+        ModStructureTypes.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(
                 this

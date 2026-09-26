@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:jigsaw",
+  "type": "until_eternity:stable_end_jigsaw",
   "biomes": "#until_eternity:has_structure/end_mining_center",
   "step": "surface_structures",
   "terrain_adaptation": "beard_thin",

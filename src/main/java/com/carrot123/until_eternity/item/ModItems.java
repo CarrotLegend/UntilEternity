@@ -18,6 +18,7 @@ import com.carrot123.until_eternity.item.curio.VoidRingItem;
 import com.carrot123.until_eternity.item.curio.VoidGripItem;
 import com.carrot123.until_eternity.item.curio.WarpedRingItem;
 import com.carrot123.until_eternity.item.curio.charm.DivineSoulLampItem;
+import com.carrot123.until_eternity.item.curio.charm.RedemptionCharmItem;
 import com.carrot123.until_eternity.item.curio.ProofOfSpurnerItem;
 import com.carrot123.until_eternity.item.lore.LoreBookItem;
 import com.carrot123.until_eternity.until_eternity;
@@ -77,6 +78,8 @@ public class ModItems {
     public static final RegistryObject<Item> END_CRAFTING_TABLE = ITEMS.register("end_crafting_table",
             () -> new EndCraftingTableBlockItem(ModBlocks.END_CRAFTING_TABLE.get(),
                     new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> DIVINE_CALCITE = ITEMS.register("divine_calcite",
+            () -> new BlockItem(ModBlocks.DIVINE_CALCITE.get(), new Item.Properties()));
     public static final RegistryObject<MobContainerItem> MOB_CONTAINER =
             ITEMS.register("mob_container", MobContainerItem::new);
     public static final RegistryObject<Item> ELEMENTAL_GAUNTLET = ITEMS.register("elemental_gauntlet",
@@ -121,6 +124,12 @@ public class ModItems {
                     ImmuneCurioItem.CurioType.LIMITED,
                     CurioAttributeProfile.EMPOWERED_SHIELD));
     public static final RegistryObject<Item> PROOF_OF_SPURNER = ITEMS.register("proof_of_spurner", ProofOfSpurnerItem::new);
+    public static final RegistryObject<Item> REDEMPTION_STAR = ITEMS.register("redemption_star",
+            () -> new RedemptionCharmItem(CurioAttributeProfile.REDEMPTION_STAR));
+    public static final RegistryObject<Item> UNSTABLE_HALO = ITEMS.register("unstable_halo",
+            () -> new RedemptionCharmItem(CurioAttributeProfile.UNSTABLE_HALO));
+    public static final RegistryObject<Item> KABBALAH_TREE = ITEMS.register("kabbalah_tree",
+            () -> new RedemptionCharmItem(CurioAttributeProfile.KABBALAH_TREE));
     public static final RegistryObject<Item> CRYSTAL_OF_DRAWN_BOW = ITEMS.register("crystal_of_drawn_bow", () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SWORD_WRAITH = ITEMS.register("sword_wraith", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> WROUGHT_IRON = ITEMS.register("wrought_iron", () -> new Item(new Item.Properties()));
@@ -288,6 +297,10 @@ public class ModItems {
                         CurioAttributeProfile.ANCIENT_SHIELD
                 )
         );
+    public static final RegistryObject<Item> PERMAFROST_CRYSTAL = ITEMS.register(
+            "permafrost_crystal",
+            () -> new AttributeCurioItem(new Item.Properties().stacksTo(1),
+                    CurioAttributeProfile.PERMAFROST_CRYSTAL, "bracelet"));
     private static ResourceLocation goetyRevelationAttribute(String path) {
         return new ResourceLocation("goety_revelation", path);
     }

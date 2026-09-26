@@ -45,69 +45,134 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = until_eternity.MODID,
         bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class TarotSetEffectManager {
-    private static final String IRON_WRIST_READY = "until_eternity:tarot_iron_wrist_ready_time";
-    private static final String DEATH_REFUSAL_READY = "until_eternity:tarot_death_refusal_ready_time";
+    private static final String IRON_WRIST_READY =
+            "until_eternity:tarot_iron_wrist_ready_time";
+    private static final String DEATH_REFUSAL_READY =
+            "until_eternity:tarot_death_refusal_ready_time";
+
+    private static final int NIGHT_WALKER_NIGHT_VISION_REFRESH = 100;
+    private static final int NIGHT_WALKER_NIGHT_VISION_DURATION = 400;
+
     private static final Map<UUID, AsceticState> ASCETIC_STATES = new HashMap<>();
+
     private static final List<ModifierSpec> MODIFIERS = List.of(
-            spec("journeys_midpoint", "movement_speed", () -> Attributes.MOVEMENT_SPEED,
-                    0.20D, AttributeModifier.Operation.MULTIPLY_TOTAL, player -> true),
-            spec("journeys_midpoint", "sprinting_speed", () -> Attributes.MOVEMENT_SPEED,
-                    0.10D, AttributeModifier.Operation.MULTIPLY_TOTAL, ServerPlayer::isSprinting),
-            spec("flash_of_inspiration", "mana_regen", AttributeRegistry.MANA_REGEN::get,
-                    0.20D, AttributeModifier.Operation.MULTIPLY_BASE, player -> true),
+            spec("journeys_midpoint", "movement_speed",
+                    () -> Attributes.MOVEMENT_SPEED,
+                    0.20D,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL,
+                    player -> true),
+
+            spec("journeys_midpoint", "sprinting_speed",
+                    () -> Attributes.MOVEMENT_SPEED,
+                    0.10D,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL,
+                    ServerPlayer::isSprinting),
+
+            spec("flash_of_inspiration", "mana_regen",
+                    AttributeRegistry.MANA_REGEN::get,
+                    0.20D,
+                    AttributeModifier.Operation.MULTIPLY_BASE,
+                    player -> true),
+
             spec("flash_of_inspiration", "cast_time_reduction",
                     AttributeRegistry.CAST_TIME_REDUCTION::get,
-                    0.10D, AttributeModifier.Operation.MULTIPLY_BASE, player -> true),
+                    0.10D,
+                    AttributeModifier.Operation.MULTIPLY_BASE,
+                    player -> true),
+
             spec("flash_of_inspiration", "cooldown_reduction",
                     AttributeRegistry.COOLDOWN_REDUCTION::get,
-                    0.10D, AttributeModifier.Operation.MULTIPLY_BASE, player -> true),
-            spec("night_walker", "all_damage", ModAttributes.ALL_DAMAGE::get,
-                    0.12D, AttributeModifier.Operation.MULTIPLY_BASE,
+                    0.10D,
+                    AttributeModifier.Operation.MULTIPLY_BASE,
+                    player -> true),
+
+            spec("night_walker", "all_damage",
+                    ModAttributes.ALL_DAMAGE::get,
+                    0.12D,
+                    AttributeModifier.Operation.MULTIPLY_BASE,
                     player -> !isDay(player)),
-            spec("night_walker", "movement_speed", () -> Attributes.MOVEMENT_SPEED,
-                    0.15D, AttributeModifier.Operation.MULTIPLY_TOTAL,
+
+            spec("night_walker", "movement_speed",
+                    () -> Attributes.MOVEMENT_SPEED,
+                    0.15D,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL,
                     player -> !isDay(player)),
+
             spec("life_death_boundary", "life_steal",
-                    () -> PuffishAttributesCompat.resolve(PuffishAttributesCompat.LIFE_STEAL),
-                    0.20D, AttributeModifier.Operation.MULTIPLY_TOTAL, player -> true),
-            spec("desperado", "all_damage", ModAttributes.ALL_DAMAGE::get,
-                    0.25D, AttributeModifier.Operation.MULTIPLY_BASE,
+                    () -> PuffishAttributesCompat.resolve(
+                            PuffishAttributesCompat.LIFE_STEAL),
+                    0.20D,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL,
+                    player -> true),
+
+            spec("desperado", "all_damage",
+                    ModAttributes.ALL_DAMAGE::get,
+                    0.25D,
+                    AttributeModifier.Operation.MULTIPLY_BASE,
                     player -> belowHealth(player, 0.30D)),
-            spec("desperado", "attack_speed", () -> Attributes.ATTACK_SPEED,
-                    0.10D, AttributeModifier.Operation.MULTIPLY_TOTAL,
+
+            spec("desperado", "attack_speed",
+                    () -> Attributes.ATTACK_SPEED,
+                    0.10D,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL,
                     player -> belowHealth(player, 0.30D)),
-            spec("berserk", "attack_speed", () -> Attributes.ATTACK_SPEED,
-                    0.20D, AttributeModifier.Operation.MULTIPLY_TOTAL,
+
+            spec("berserk", "attack_speed",
+                    () -> Attributes.ATTACK_SPEED,
+                    0.20D,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL,
                     player -> belowHealth(player, 0.50D)),
-            spec("celestial", "focus_damage", ModAttributes.FOCUS_DAMAGE::get,
-                    0.10D, AttributeModifier.Operation.MULTIPLY_TOTAL,
+
+            spec("celestial", "focus_damage",
+                    ModAttributes.FOCUS_DAMAGE::get,
+                    0.10D,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL,
                     TarotSetEffectManager::isDay),
-            spec("celestial", "spell_power", AttributeRegistry.SPELL_POWER::get,
-                    0.15D, AttributeModifier.Operation.MULTIPLY_BASE,
+
+            spec("celestial", "spell_power",
+                    AttributeRegistry.SPELL_POWER::get,
+                    0.15D,
+                    AttributeModifier.Operation.MULTIPLY_BASE,
                     TarotSetEffectManager::isDay),
+
             spec("celestial", "goety_cast_duration",
                     () -> GoetyRevelationAttributesCompat.resolve(
                             GoetyRevelationAttributesCompat.CAST_DURATION),
-                    0.10D, AttributeModifier.Operation.ADDITION,
+                    0.10D,
+                    AttributeModifier.Operation.ADDITION,
                     player -> !isDay(player)),
+
             spec("celestial", "goety_spell_cooldown",
                     () -> GoetyRevelationAttributesCompat.resolve(
                             GoetyRevelationAttributesCompat.SPELL_COOLDOWN),
-                    0.10D, AttributeModifier.Operation.ADDITION,
+                    0.10D,
+                    AttributeModifier.Operation.ADDITION,
                     player -> !isDay(player)),
+
             spec("celestial", "iron_cast_time_reduction",
                     AttributeRegistry.CAST_TIME_REDUCTION::get,
-                    0.10D, AttributeModifier.Operation.MULTIPLY_BASE,
+                    0.10D,
+                    AttributeModifier.Operation.MULTIPLY_BASE,
                     player -> !isDay(player)),
+
             spec("celestial", "iron_cooldown_reduction",
                     AttributeRegistry.COOLDOWN_REDUCTION::get,
-                    0.10D, AttributeModifier.Operation.MULTIPLY_BASE,
+                    0.10D,
+                    AttributeModifier.Operation.MULTIPLY_BASE,
                     player -> !isDay(player)),
-            spec("empire", "max_health", () -> Attributes.MAX_HEALTH,
-                    0.50D, AttributeModifier.Operation.MULTIPLY_TOTAL, player -> true),
+
+            spec("empire", "max_health",
+                    () -> Attributes.MAX_HEALTH,
+                    0.50D,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL,
+                    player -> true),
+
             spec("empire", "resistance",
-                    () -> PuffishAttributesCompat.resolve(PuffishAttributesCompat.RESISTANCE),
-                    0.10D, AttributeModifier.Operation.MULTIPLY_TOTAL, player -> true)
+                    () -> PuffishAttributesCompat.resolve(
+                            PuffishAttributesCompat.RESISTANCE),
+                    0.10D,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL,
+                    player -> true)
     );
 
     private TarotSetEffectManager() {
@@ -141,23 +206,45 @@ public final class TarotSetEffectManager {
         }
     }
 
-    private static ModifierSpec spec(String set, String key, Supplier<Attribute> attribute,
-            double amount, AttributeModifier.Operation operation,
-            Predicate<ServerPlayer> condition) {
+    private static ModifierSpec spec(
+            String set,
+            String key,
+            Supplier<Attribute> attribute,
+            double amount,
+            AttributeModifier.Operation operation,
+            Predicate<ServerPlayer> condition
+    ) {
         String salt = until_eternity.MODID + ":tarot/" + set + "/" + key;
-        return new ModifierSpec(new ResourceLocation(until_eternity.MODID, set),
-                salt, UUID.nameUUIDFromBytes(salt.getBytes(StandardCharsets.UTF_8)),
-                attribute, amount, operation, condition);
+
+        return new ModifierSpec(
+                new ResourceLocation(until_eternity.MODID, set),
+                salt,
+                UUID.nameUUIDFromBytes(salt.getBytes(StandardCharsets.UTF_8)),
+                attribute,
+                amount,
+                operation,
+                condition
+        );
     }
 
     private static void activate(ServerPlayer player, ResourceLocation setId) {
         syncModifiers(player, setId);
-        if (setId.equals(TarotSetRegistry.id("ascetic"))) {
-            ASCETIC_STATES.put(player.getUUID(), new AsceticState(gameTime(player) + 100L));
+
+        if (setId.equals(TarotSetRegistry.id("night_walker"))) {
+            refreshNightWalkerNightVision(player);
         }
+
+        if (setId.equals(TarotSetRegistry.id("ascetic"))) {
+            ASCETIC_STATES.put(
+                    player.getUUID(),
+                    new AsceticState(gameTime(player) + 100L)
+            );
+        }
+
         if (setId.equals(TarotSetRegistry.id("foresight"))) {
             TarotSetManager.startForesight(player);
         }
+
         if (setId.equals(TarotSetRegistry.id("hero"))) {
             refreshHero(player);
         }
@@ -167,21 +254,29 @@ public final class TarotSetEffectManager {
         for (ModifierSpec spec : MODIFIERS) {
             if (spec.setId().equals(setId)) {
                 Attribute attribute = spec.attribute().get();
+
                 if (attribute == null) {
                     continue;
                 }
+
                 AttributeInstance instance = player.getAttribute(attribute);
+
                 if (instance != null) {
                     instance.removeModifier(spec.uuid());
                 }
             }
         }
+
         if (setId.equals(TarotSetRegistry.id("empire"))) {
-            player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
+            player.setHealth(
+                    Math.min(player.getHealth(), player.getMaxHealth())
+            );
         }
+
         if (setId.equals(TarotSetRegistry.id("ascetic"))) {
             ASCETIC_STATES.remove(player.getUUID());
         }
+
         if (setId.equals(TarotSetRegistry.id("foresight"))) {
             TarotSetManager.stopForesight(player);
         }
@@ -189,103 +284,192 @@ public final class TarotSetEffectManager {
 
     private static void tick(ServerPlayer player, ResourceLocation setId) {
         syncModifiers(player, setId);
-        if (setId.equals(TarotSetRegistry.id("hero")) && player.tickCount % 20 == 0) {
+
+        if (setId.equals(TarotSetRegistry.id("night_walker"))
+                && player.tickCount % NIGHT_WALKER_NIGHT_VISION_REFRESH == 0) {
+            refreshNightWalkerNightVision(player);
+        }
+
+        if (setId.equals(TarotSetRegistry.id("hero"))
+                && player.tickCount % 20 == 0) {
             refreshHero(player);
         }
+
         if (setId.equals(TarotSetRegistry.id("ascetic"))) {
-            AsceticState state = ASCETIC_STATES.computeIfAbsent(player.getUUID(),
-                    ignored -> new AsceticState(gameTime(player) + 100L));
+            AsceticState state = ASCETIC_STATES.computeIfAbsent(
+                    player.getUUID(),
+                    ignored -> new AsceticState(gameTime(player) + 100L)
+            );
+
             long now = gameTime(player);
+
             while (state.stacks < 10 && now >= state.nextStackTime) {
                 state.stacks++;
                 state.nextStackTime += 100L;
             }
         }
+
         if (setId.equals(TarotSetRegistry.id("foresight"))) {
             TarotSetManager.tickForesight(player);
         }
     }
 
-    private static void syncModifiers(ServerPlayer player, ResourceLocation setId) {
+    private static void syncModifiers(
+            ServerPlayer player,
+            ResourceLocation setId
+    ) {
         for (ModifierSpec spec : MODIFIERS) {
             if (!spec.setId().equals(setId)) {
                 continue;
             }
+
             Attribute attribute = spec.attribute().get();
+
             if (attribute == null) {
                 continue;
             }
+
             AttributeInstance instance = player.getAttribute(attribute);
+
             if (instance == null) {
                 continue;
             }
+
             AttributeModifier current = instance.getModifier(spec.uuid());
+
             if (!spec.condition().test(player)) {
                 if (current != null) {
                     instance.removeModifier(spec.uuid());
                 }
                 continue;
             }
-            if (current != null && Double.compare(current.getAmount(), spec.amount()) == 0
+
+            if (current != null
+                    && Double.compare(current.getAmount(), spec.amount()) == 0
                     && current.getOperation() == spec.operation()) {
                 continue;
             }
+
             if (current != null) {
                 instance.removeModifier(spec.uuid());
             }
-            instance.addTransientModifier(new AttributeModifier(spec.uuid(), spec.name(),
-                    spec.amount(), spec.operation()));
+
+            instance.addTransientModifier(
+                    new AttributeModifier(
+                            spec.uuid(),
+                            spec.name(),
+                            spec.amount(),
+                            spec.operation()
+                    )
+            );
         }
     }
 
+    private static void refreshNightWalkerNightVision(ServerPlayer player) {
+        player.addEffect(
+                new MobEffectInstance(
+                        MobEffects.NIGHT_VISION,
+                        NIGHT_WALKER_NIGHT_VISION_DURATION,
+                        0,
+                        false,
+                        false,
+                        true
+                )
+        );
+    }
+
     private static void refreshHero(ServerPlayer player) {
-        MobEffectInstance current = player.getEffect(MobEffects.DAMAGE_BOOST);
-        if (current == null || current.getAmplifier() < 3
-                || current.getAmplifier() == 3 && current.getDuration() <= 20) {
-            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 3,
-                    false, false, true));
+        MobEffectInstance current =
+                player.getEffect(MobEffects.DAMAGE_BOOST);
+
+        if (current == null
+                || current.getAmplifier() < 3
+                || current.getAmplifier() == 3
+                && current.getDuration() <= 20) {
+
+            player.addEffect(
+                    new MobEffectInstance(
+                            MobEffects.DAMAGE_BOOST,
+                            40,
+                            3,
+                            false,
+                            false,
+                            true
+                    )
+            );
         }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingDamage(LivingDamageEvent event) {
         float amount = event.getAmount();
-        if (event.getEntity().level().isClientSide || !(amount > 0.0F)
+
+        if (event.getEntity().level().isClientSide
+                || !(amount > 0.0F)
                 || !Float.isFinite(amount)) {
             return;
         }
-        ServerPlayer attacker = PlayerDamageAttackerResolver.resolve(event.getSource());
+
+        ServerPlayer attacker =
+                PlayerDamageAttackerResolver.resolve(event.getSource());
+
         if (attacker != null && attacker != event.getEntity()) {
             if (hasSet(attacker, "apocalypse")) {
-                event.getEntity().addEffect(new MobEffectInstance(
-                        ModMobEffects.CALAMITY.get(), 100, 0,
-                        false, true, false), attacker);
+                event.getEntity().addEffect(
+                        new MobEffectInstance(
+                                ModMobEffects.CALAMITY.get(),
+                                100,
+                                0,
+                                false,
+                                true,
+                                false
+                        ),
+                        attacker
+                );
             }
+
             if (hasSet(attacker, "burning_desire")
                     && (event.getEntity() instanceof Enemy
-                    || event.getEntity() instanceof Mob mob && mob.getTarget() == attacker)) {
+                    || event.getEntity() instanceof Mob mob
+                    && mob.getTarget() == attacker)) {
+
                 amount = safeMultiply(amount, 1.20D);
             }
+
             if (hasSet(attacker, "ascetic")) {
                 int stacks = consumeAscetic(attacker);
-                amount = safeMultiply(amount, 1.0D + stacks * 0.10D);
+                amount = safeMultiply(
+                        amount,
+                        1.0D + stacks * 0.10D
+                );
             }
         }
+
         if (event.getEntity().hasEffect(ModMobEffects.CALAMITY.get())) {
             amount = safeMultiply(amount, 1.40D);
         }
+
         event.setAmount(amount);
+
         if (event.getEntity() instanceof ServerPlayer victim) {
-            if (hasSet(victim, "iron_wrist") && hasExternalAttacker(event.getSource(), victim)) {
+            if (hasSet(victim, "iron_wrist")
+                    && hasExternalAttacker(event.getSource(), victim)) {
                 triggerIronWrist(victim);
             }
+
             if (hasSet(victim, "misfortune")) {
                 triggerMisfortune(victim);
             }
+
             float incoming = event.getAmount();
-            if (!event.isCanceled() && incoming > 0.0F && Float.isFinite(incoming)
+
+            if (!event.isCanceled()
+                    && incoming > 0.0F
+                    && Float.isFinite(incoming)
                     && TarotSetManager.isForesightReady(victim)) {
+
                 event.setAmount(incoming * 0.5F);
+
                 if (event.getAmount() < incoming) {
                     TarotSetManager.consumeForesight(victim);
                 }
@@ -299,12 +483,19 @@ public final class TarotSetEffectManager {
                 || !hasSet(player, "death_refusal")) {
             return;
         }
+
         CompoundTag data = player.getPersistentData();
         long now = gameTime(player);
+
         if (now < data.getLong(DEATH_REFUSAL_READY)) {
             return;
         }
-        data.putLong(DEATH_REFUSAL_READY, now + 3600L);
+
+        data.putLong(
+                DEATH_REFUSAL_READY,
+                now + 3600L
+        );
+
         player.setHealth(1.0F);
         event.setCanceled(true);
     }
@@ -314,113 +505,224 @@ public final class TarotSetEffectManager {
         if (!(event.getEntity() instanceof ServerPlayer player)) {
             return;
         }
-        CompoundTag oldData = event.getOriginal().getPersistentData();
-        CompoundTag newData = player.getPersistentData();
-        for (String key : List.of(IRON_WRIST_READY, DEATH_REFUSAL_READY)) {
+
+        CompoundTag oldData =
+                event.getOriginal().getPersistentData();
+
+        CompoundTag newData =
+                player.getPersistentData();
+
+        for (String key : List.of(
+                IRON_WRIST_READY,
+                DEATH_REFUSAL_READY
+        )) {
             if (oldData.contains(key, Tag.TAG_LONG)) {
-                newData.putLong(key, oldData.getLong(key));
+                newData.putLong(
+                        key,
+                        oldData.getLong(key)
+                );
             }
         }
     }
 
-    private static boolean hasSet(ServerPlayer player, String path) {
-        return TarotSetManager.activeSets(player).contains(TarotSetRegistry.id(path));
+    private static boolean hasSet(
+            ServerPlayer player,
+            String path
+    ) {
+        return TarotSetManager.activeSets(player)
+                .contains(TarotSetRegistry.id(path));
     }
 
     private static int consumeAscetic(ServerPlayer player) {
-        AsceticState state = ASCETIC_STATES.computeIfAbsent(player.getUUID(),
-                ignored -> new AsceticState(gameTime(player) + 100L));
+        AsceticState state =
+                ASCETIC_STATES.computeIfAbsent(
+                        player.getUUID(),
+                        ignored ->
+                                new AsceticState(
+                                        gameTime(player) + 100L
+                                )
+                );
+
         int stacks = state.stacks;
+
         state.stacks = 0;
         state.lastAttackTime = gameTime(player);
-        state.nextStackTime = state.lastAttackTime + 100L;
+        state.nextStackTime =
+                state.lastAttackTime + 100L;
+
         return stacks;
     }
 
     private static void triggerIronWrist(ServerPlayer player) {
         CompoundTag data = player.getPersistentData();
         long now = gameTime(player);
+
         if (now < data.getLong(IRON_WRIST_READY)) {
             return;
         }
-        data.putLong(IRON_WRIST_READY, now + 200L);
-        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,
-                100, 3, false, true, true));
+
+        data.putLong(
+                IRON_WRIST_READY,
+                now + 200L
+        );
+
+        player.addEffect(
+                new MobEffectInstance(
+                        MobEffects.DAMAGE_RESISTANCE,
+                        100,
+                        3,
+                        false,
+                        true,
+                        true
+                )
+        );
     }
 
     private static void triggerMisfortune(ServerPlayer player) {
         MobEffect effect;
         int amplifier;
+
         switch (player.getRandom().nextInt(4)) {
             case 0 -> {
                 effect = MobEffects.REGENERATION;
                 amplifier = 3;
             }
+
             case 1 -> {
                 effect = MobEffects.MOVEMENT_SPEED;
                 amplifier = 1;
             }
+
             case 2 -> {
                 effect = MobEffects.DAMAGE_BOOST;
                 amplifier = 4;
             }
+
             default -> {
                 effect = MobEffects.WEAKNESS;
                 amplifier = 1;
             }
         }
-        player.addEffect(new MobEffectInstance(effect, 100, amplifier));
+
+        player.addEffect(
+                new MobEffectInstance(
+                        effect,
+                        100,
+                        amplifier
+                )
+        );
     }
 
-    private static boolean hasExternalAttacker(DamageSource source, ServerPlayer victim) {
-        var visited = Collections.newSetFromMap(new IdentityHashMap<Entity, Boolean>());
+    private static boolean hasExternalAttacker(
+            DamageSource source,
+            ServerPlayer victim
+    ) {
+        Set<Entity> visited =
+                Collections.newSetFromMap(
+                        new IdentityHashMap<>()
+                );
+
         if (source instanceof OwnedDamageSource owned) {
-            Entity owner = resolveAttacker(owned.getOwner(), visited);
+            Entity owner =
+                    resolveAttacker(
+                            owned.getOwner(),
+                            visited
+                    );
+
             if (owner != null) {
                 return owner != victim;
             }
         }
-        Entity attacker = resolveAttacker(source.getEntity(), visited);
+
+        Entity attacker =
+                resolveAttacker(
+                        source.getEntity(),
+                        visited
+                );
+
         if (attacker == null) {
-            attacker = resolveAttacker(source.getDirectEntity(), visited);
+            attacker =
+                    resolveAttacker(
+                            source.getDirectEntity(),
+                            visited
+                    );
         }
-        return attacker != null && attacker != victim;
+
+        return attacker != null
+                && attacker != victim;
     }
 
-    private static Entity resolveAttacker(Entity entity, Set<Entity> visited) {
+    private static Entity resolveAttacker(
+            Entity entity,
+            Set<Entity> visited
+    ) {
         if (entity == null || !visited.add(entity)) {
             return null;
         }
+
         if (entity instanceof Projectile projectile) {
-            return resolveAttacker(projectile.getOwner(), visited);
+            return resolveAttacker(
+                    projectile.getOwner(),
+                    visited
+            );
         }
+
         if (entity instanceof OwnableEntity ownable) {
-            return resolveAttacker(ownable.getOwner(), visited);
+            return resolveAttacker(
+                    ownable.getOwner(),
+                    visited
+            );
         }
+
         return entity;
     }
 
-    private static boolean belowHealth(ServerPlayer player, double fraction) {
+    private static boolean belowHealth(
+            ServerPlayer player,
+            double fraction
+    ) {
         return player.getMaxHealth() > 0.0F
-                && player.getHealth() < player.getMaxHealth() * fraction;
+                && player.getHealth()
+                < player.getMaxHealth() * fraction;
     }
 
     private static boolean isDay(ServerPlayer player) {
-        return Math.floorMod(player.level().getDayTime(), 24000L) < 12000L;
+        return Math.floorMod(
+                player.level().getDayTime(),
+                24000L
+        ) < 12000L;
     }
 
     private static long gameTime(ServerPlayer player) {
-        return player.serverLevel().getServer().overworld().getGameTime();
+        return player.serverLevel()
+                .getServer()
+                .overworld()
+                .getGameTime();
     }
 
-    private static float safeMultiply(float amount, double multiplier) {
+    private static float safeMultiply(
+            float amount,
+            double multiplier
+    ) {
         double result = amount * multiplier;
-        return Double.isFinite(result) ? (float) Math.min(result, Float.MAX_VALUE) : amount;
+
+        return Double.isFinite(result)
+                ? (float) Math.min(
+                        result,
+                        Float.MAX_VALUE
+                )
+                : amount;
     }
 
-    private record ModifierSpec(ResourceLocation setId, String name, UUID uuid,
-            Supplier<Attribute> attribute, double amount, AttributeModifier.Operation operation,
-            Predicate<ServerPlayer> condition) {
+    private record ModifierSpec(
+            ResourceLocation setId,
+            String name,
+            UUID uuid,
+            Supplier<Attribute> attribute,
+            double amount,
+            AttributeModifier.Operation operation,
+            Predicate<ServerPlayer> condition
+    ) {
     }
 
     private static final class AsceticState {

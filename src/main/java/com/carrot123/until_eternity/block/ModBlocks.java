@@ -2,6 +2,8 @@ package com.carrot123.until_eternity.block;
 
 import com.carrot123.until_eternity.until_eternity;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -22,6 +24,10 @@ public class ModBlocks {
             ImmortalAltarBlock::new);
     public static final RegistryObject<Block> END_CRAFTING_TABLE = BLOCKS.register("end_crafting_table",
             EndCraftingTableBlock::new);
+
+    public static final RegistryObject<Block> DIVINE_CALCITE = BLOCKS.register("divine_calcite",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.CALCITE)
+                    .strength(-1.0F, 3600000.0F)));
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);

@@ -62,6 +62,7 @@ public final class AllDamageCombatEvents {
             return amount;
         }
         double modified = (double) amount * multiplier;
+        modified = RedemptionCharmDamageLogic.amplify(attacker, target, modified);
         if (!Double.isFinite(modified)) {
             return amount;
         }

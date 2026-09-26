@@ -1,6 +1,7 @@
 package com.carrot123.until_eternity.item;
 
 import com.carrot123.until_eternity.compat.SummoningRitualsCompat;
+import com.carrot123.until_eternity.block.ModBlocks;
 
 import java.util.List;
 import java.util.Set;
@@ -68,6 +69,28 @@ public class FinalIngotPickaxe extends PickaxeItem {
             return super.useOn(context);
         }
 
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+
+        if (context.getHand() == InteractionHand.MAIN_HAND
+                && !player.isShiftKeyDown()
+                && level.getBlockState(pos).is(ModBlocks.DIVINE_CALCITE.get())) {
+            if (player.isSpectator()
+                    || !level.mayInteract(player, pos)
+                    || !player.mayUseItemAt(pos, context.getClickedFace(), context.getItemInHand())
+                    || player.getCooldowns().isOnCooldown(this)) {
+                return InteractionResult.FAIL;
+            }
+
+            if (level.isClientSide) {
+                return InteractionResult.SUCCESS;
+            }
+
+            return tryBreakUnbreakableBlock(level, pos, player)
+                    ? InteractionResult.SUCCESS
+                    : InteractionResult.FAIL;
+        }
+
         if (!player.isShiftKeyDown()) {
             return super.useOn(context);
         }
@@ -75,9 +98,6 @@ public class FinalIngotPickaxe extends PickaxeItem {
         if (player.getCooldowns().isOnCooldown(this)) {
             return InteractionResult.FAIL;
         }
-
-        Level level = context.getLevel();
-        BlockPos pos = context.getClickedPos();
 
         BlockState state = level.getBlockState(pos);
 
@@ -358,6 +378,11 @@ public class FinalIngotPickaxe extends PickaxeItem {
             return false;
         }
 
+        if (originalState.is(ModBlocks.DIVINE_CALCITE.get())
+                && serverLevel.getBlockState(pos).is(ModBlocks.DIVINE_CALCITE.get())) {
+            return false;
+        }
+
         serverLevel.levelEvent(
                 2001,
                 pos,
@@ -372,11 +397,6 @@ public class FinalIngotPickaxe extends PickaxeItem {
                             previousItemEntities
                     );
         } else if (guaranteedSelfDrop != null) {
-            /*
-             * Bedrock and EEEAB's Erosion Deepslate Bricks normally do not
-             * produce a usable block drop when destroyed. The Finalite
-             * Pickaxe explicitly guarantees one corresponding block item.
-             */
             Block.popResource(
                     serverLevel,
                     pos,
@@ -391,6 +411,10 @@ public class FinalIngotPickaxe extends PickaxeItem {
     private static Item getGuaranteedSelfDrop(
             BlockState state
     ) {
+        if (state.is(ModBlocks.DIVINE_CALCITE.get())) {
+            return ModItems.DIVINE_CALCITE.get();
+        }
+
         if (state.is(Blocks.BEDROCK)) {
             return Items.BEDROCK;
         }

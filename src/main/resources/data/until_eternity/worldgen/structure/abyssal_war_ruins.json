@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:jigsaw",
+  "type": "until_eternity:stable_end_jigsaw",
   "biomes": "#until_eternity:end_outer_islands",
   "step": "surface_structures",
   "terrain_adaptation": "none",

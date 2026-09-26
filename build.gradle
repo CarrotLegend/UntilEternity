@@ -401,7 +401,8 @@ tasks.register('verifyProductionKnifeArtifacts') {
                 'compat/revelationfix/ApostleRevelationFixStateTrueChefsKnifeMixin',
                 'compat/revelationfix/ApostleRevelationFixTrueChefsKnifeMixin',
                 'compat/revelationfix/SafeClassTrueChefsKnifeMixin',
-                'compat/revelationfix/AttackDamageChangeHandlerTrueChefsKnifeMixin'
+                'compat/revelationfix/AttackDamageChangeHandlerTrueChefsKnifeMixin',
+                'compat/revelationfix/LivingEntityOdamaneTargetingMixin'
         ]
         def commonEntries = [
                 'until_eternity.mixins.json',
@@ -499,6 +500,31 @@ tasks.register('verifyProductionKnifeArtifacts') {
             throw new GradleException(
                     'Mixin config lacks the EEEAB item renderer replacement')
         }
+        if (!config.contains('compat.revelationfix.LivingEntityOdamaneTargetingMixin') ||
+                config.contains('compat.revelationfix.LivingEntityHaloAttackMixin') ||
+                config.contains('compat.revelationfix.ATAHelper2HaloAttackMixin')) {
+            throw new GradleException('Halo targeting mixin config is not isolated')
+        }
+
+        File revelationFixJar = revelationFixCompileJar.get().asFile
+        def livingEntityMixin = new org.objectweb.asm.tree.ClassNode()
+        new org.objectweb.asm.ClassReader(readEntry(revelationFixJar,
+                'com/mega/revelationfix/mixin/LivingEntityMixin.class')).accept(livingEntityMixin, 0)
+        def canAttackHandler = livingEntityMixin.methods.findAll {
+            it.name == 'canAttack' &&
+                    it.desc == '(Lnet/minecraft/world/entity/LivingEntity;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfoReturnable;)V'
+        }
+        def odamaneCalls = canAttackHandler.size() == 1
+                ? canAttackHandler[0].instructions.toArray().findAll {
+                    it instanceof org.objectweb.asm.tree.MethodInsnNode &&
+                            it.owner == 'com/mega/revelationfix/util/entity/ATAHelper2' &&
+                            it.name == 'hasOdamane' &&
+                            it.desc == '(Lnet/minecraft/world/entity/Entity;)Z'
+                }
+                : []
+        if (odamaneCalls.size() != 1) {
+            throw new GradleException('RevelationFix canAttack handler no longer has exactly one Odamane call')
+        }
 
         def removedMixins = [
                 'TrueChefsKnifePlayerAttackMixin',
@@ -513,7 +539,9 @@ tasks.register('verifyProductionKnifeArtifacts') {
                 'compat/cataclysm/RoyalDraugrTrueChefsKnifeBlockMixin',
                 'compat/cataclysm/WadjetTrueChefsKnifeBlockMixin',
                 'compat/goety/VizierTrueChefsKnifeMixin',
-                'compat/legendary_monsters/LegendaryMonstersTrueChefsKnifeMixin'
+                'compat/legendary_monsters/LegendaryMonstersTrueChefsKnifeMixin',
+                'compat/revelationfix/LivingEntityHaloAttackMixin',
+                'compat/revelationfix/ATAHelper2HaloAttackMixin'
         ]
         def regularZip = new java.util.zip.ZipFile(regularJar)
         try {
@@ -525,6 +553,10 @@ tasks.register('verifyProductionKnifeArtifacts') {
                     throw new GradleException(
                             "Removed absolute-damage mixin is still packaged: ${mixin}")
                 }
+            }
+            if (regularZip.getEntry(
+                    'com/carrot123/until_eternity/compat/revelationfix/HaloAttackCheckGuard.class') != null) {
+                throw new GradleException('Removed HaloAttackCheckGuard is still packaged')
             }
         } finally {
             regularZip.close()

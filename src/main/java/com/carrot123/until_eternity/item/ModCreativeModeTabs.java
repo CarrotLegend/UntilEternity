@@ -35,6 +35,7 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.UNIVERSAL_SMITHING_TEMPLATE.get());
                 output.accept(ModItems.IMMORTAL_ALTAR.get());
                 output.accept(ModItems.END_CRAFTING_TABLE.get());
+                output.accept(ModItems.DIVINE_CALCITE.get());
                 output.accept(ModItems.MOB_CONTAINER.get());
                 output.accept(ModItems.SATURATED_EARTH_PARTICLE.get());
                 output.accept(ModItems.SATURATED_FIRE_PARTICLE.get());
@@ -50,6 +51,9 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.COSMIC_AEGIS.get());
                 output.accept(ModItems.EMPOWERED_SHIELD.get());
                 output.accept(ModItems.PROOF_OF_SPURNER.get());
+                output.accept(ModItems.REDEMPTION_STAR.get());
+                output.accept(ModItems.UNSTABLE_HALO.get());
+                output.accept(ModItems.KABBALAH_TREE.get());
                 output.accept(ModItems.CRYSTAL_OF_DRAWN_BOW.get());
                 output.accept(ModItems.SWORD_WRAITH.get());
                 output.accept(ModItems.WROUGHT_IRON.get());
@@ -122,6 +126,7 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.SPELL_POWER_UPGRADE_ORB.get());
                 output.accept(ModItems.TRUE_BEDROCK.get());
                 output.accept(ModItems.ANCIENT_SHIELD.get());
+                output.accept(ModItems.PERMAFROST_CRYSTAL.get());
             }).build());
 
     public static void register(IEventBus eventBus) {
