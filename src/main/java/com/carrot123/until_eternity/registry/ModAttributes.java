@@ -17,24 +17,47 @@ public final class ModAttributes {
             "attribute.name.until_eternity.focus_damage";
     public static final String ALL_DAMAGE_DESCRIPTION_ID =
             "attribute.name.until_eternity.all_damage";
+    public static final String CHARGE_SPEED_DESCRIPTION_ID =
+            "attribute.name.until_eternity.charge_speed";
 
     public static final DeferredRegister<Attribute> ATTRIBUTES =
-            DeferredRegister.create(ForgeRegistries.ATTRIBUTES,
-                    until_eternity.MODID);
+            DeferredRegister.create(
+                    ForgeRegistries.ATTRIBUTES,
+                    until_eternity.MODID
+            );
 
     public static final RegistryObject<Attribute> FOCUS_DAMAGE =
-            ATTRIBUTES.register("focus_damage", () -> new RangedAttribute(
-                    FOCUS_DAMAGE_DESCRIPTION_ID,
-                    1.0D,
-                    0.0D,
-                    32767.0D).setSyncable(true));
+            ATTRIBUTES.register(
+                    "focus_damage",
+                    () -> new RangedAttribute(
+                            FOCUS_DAMAGE_DESCRIPTION_ID,
+                            1.0D,
+                            0.0D,
+                            32767.0D
+                    ).setSyncable(true)
+            );
 
     public static final RegistryObject<Attribute> ALL_DAMAGE =
-            ATTRIBUTES.register("all_damage", () -> new RangedAttribute(
-                    ALL_DAMAGE_DESCRIPTION_ID,
-                    1.0D,
-                    0.0D,
-                    32767.0D).setSyncable(true));
+            ATTRIBUTES.register(
+                    "all_damage",
+                    () -> new RangedAttribute(
+                            ALL_DAMAGE_DESCRIPTION_ID,
+                            1.0D,
+                            0.0D,
+                            32767.0D
+                    ).setSyncable(true)
+            );
+
+    public static final RegistryObject<Attribute> CHARGE_SPEED =
+            ATTRIBUTES.register(
+                    "charge_speed",
+                    () -> new RangedAttribute(
+                            CHARGE_SPEED_DESCRIPTION_ID,
+                            1.0D,
+                            0.0D,
+                            32767.0D
+                    ).setSyncable(true)
+            );
 
     private ModAttributes() {
     }
@@ -45,7 +68,8 @@ public final class ModAttributes {
 
     @Mod.EventBusSubscriber(
             modid = until_eternity.MODID,
-            bus = Mod.EventBusSubscriber.Bus.MOD)
+            bus = Mod.EventBusSubscriber.Bus.MOD
+    )
     public static final class PlayerAttributes {
         private PlayerAttributes() {
         }
@@ -56,6 +80,7 @@ public final class ModAttributes {
         ) {
             event.add(EntityType.PLAYER, FOCUS_DAMAGE.get());
             event.add(EntityType.PLAYER, ALL_DAMAGE.get());
+            event.add(EntityType.PLAYER, CHARGE_SPEED.get());
         }
     }
 }
