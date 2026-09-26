@@ -7,8 +7,13 @@ public final class EnigmaticLegacyCompat {
     }
 
     public static void registerIfLoaded() {
-        if (ModList.get().isLoaded("enigmaticlegacy")) {
-            CursedScrollAttackSpeedEvents.register();
+        if (!ModList.get().isLoaded(
+                "enigmaticlegacy"
+        )) {
+            return;
         }
+
+        CursedScrollAttackSpeedEvents.register();
+        CursedScrollUpgradeEvents.register();
     }
 }

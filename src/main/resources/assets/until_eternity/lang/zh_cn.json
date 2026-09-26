@@ -381,5 +381,21 @@
   "tooltip.until_eternity.unstable_halo.effect": "攻击随机造成60%到200%的伤害，受幸运影响。",
   "tooltip.until_eternity.kabbalah_tree.line1": "\"王冠\"Keter、\"智慧\"Ḥokhmah、\"理解\"Bina、\"仁爱\"Ḥesed、\"严厉\"Gevurah",
   "tooltip.until_eternity.kabbalah_tree.line2": "\"美丽\"Tifʾeret、\"胜利\"Netzaḥ、\"荣耀\"Hod、\"基础\"Yesod、\"王国\"Malkhut",
-  "tooltip.until_eternity.kabbalah_tree.line3": "对受到伤害的生物造成伤害增加，其对你造成伤害降低"
+  "tooltip.until_eternity.kabbalah_tree.line3": "对受到伤害的生物造成伤害增加，其对你造成伤害降低",
+  "tooltip.until_eternity.cursed_scroll.damage_cap": "攻击增幅上限：%s",
+  "tooltip.until_eternity.cursed_scroll.damage_cap_unlimited": "攻击增幅上限：无限",
+  "tooltip.until_eternity.cursed_scroll.next_cap": "使用 %1$s 可将攻击增幅上限提升至 %2$s",
+  "tooltip.until_eternity.cursed_scroll.next_unlimited": "使用 %s 可解除攻击增幅上限",
+  "tooltip.until_eternity.cursed_scroll.fully_unlocked": "攻击增幅已完全解锁",
+  "message.until_eternity.cursed_scroll.cap_already_unlocked": "千咒卷轴已经拥有相同或更高的攻击增幅上限",
+  "message.until_eternity.cursed_scroll.upgraded": "千咒卷轴攻击增幅上限已提升至 %s",
+  "message.until_eternity.cursed_scroll.upgraded_unlimited": "千咒卷轴攻击增幅已解除上限",
+  "tooltip.until_eternity.blessing_scroll.damage_cap": "伤害增幅上限：%s",
+  "tooltip.until_eternity.blessing_scroll.damage_cap_unlimited": "伤害增幅上限：无限",
+  "tooltip.until_eternity.blessing_scroll.next_cap": "使用 %1$s 可将伤害增幅上限提升至 %2$s",
+  "tooltip.until_eternity.blessing_scroll.next_unlimited": "使用 %s 可解除伤害增幅上限",
+  "tooltip.until_eternity.blessing_scroll.fully_unlocked": "伤害增幅已完全解锁",
+  "message.until_eternity.blessing_scroll.cap_already_unlocked": "恩赐卷轴已经拥有相同或更高的伤害增幅上限",
+  "message.until_eternity.blessing_scroll.upgraded": "恩赐卷轴伤害增幅上限已提升至 %s",
+  "message.until_eternity.blessing_scroll.upgraded_unlimited": "恩赐卷轴伤害增幅已解除上限"
 }

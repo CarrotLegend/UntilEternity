@@ -367,5 +367,21 @@
   "tooltip.until_eternity.unstable_halo.effect": "Attacks randomly deal 60% to 200% damage, influenced by Luck.",
   "tooltip.until_eternity.kabbalah_tree.line1": "\"Crown\" Keter, \"Wisdom\" Ḥokhmah, \"Understanding\" Bina, \"Mercy\" Ḥesed, \"Severity\" Gevurah",
   "tooltip.until_eternity.kabbalah_tree.line2": "\"Beauty\" Tifʾeret, \"Victory\" Netzaḥ, \"Glory\" Hod, \"Foundation\" Yesod, \"Kingdom\" Malkhut",
-  "tooltip.until_eternity.kabbalah_tree.line3": "Deal more damage to afflicted creatures; they deal less damage to you."
+  "tooltip.until_eternity.kabbalah_tree.line3": "Deal more damage to afflicted creatures; they deal less damage to you.",
+  "tooltip.until_eternity.cursed_scroll.damage_cap": "攻击增幅上限：%s",
+  "tooltip.until_eternity.cursed_scroll.damage_cap_unlimited": "攻击增幅上限：无限",
+  "tooltip.until_eternity.cursed_scroll.next_cap": "使用 %1$s 可将攻击增幅上限提升至 %2$s",
+  "tooltip.until_eternity.cursed_scroll.next_unlimited": "使用 %s 可解除攻击增幅上限",
+  "tooltip.until_eternity.cursed_scroll.fully_unlocked": "攻击增幅已完全解锁",
+  "message.until_eternity.cursed_scroll.cap_already_unlocked": "千咒卷轴已经拥有相同或更高的攻击增幅上限",
+  "message.until_eternity.cursed_scroll.upgraded": "千咒卷轴攻击增幅上限已提升至 %s",
+  "message.until_eternity.cursed_scroll.upgraded_unlimited": "千咒卷轴攻击增幅已解除上限",
+  "tooltip.until_eternity.blessing_scroll.damage_cap": "Damage bonus cap: %s",
+  "tooltip.until_eternity.blessing_scroll.damage_cap_unlimited": "Damage bonus cap: Unlimited",
+  "tooltip.until_eternity.blessing_scroll.next_cap": "Use %1$s to raise the damage bonus cap to %2$s",
+  "tooltip.until_eternity.blessing_scroll.next_unlimited": "Use %s to remove the damage bonus cap",
+  "tooltip.until_eternity.blessing_scroll.fully_unlocked": "Damage bonus fully unlocked",
+  "message.until_eternity.blessing_scroll.cap_already_unlocked": "Blessing Scroll already has the same or a higher damage bonus cap",
+  "message.until_eternity.blessing_scroll.upgraded": "Blessing Scroll damage bonus cap raised to %s",
+  "message.until_eternity.blessing_scroll.upgraded_unlimited": "Blessing Scroll damage bonus cap removed"
 }

@@ -402,7 +402,9 @@ tasks.register('verifyProductionKnifeArtifacts') {
                 'compat/revelationfix/ApostleRevelationFixTrueChefsKnifeMixin',
                 'compat/revelationfix/SafeClassTrueChefsKnifeMixin',
                 'compat/revelationfix/AttackDamageChangeHandlerTrueChefsKnifeMixin',
-                'compat/revelationfix/LivingEntityOdamaneTargetingMixin'
+                'compat/revelationfix/LivingEntityOdamaneTargetingMixin',
+                'compat/revelationfix/BlessingScrollDamageCapMixin',
+                'compat/revelationfix/BlessingScrollTooltipCapMixin'
         ]
         def commonEntries = [
                 'until_eternity.mixins.json',
@@ -505,6 +507,10 @@ tasks.register('verifyProductionKnifeArtifacts') {
                 config.contains('compat.revelationfix.ATAHelper2HaloAttackMixin')) {
             throw new GradleException('Halo targeting mixin config is not isolated')
         }
+        if (!config.contains('compat.revelationfix.BlessingScrollDamageCapMixin') ||
+                !config.contains('compat.revelationfix.BlessingScrollTooltipCapMixin')) {
+            throw new GradleException('Blessing Scroll mixins are missing from the production config')
+        }
 
         File revelationFixJar = revelationFixCompileJar.get().asFile
         def livingEntityMixin = new org.objectweb.asm.tree.ClassNode()
@@ -524,6 +530,36 @@ tasks.register('verifyProductionKnifeArtifacts') {
                 : []
         if (odamaneCalls.size() != 1) {
             throw new GradleException('RevelationFix canAttack handler no longer has exactly one Odamane call')
+        }
+
+        def blessingHandler = new org.objectweb.asm.tree.ClassNode()
+        new org.objectweb.asm.ClassReader(readEntry(revelationFixJar,
+                'com/mega/revelationfix/common/item/curios/enigmtic_legacy/BlessingScroll$CuriosHandler.class')).accept(blessingHandler, 0)
+        def blessingHurt = blessingHandler.methods.findAll {
+            it.name == 'livingHurt' &&
+                    it.desc == '(Lnet/minecraftforge/event/entity/living/LivingHurtEvent;)V'
+        }
+        def blessingSetAmount = blessingHurt.size() == 1
+                ? blessingHurt[0].instructions.toArray().findAll {
+                    it instanceof org.objectweb.asm.tree.MethodInsnNode &&
+                            it.owner == 'net/minecraftforge/event/entity/living/LivingHurtEvent' &&
+                            it.name == 'setAmount' && it.desc == '(F)V'
+                } : []
+        if (blessingSetAmount.size() != 1) {
+            throw new GradleException('Blessing Scroll hurt handler no longer has one setAmount call')
+        }
+        def blessingItem = new org.objectweb.asm.tree.ClassNode()
+        new org.objectweb.asm.ClassReader(readEntry(revelationFixJar,
+                'com/mega/revelationfix/common/item/curios/enigmtic_legacy/BlessingScroll.class')).accept(blessingItem, 0)
+        def blessingTooltip = blessingItem.methods.findAll {
+            it.name == 'lambda$new$5' &&
+                    it.desc == '(Lnet/minecraft/world/item/ItemStack;)Ljava/lang/Object;'
+        }
+        if (blessingTooltip.size() != 1 || !blessingTooltip[0].instructions.toArray().any {
+            it instanceof org.objectweb.asm.tree.FieldInsnNode &&
+                    it.name == 'blessingScrollDamageBoost'
+        }) {
+            throw new GradleException('Blessing Scroll dynamic damage tooltip changed')
         }
 
         def removedMixins = [
