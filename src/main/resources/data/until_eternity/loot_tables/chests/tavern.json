@@ -1,0 +1,123 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 4.0,
+        "max": 8.0
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:wine"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:champagne"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:vodka"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:brandy"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:carignan"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:sakura_wine"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:plum_wine"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:whiskey"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:ice_wine"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:polaris_sweet_white"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:honey_wine"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:red_queen"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:miners_star"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:rum"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:riesling_dry_white"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:sunset_glow"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:madame_shexiang"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:sweet_berry_wine"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:sherry"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:mother_snow"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:luminous_bride"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:glowflower_brew"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:sauvignon_blanc_dry_white"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.75
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "until_eternity:tavern_owner_diary"
+        }
+      ]
+    }
+  ]
+}

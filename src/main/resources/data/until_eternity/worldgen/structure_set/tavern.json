@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "until_eternity:tavern",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 193746821,
+    "spacing": 60,
+    "separation": 40
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "until_eternity:plains_settlement",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 172839451,
+    "spacing": 48,
+    "separation": 24
+  }
+}

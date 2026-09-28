@@ -1,0 +1,382 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 7.0,
+        "max": 10.0
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:barbecue_stick",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:egg_sandwich",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:chicken_sandwich",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:hamburger",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:bacon_sandwich",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:mutton_wrap",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:dumplings",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:stuffed_potato",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:cabbage_rolls",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:salmon_roll",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:cod_roll",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:kelp_roll_slice",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 6.0,
+        "max": 9.0
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:cooked_rice"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:mixed_salad"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:beef_stew"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:chicken_soup"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:vegetable_soup"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:fish_stew"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:fried_rice"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:pumpkin_soup"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:baked_cod_stew"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:noodle_soup"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:bone_broth"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:bacon_and_eggs"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:pasta_with_meatballs"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:pasta_with_mutton_chop"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:roasted_mutton_chops"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:steak_and_potatoes"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:vegetable_noodles"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:ratatouille"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:squid_ink_pasta"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:grilled_salmon"
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 4.0,
+        "max": 7.0
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:fruit_salad"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:sweet_berry_cookie",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:honey_cookie",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:melon_popsicle",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:glow_berry_custard",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:apple_pie_slice",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:sweet_berry_cheesecake_slice",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "farmersdelight:chocolate_pie_slice",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 3,
+      "bonus_rolls": 2.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "terra_curio:blindfold"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "terra_curio:flashlight"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "terra_curio:trifold_map"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "terra_curio:shot_put"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "artifacts:everlasting_beef"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "artifacts:plastic_drinking_hat"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "artifacts:night_vision_goggles"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "artifacts:feral_claws"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "artifacts:steadfast_spikes"
+        }
+      ]
+    }
+  ]
+}

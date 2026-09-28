@@ -1,0 +1,81 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 3.0,
+        "max": 6.0
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:wine",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:sakura_wine",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:plum_wine",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:ice_wine",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:honey_wine",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:sweet_berry_wine",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1.0,
+        "max": 3.0
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:watermelon_juice",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:vinegar",
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.2
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_tavern:molotov"
+        }
+      ]
+    }
+  ]
+}

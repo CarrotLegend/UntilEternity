@@ -2,7 +2,9 @@ package com.carrot123.until_eternity.network;
 
 import com.carrot123.until_eternity.until_eternity;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public final class ModNetworking {
@@ -11,7 +13,10 @@ public final class ModNetworking {
 
     public static final SimpleChannel CHANNEL =
             NetworkRegistry.newSimpleChannel(
-                    new ResourceLocation(until_eternity.MODID, "main"),
+                    new ResourceLocation(
+                            until_eternity.MODID,
+                            "main"
+                    ),
                     () -> PROTOCOL_VERSION,
                     PROTOCOL_VERSION::equals,
                     PROTOCOL_VERSION::equals
@@ -37,12 +42,37 @@ public final class ModNetworking {
                 TrueBedrockActivationS2CPacket::decode,
                 TrueBedrockActivationS2CPacket::handle
         );
+
         CHANNEL.registerMessage(
                 packetId++,
                 SyncTarotDeckS2CPacket.class,
                 SyncTarotDeckS2CPacket::encode,
                 SyncTarotDeckS2CPacket::decode,
                 SyncTarotDeckS2CPacket::handle
+        );
+
+        CHANNEL.registerMessage(
+                packetId++,
+                EntityHurtAnimS2CPacket.class,
+                EntityHurtAnimS2CPacket::encode,
+                EntityHurtAnimS2CPacket::decode,
+                EntityHurtAnimS2CPacket::handle
+        );
+    }
+
+    public static void sendHurtAnimation(
+            LivingEntity entity
+    ) {
+        if (entity.level().isClientSide) {
+            return;
+        }
+
+        CHANNEL.send(
+                PacketDistributor.TRACKING_ENTITY_AND_SELF
+                        .with(() -> entity),
+                new EntityHurtAnimS2CPacket(
+                        entity.getId()
+                )
         );
     }
 }

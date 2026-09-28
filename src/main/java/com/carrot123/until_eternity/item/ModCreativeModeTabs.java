@@ -127,6 +127,7 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.TRUE_BEDROCK.get());
                 output.accept(ModItems.ANCIENT_SHIELD.get());
                 output.accept(ModItems.PERMAFROST_CRYSTAL.get());
+                output.accept(ModItems.TAVERN_OWNER_DIARY.get());
             }).build());
 
     public static void register(IEventBus eventBus) {

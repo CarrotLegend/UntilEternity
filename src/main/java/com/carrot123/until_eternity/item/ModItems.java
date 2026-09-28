@@ -23,6 +23,7 @@ import com.carrot123.until_eternity.item.curio.ProofOfSpurnerItem;
 import com.carrot123.until_eternity.item.lore.LoreBookItem;
 import com.carrot123.until_eternity.until_eternity;
 import com.carrot123.until_eternity.item.curio.HeadChefGlovesItem;
+import com.carrot123.until_eternity.item.TavernOwnerDiaryItem;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.item.UpgradeOrbItem;
 import io.redspace.ironsspellbooks.item.armor.UpgradeOrbType;
@@ -301,6 +302,11 @@ public class ModItems {
             "permafrost_crystal",
             () -> new AttributeCurioItem(new Item.Properties().stacksTo(1),
                     CurioAttributeProfile.PERMAFROST_CRYSTAL, "bracelet"));
+    public static final RegistryObject<Item> TAVERN_OWNER_DIARY = ITEMS.register(
+        "tavern_owner_diary",
+        () -> new TavernOwnerDiaryItem(new Item.Properties())
+);
+
     private static ResourceLocation goetyRevelationAttribute(String path) {
         return new ResourceLocation("goety_revelation", path);
     }

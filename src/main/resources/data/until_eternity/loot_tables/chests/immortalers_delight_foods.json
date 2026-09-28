@@ -1,0 +1,320 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 7.0,
+        "max": 10.0
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:roast_evolutcorn",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:roast_evolutcorn_chops",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:popolutcorn",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:cretaceous_zea_ball",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:colorful_grilled_skewers",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:zea_pancake_slice",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:evolutcorn_bread",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:evolutcorn_jiaozi",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:stuffed_poisonous_potato",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:pufferfish_roll",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 6.0,
+        "max": 9.0
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:peatic_musa_salad"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:pearlipearl_eggsteam"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:mashed_potatoes"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:mashed_potato_with_jam"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:braised_spider_eyes_in_gravy"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:meaty_rotten_tomato_broth"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:bowl_of_stewed_rotten_meat_in_clay_pot"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:tartare_chicken"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:himekaido_chazuke"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:banana_box_salmon"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:banana_box_cod"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:pearlip_rice_roll_boat"
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 5.0,
+        "max": 7.0
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:pearlip_jelly",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:ice_pearlip",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:chocolate_pearlip_sticks",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:perfect_summer_ice"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:twilight_gelato"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:himekaido_yogurt_pie_slice",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:giant_tart_slice",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:scarlet_gelato"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:scarlet_sundae"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "immortalers_delight:himekandy",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

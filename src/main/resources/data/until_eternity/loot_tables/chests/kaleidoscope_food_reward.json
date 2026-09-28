@@ -1,0 +1,319 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 6.0,
+        "max": 9.0
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:baozi",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:zongzi",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:bamboo_tube_rice"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:beef_noodle"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:beef_meatball_soup"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:braised_beef_rice_bowl"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:braised_beef_with_potatoes"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:braised_pork_ribs"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:chicken_and_mushroom_stew"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:sweet_and_sour_pork"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:sweet_and_sour_pork_rice_bowl"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:wild_mushroom_rabbit_soup"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:tundra_style_sashimi"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:borscht"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:blaze_lamb_chop"
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 6.0,
+        "max": 9.0
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:wonton_noodles"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:sichuan_wonton"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:yangrou_paomo"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:lamb_pilaf"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:yangzhou_fried_rice"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:big_plate_chicken"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:big_plate_chicken_noodles"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:dry_pot_chicken"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:dry_pot_spare_ribs"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:dry_pot_potatoes"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:sichuan_boiled_fish"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:sichuan_boiled_pork_slices"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:four_joy_meatballs"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:beef_with_scrambled_eggs_rice"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:stir_fried_yellow_beef_rice"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:stir_fried_three_fresh_vegetables_rice"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:sauerkraut_beef_noodles"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:yellow_croaker_tofu_soup"
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 3.0,
+        "max": 5.0
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:candied_potato",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:mooncake",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:steamed_rice_rolls",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:red_rice_roll",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:century_egg",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:salted_egg",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:hk_milk_tea"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:barley_tea"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:biluochun"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:tieguanyin"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.1
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:golden_apple_platter"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.08
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_cookery:buddha_jumps_over_the_wall"
+        }
+      ]
+    }
+  ]
+}
