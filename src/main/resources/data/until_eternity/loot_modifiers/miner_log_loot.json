@@ -1,0 +1,13 @@
+{
+  "type": "until_eternity:miner_log_loot",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "until_eternity:chests/ore_mining_center"
+    },
+    {
+      "condition": "minecraft:random_chance",
+      "chance": 0.45
+    }
+  ]
+}

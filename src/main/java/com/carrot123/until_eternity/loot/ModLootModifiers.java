@@ -19,6 +19,11 @@ public final class ModLootModifiers {
                     "plenitude_loot",
                     () -> PlenitudeLootModifier.CODEC);
 
+    public static final RegistryObject<Codec<? extends IGlobalLootModifier>>
+            MINER_LOG_LOOT = LOOT_MODIFIER_SERIALIZERS.register(
+                    "miner_log_loot",
+                    () -> MinerLogLootModifier.CODEC);
+
     private ModLootModifiers() {
     }
 

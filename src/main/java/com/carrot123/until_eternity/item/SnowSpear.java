@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class SnowSpear extends SwordItem {
-    public static final float BASE_ATTACK_DAMAGE = 213.0F;
+    public static final float BASE_ATTACK_DAMAGE = 199.0F;
     private static final float PLAYER_BASE_ATTACK_DAMAGE = 1.0F;
 
     public SnowSpear(

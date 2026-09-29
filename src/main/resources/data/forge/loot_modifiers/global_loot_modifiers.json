@@ -1,6 +1,7 @@
 {
   "replace": false,
   "entries": [
-    "until_eternity:plenitude_loot"
+    "until_eternity:plenitude_loot",
+    "until_eternity:miner_log_loot"
   ]
 }

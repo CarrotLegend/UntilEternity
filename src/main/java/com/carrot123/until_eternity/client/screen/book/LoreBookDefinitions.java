@@ -17,16 +17,18 @@ final class LoreBookDefinitions {
     static final BookDefinition MINER_LOG =
             new BookDefinition(
                     "item.until_eternity.miner_log",
-                    texture("miner_log.png"),
-                    texture("miner_log_buttons.png"),
+                    texture("END_book_GUI.png"),
+                    texture("END_butten_GUI.png"),
 
                     256,
                     192,
+                    128,
+                    96,
 
-                    38,
-                    17,
-                    180,
-                    166,
+                    26,
+                    35,
+                    204,
+                    162,
 
                     0x49315E,
                     0x29202D,
@@ -34,95 +36,20 @@ final class LoreBookDefinitions {
 
                     true,
 
-                    true,
+                    false,
 
                     12,
 
                     List.of(
-                            illustrated(
-                                    "miner_log",
-                                    1,
-                                    "end_cave"
-                            ),
-                            illustrated(
-                                    "miner_log",
-                                    2,
-                                    "strange_vein"
-                            ),
-                            illustrated(
-                                    "miner_log",
-                                    3,
-                                    "obsidian_pillars"
-                            ),
-                            illustrated(
-                                    "miner_log",
-                                    4,
-                                    "enderman_notes"
-                            ),
+                            page("miner_log", 1),
+                            page("miner_log", 2),
+                            minerPage(3, "body.1", "body.2", "emphasis.1", "body.3"),
+                            page("miner_log", 4),
                             page(
                                     "miner_log",
                                     5
                             ),
-                            page(
-                                    "miner_log",
-                                    6
-                            )
-                    )
-            );
-
-    static final BookDefinition DAMP_DIARY =
-            new BookDefinition(
-                    "item.until_eternity.damp_diary",
-                    texture("damp_diary.png"),
-                    texture("damp_diary_buttons.png"),
-
-                    256,
-                    192,
-
-                    50,
-                    17,
-                    166,
-                    166,
-
-                    0x30483E,
-                    0x202E29,
-                    0x496759,
-
-                    true,
-
-                    true,
-
-                    12,
-
-                    List.of(
-                            illustrated(
-                                    "damp_diary",
-                                    1,
-                                    "wet_corridor"
-                            ),
-                            page(
-                                    "damp_diary",
-                                    2
-                            ),
-                            illustrated(
-                                    "damp_diary",
-                                    3,
-                                    "broken_brazier"
-                            ),
-                            illustrated(
-                                    "damp_diary",
-                                    4,
-                                    "crest_fragment"
-                            ),
-                            illustrated(
-                                    "damp_diary",
-                                    5,
-                                    "flooded_map"
-                            ),
-                            page(
-                                    "damp_diary",
-                                    6
-                            )
+                            minerPage(6, "body.1", "body.2", "emphasis.1", "body.3", "emphasis.2")
                     )
             );
 
@@ -150,17 +77,19 @@ final class LoreBookDefinitions {
 
         return new BookDefinition(
                 "item.until_eternity." + id,
-                texture(id + ".png"),
+                texture("END_paper_GUI.png"),
 
                 null,
 
+                256,
                 192,
-                192,
+                128,
+                96,
 
-                28,
-                23,
-                136,
-                150,
+                80,
+                26,
+                96,
+                166,
 
                 0x60452F,
                 0x382A21,
@@ -213,6 +142,15 @@ final class LoreBookDefinitions {
                 root + ".body.1",
                 root + ".body.2"
         );
+    }
+
+    private static BookPageData minerPage(int page, String... parts) {
+        String root = "gui.until_eternity.lore_book.miner_log.page." + page;
+        String[] keys = new String[parts.length];
+        for (int index = 0; index < parts.length; index++) {
+            keys[index] = root + "." + parts[index];
+        }
+        return BookPageData.text(root + ".title", keys);
     }
 
     private static ResourceLocation texture(

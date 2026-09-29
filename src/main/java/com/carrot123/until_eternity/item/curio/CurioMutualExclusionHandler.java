@@ -17,24 +17,33 @@ import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = "until_eternity", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class CurioMutualExclusionHandler {
+
     private static final Set<ResourceLocation> SHIELD_GROUP = Set.of(
             id("empowered_shield"),
             id("cosmic_aegis"),
             TerraCurioCompat.ANKH_SHIELD
     );
+
     private static final Set<ResourceLocation> SHARK_TOOTH_GROUP = Set.of(
             id("reaper_tooth_necklace"),
             id("sand_shark_tooth_necklace"),
             TerraCurioCompat.SHARK_TOOTH_NECKLACE
     );
+
     private static final Set<ResourceLocation> LIFE_CHARM_GROUP = Set.of(
             id("regenerator"),
             id("guttering_candle")
     );
+
+    private static final Set<ResourceLocation> DARK_CAGE_GROUP = Set.of(
+            id("dark_cage")
+    );
+
     private static final List<Set<ResourceLocation>> GROUPS = List.of(
             SHIELD_GROUP,
             SHARK_TOOTH_GROUP,
-            LIFE_CHARM_GROUP
+            LIFE_CHARM_GROUP,
+            DARK_CAGE_GROUP
     );
 
     private CurioMutualExclusionHandler() {
@@ -47,56 +56,100 @@ public final class CurioMutualExclusionHandler {
         }
     }
 
-    public static boolean canEquip(SlotContext targetContext, ItemStack candidate) {
+    public static boolean canEquip(
+            SlotContext targetContext,
+            ItemStack candidate
+    ) {
         if (candidate.isEmpty()
                 || targetContext == null
                 || targetContext.entity() == null) {
             return true;
         }
 
-        ResourceLocation candidateId = ForgeRegistries.ITEMS.getKey(candidate.getItem());
-        Set<ResourceLocation> candidateGroup = findGroup(candidateId);
+        ResourceLocation candidateId =
+                ForgeRegistries.ITEMS.getKey(
+                        candidate.getItem()
+                );
+
+        Set<ResourceLocation> candidateGroup =
+                findGroup(candidateId);
+
         if (candidateGroup == null) {
             return true;
         }
 
-        return CuriosApi.getCuriosInventory(targetContext.entity()).map(handler -> {
-            for (var entry : handler.getCurios().entrySet()) {
-                var stacksHandler = entry.getValue();
-                IDynamicStackHandler stacks = stacksHandler.getStacks();
-                for (int index = 0; index < stacks.getSlots(); index++) {
-                    if (entry.getKey().equals(targetContext.identifier())
-                            && index == targetContext.index()) {
-                        continue;
-                    }
+        return CuriosApi
+                .getCuriosInventory(
+                        targetContext.entity()
+                )
+                .map(handler -> {
+                    for (var entry :
+                            handler.getCurios().entrySet()) {
 
-                    ItemStack equipped = stacks.getStackInSlot(index);
-                    if (!equipped.isEmpty()) {
-                        ResourceLocation equippedId =
-                                ForgeRegistries.ITEMS.getKey(equipped.getItem());
-                        if (candidateGroup.contains(equippedId)) {
-                            return false;
+                        var stacksHandler =
+                                entry.getValue();
+
+                        IDynamicStackHandler stacks =
+                                stacksHandler.getStacks();
+
+                        for (int index = 0;
+                             index < stacks.getSlots();
+                             index++) {
+
+                            if (entry.getKey().equals(
+                                    targetContext.identifier()
+                            ) && index == targetContext.index()) {
+                                continue;
+                            }
+
+                            ItemStack equipped =
+                                    stacks.getStackInSlot(index);
+
+                            if (equipped.isEmpty()) {
+                                continue;
+                            }
+
+                            ResourceLocation equippedId =
+                                    ForgeRegistries.ITEMS
+                                            .getKey(
+                                                    equipped.getItem()
+                                            );
+
+                            if (candidateGroup.contains(
+                                    equippedId
+                            )) {
+                                return false;
+                            }
                         }
                     }
-                }
-            }
-            return true;
-        }).orElse(true);
+
+                    return true;
+                })
+                .orElse(true);
     }
 
-    static Set<ResourceLocation> findGroup(ResourceLocation itemId) {
+    static Set<ResourceLocation> findGroup(
+            ResourceLocation itemId
+    ) {
         if (itemId == null) {
             return null;
         }
+
         for (Set<ResourceLocation> group : GROUPS) {
             if (group.contains(itemId)) {
                 return group;
             }
         }
+
         return null;
     }
 
-    private static ResourceLocation id(String path) {
-        return new ResourceLocation("until_eternity", path);
+    private static ResourceLocation id(
+            String path
+    ) {
+        return new ResourceLocation(
+                "until_eternity",
+                path
+        );
     }
 }

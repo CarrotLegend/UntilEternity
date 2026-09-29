@@ -19,6 +19,9 @@ public abstract class BaseSpawnerMixin {
     private static final ResourceLocation UNTIL_ETERNITY$CURSED_INFUSER =
             new ResourceLocation("goety", "cursed_infuser");
 
+    private static final ResourceLocation UNTIL_ETERNITY$GRIM_INFUSER =
+            new ResourceLocation("goety", "grim_infuser");
+
     @Inject(
             method = {
                     "serverTick",
@@ -33,7 +36,7 @@ public abstract class BaseSpawnerMixin {
             BlockPos pos,
             CallbackInfo ci
     ) {
-        if (untilEternity$hasCursedInfuserAbove(level, pos)) {
+        if (untilEternity$hasInfuserAbove(level, pos)) {
             ci.cancel();
         }
     }
@@ -52,7 +55,7 @@ public abstract class BaseSpawnerMixin {
             BlockPos pos,
             CallbackInfo ci
     ) {
-        if (untilEternity$hasCursedInfuserAbove(level, pos)) {
+        if (untilEternity$hasInfuserAbove(level, pos)) {
             ci.cancel();
         }
     }
@@ -97,7 +100,7 @@ public abstract class BaseSpawnerMixin {
         return true;
     }
 
-    private static boolean untilEternity$hasCursedInfuserAbove(
+    private static boolean untilEternity$hasInfuserAbove(
             Level level,
             BlockPos spawnerPos
     ) {
@@ -105,6 +108,7 @@ public abstract class BaseSpawnerMixin {
                 level.getBlockState(spawnerPos.above()).getBlock()
         );
 
-        return UNTIL_ETERNITY$CURSED_INFUSER.equals(id);
+        return UNTIL_ETERNITY$CURSED_INFUSER.equals(id)
+                || UNTIL_ETERNITY$GRIM_INFUSER.equals(id);
     }
 }

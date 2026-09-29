@@ -99,17 +99,19 @@ abstract class AbstractLoreBookScreen extends Screen {
 
         renderBackground(graphics);
 
-        graphics.blit(
-                definition.background(),
-                leftPos,
-                topPos,
-                0,
-                0,
-                definition.width(),
-                definition.height(),
-                definition.width(),
-                definition.height()
+        graphics.pose().pushPose();
+        graphics.pose().translate(leftPos, topPos, 0);
+        graphics.pose().scale(
+                (float) definition.width() / definition.textureWidth(),
+                (float) definition.height() / definition.textureHeight(),
+                1
         );
+        graphics.blit(
+                definition.background(), 0, 0, 0, 0,
+                definition.textureWidth(), definition.textureHeight(),
+                definition.textureWidth(), definition.textureHeight()
+        );
+        graphics.pose().popPose();
 
         if (definition.twoPageSpread()) {
             renderSpread(graphics);

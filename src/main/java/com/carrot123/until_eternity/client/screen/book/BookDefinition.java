@@ -10,6 +10,8 @@ public record BookDefinition(
         ResourceLocation buttons,
         int width,
         int height,
+        int textureWidth,
+        int textureHeight,
         int contentLeft,
         int contentTop,
         int contentWidth,

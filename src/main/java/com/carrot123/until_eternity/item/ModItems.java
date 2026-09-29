@@ -176,7 +176,7 @@ public class ModItems {
     public static final RegistryObject<Item> MINER_LOG = ITEMS.register("miner_log",
             () -> new LoreBookItem(LoreBookItem.Type.MINER_LOG));
     public static final RegistryObject<Item> DAMP_DIARY = ITEMS.register("damp_diary",
-            () -> new LoreBookItem(LoreBookItem.Type.DAMP_DIARY));
+            DampDiaryItem::new);
     public static final RegistryObject<Item> TORN_PAPER_1 = ITEMS.register("torn_paper_1",
             () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_1));
     public static final RegistryObject<Item> TORN_PAPER_2 = ITEMS.register("torn_paper_2",

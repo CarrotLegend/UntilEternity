@@ -1,9 +1,9 @@
 package com.carrot123.until_eternity.item;
 
 import com.carrot123.until_eternity.client.ClientBookOpener;
+import com.carrot123.until_eternity.item.lore.ReadableWrittenBookFactory;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
@@ -12,7 +12,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 public class TavernOwnerDiaryItem extends Item {
@@ -37,14 +36,6 @@ public class TavernOwnerDiaryItem extends Item {
     }
 
     public static ItemStack createReadableBook() {
-        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-
-        CompoundTag tag = new CompoundTag();
-        tag.putString("title", "酒馆老板日记");
-        tag.putString("author", "酒馆老板");
-        tag.putInt("generation", 0);
-        tag.putBoolean("resolved", true);
-
         ListTag pages = new ListTag();
 
         addPage(
@@ -600,10 +591,7 @@ public class TavernOwnerDiaryItem extends Item {
                 "我已经等够了。"
         );
 
-        tag.put("pages", pages);
-        book.setTag(tag);
-
-        return book;
+        return ReadableWrittenBookFactory.create("酒馆老板日记", "酒馆老板", pages);
     }
 
     private static void addPage(ListTag pages, String title, String body) {

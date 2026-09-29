@@ -14,7 +14,6 @@ public final class LoreBookClient {
         Minecraft minecraft = Minecraft.getInstance();
         minecraft.setScreen(switch (type) {
             case MINER_LOG -> new MinerLogScreen();
-            case DAMP_DIARY -> new DampDiaryScreen();
             case TORN_PAPER_1, TORN_PAPER_2, TORN_PAPER_3, TORN_PAPER_4, TORN_PAPER_5 ->
                     new TornPaperScreen(type);
         });

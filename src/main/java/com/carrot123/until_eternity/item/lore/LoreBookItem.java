@@ -30,7 +30,6 @@ public final class LoreBookItem extends Item {
 
     public enum Type {
         MINER_LOG,
-        DAMP_DIARY,
         TORN_PAPER_1,
         TORN_PAPER_2,
         TORN_PAPER_3,

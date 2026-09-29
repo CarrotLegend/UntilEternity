@@ -51,6 +51,7 @@
     "compat.goety.IronHideSpellMixin",
     "compat.goetyrevelation.QuietusStarPropertiesMixin",
     "compat.goetyrevelation.CommonEventHandlerPuzzleWhitelistMixin",
+    "compat.goetyrevelation.BowOfRevelationArrowEffectMixin",
     "compat.revelationfix.LivingEntityOdamaneTargetingMixin",
     "compat.revelationfix.BlessingScrollDamageCapMixin",
     "compat.revelationfix.BlessingScrollTooltipCapMixin",
