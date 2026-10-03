@@ -1,0 +1,34 @@
+{
+  "type": "until_eternity:end_crafting",
+  "pattern": [
+    "  Z  ",
+    " ABA",
+    "ZPDPZ",
+    " AEA",
+    "  Z  "
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "D": {
+      "item": "irons_spellbooks:divine_soulshard"
+    },
+    "Z": {
+      "item": "aether:zanite_gemstone"
+    },
+    "B": {
+      "item": "goety_revelation:bow_of_revelation"
+    },
+    "P": {
+      "item": "eternal_trinkets:purpur_ingot"
+    },
+    "E": {
+      "item": "legendary_monsters:enderitium_ingot"
+    }
+  },
+  "result": {
+    "item": "eternal_career:crystal_of_drawn_bow",
+    "count": 1
+  }
+}

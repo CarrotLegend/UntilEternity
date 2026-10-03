@@ -17,6 +17,9 @@ public final class UntilEternityMixinPlugin
     private static final String AETHER_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.aether.";
 
+    private static final String AETHERS_DELIGHT_COMPAT =
+            "com.carrot123.until_eternity.mixin.compat.aethersdelight.";
+
     private static final String SUMMONING_RITUALS_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.summoningrituals.";
 
@@ -65,55 +68,87 @@ public final class UntilEternityMixinPlugin
             String targetClassName,
             String mixinClassName
     ) {
-        if (mixinClassName.startsWith(AETHER_COMPAT)) {
-            return isModLoaded("aether");
+        if (mixinClassName.startsWith(
+                AETHER_COMPAT
+        )) {
+            return isModLoaded(
+                    "aether"
+            );
+        }
+
+        if (mixinClassName.startsWith(
+                AETHERS_DELIGHT_COMPAT
+        )) {
+            return isModLoaded(
+                    "aethersdelight"
+            );
         }
 
         if (mixinClassName.startsWith(
                 SUMMONING_RITUALS_COMPAT
         )) {
-            return isModLoaded("summoningrituals");
+            return isModLoaded(
+                    "summoningrituals"
+            );
         }
 
         if (mixinClassName.startsWith(
                 REVELATION_FIX_COMPAT
         )) {
-            return isModLoaded("goety_revelation")
-                    && isModLoaded("revelationfix");
+            return isModLoaded(
+                    "goety_revelation"
+            )
+                    && isModLoaded(
+                    "revelationfix"
+            );
         }
 
         if (mixinClassName.startsWith(
                 MOWZIES_MOBS_COMPAT
         )) {
-            return isModLoaded("mowziesmobs");
+            return isModLoaded(
+                    "mowziesmobs"
+            );
         }
 
         if (mixinClassName.startsWith(
                 ENIGMATIC_LEGACY_COMPAT
         )) {
-            return isModLoaded("enigmaticlegacy");
+            return isModLoaded(
+                    "enigmaticlegacy"
+            );
         }
 
         if (mixinClassName.startsWith(
                 ENIGMATIC_DELICACY_COMPAT
         )) {
-            return isModLoaded("enigmaticlegacy")
-                    && isModLoaded("enigmaticdelicacy");
+            return isModLoaded(
+                    "enigmaticlegacy"
+            )
+                    && isModLoaded(
+                    "enigmaticdelicacy"
+            );
         }
 
         if (mixinClassName.startsWith(
                 ENIGMATIC_ADDONS_COMPAT
         )) {
-            return isModLoaded("enigmaticaddons");
+            return isModLoaded(
+                    "enigmaticaddons"
+            );
         }
 
         return true;
     }
 
-    private static boolean isModLoaded(String modId) {
+    private static boolean isModLoaded(
+            String modId
+    ) {
         return FMLLoader
                 .getLoadingModList()
-                .getModFileById(modId) != null;
+                .getModFileById(
+                        modId
+                ) != null;
     }
 
     @Override
@@ -127,7 +162,9 @@ public final class UntilEternityMixinPlugin
     public List<String> getMixins() {
         MixinSquaredBootstrap.reOrderExtensions();
 
-        if (!isModLoaded("enigmaticaddons")) {
+        if (!isModLoaded(
+                "enigmaticaddons"
+        )) {
             return null;
         }
 
@@ -155,11 +192,15 @@ public final class UntilEternityMixinPlugin
             String mixinClassName,
             IMixinInfo mixinInfo
     ) {
-        if (!isModLoaded("enigmaticaddons")) {
+        if (!isModLoaded(
+                "enigmaticaddons"
+        )) {
             return;
         }
 
-        if (NIGHT_SCROLL_CLASS.equals(targetClassName)) {
+        if (NIGHT_SCROLL_CLASS.equals(
+                targetClassName
+        )) {
             targetClass.interfaces.remove(
                     IBETRAYED_INTERFACE
             );
@@ -177,7 +218,9 @@ public final class UntilEternityMixinPlugin
             return;
         }
 
-        if (BERSERK_EMBLEM_CLASS.equals(targetClassName)) {
+        if (BERSERK_EMBLEM_CLASS.equals(
+                targetClassName
+        )) {
             addInterface(
                     targetClass,
                     IBLESSED_INTERFACE
@@ -189,8 +232,12 @@ public final class UntilEternityMixinPlugin
             ClassNode targetClass,
             String interfaceName
     ) {
-        if (!targetClass.interfaces.contains(interfaceName)) {
-            targetClass.interfaces.add(interfaceName);
+        if (!targetClass.interfaces.contains(
+                interfaceName
+        )) {
+            targetClass.interfaces.add(
+                    interfaceName
+            );
         }
     }
 }

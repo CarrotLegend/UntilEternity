@@ -1,14 +1,11 @@
 package com.carrot123.until_eternity.item;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 final class RandomLootGeneratorData {
-    static final String TAG_LOOT_TABLE = "UntilEternityLootTable";
 
     static final List<ResourceLocation> LOOT_TABLE_IDS = List.of(
             chest("abandoned_mineshaft"),
@@ -42,20 +39,16 @@ final class RandomLootGeneratorData {
     private RandomLootGeneratorData() {
     }
 
-    static boolean assignLootTableIfMissing(CompoundTag tag, RandomSource random) {
-        if (tag.contains(TAG_LOOT_TABLE)) {
-            return false;
-        }
-        ResourceLocation selected = LOOT_TABLE_IDS.get(random.nextInt(LOOT_TABLE_IDS.size()));
-        tag.putString(TAG_LOOT_TABLE, selected.toString());
-        return true;
-    }
-
-    static @Nullable ResourceLocation parseLootTableId(String storedId) {
-        return ResourceLocation.tryParse(storedId);
+    static ResourceLocation getRandomLootTable(RandomSource random) {
+        return LOOT_TABLE_IDS.get(
+                random.nextInt(LOOT_TABLE_IDS.size())
+        );
     }
 
     private static ResourceLocation chest(String path) {
-        return new ResourceLocation("minecraft", "chests/" + path);
+        return new ResourceLocation(
+                "minecraft",
+                "chests/" + path
+        );
     }
 }

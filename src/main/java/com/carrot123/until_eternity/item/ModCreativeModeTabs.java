@@ -54,7 +54,6 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.REDEMPTION_STAR.get());
                 output.accept(ModItems.UNSTABLE_HALO.get());
                 output.accept(ModItems.KABBALAH_TREE.get());
-                output.accept(ModItems.CRYSTAL_OF_DRAWN_BOW.get());
                 output.accept(ModItems.SWORD_WRAITH.get());
                 output.accept(ModItems.WROUGHT_IRON.get());
                 output.accept(ModItems.IMMORTAL_HEART.get());

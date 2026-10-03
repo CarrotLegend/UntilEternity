@@ -4,7 +4,9 @@ import com.carrot123.until_eternity.block.ModBlocks;
 import com.carrot123.until_eternity.block.entity.ModBlockEntities;
 import com.carrot123.until_eternity.client.screen.EndCraftingTableScreen;
 import com.carrot123.until_eternity.compat.bettercombat.HeadChefGlovesBetterCombatCompat;
+import com.carrot123.until_eternity.compat.bettercombat.TarotStarBetterCombatCompat;
 import com.carrot123.until_eternity.compat.enigmaticlegacy.EnigmaticLegacyCompat;
+import com.carrot123.until_eternity.compat.legendarymonsters.SandstormCrystalCurioCompat;
 import com.carrot123.until_eternity.compat.revelationfix.RevelationFixAbsoluteDamageBootstrap;
 import com.carrot123.until_eternity.enchantment.ModEnchantments;
 import com.carrot123.until_eternity.event.CurioEventHandler;
@@ -23,7 +25,6 @@ import com.carrot123.until_eternity.registry.ModPotions;
 import com.carrot123.until_eternity.worldgen.ModFeatures;
 import com.carrot123.until_eternity.worldgen.ModPoiTypes;
 import com.carrot123.until_eternity.worldgen.structure.ModStructureTypes;
-import com.carrot123.until_eternity.compat.legendarymonsters.SandstormCrystalCurioCompat;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -123,7 +124,10 @@ public class until_eternity {
         ModFeatures.register(
                 modEventBus
         );
-        ModStructureTypes.register(modEventBus);
+
+        ModStructureTypes.register(
+                modEventBus
+        );
 
         MinecraftForge.EVENT_BUS.register(
                 this
@@ -161,9 +165,10 @@ public class until_eternity {
         );
 
         event.enqueueWork(() -> {
-                ModNetworking.register();
-                SandstormCrystalCurioCompat.register();
+            ModNetworking.register();
+            SandstormCrystalCurioCompat.register();
         });
+
         if (Config.logDirtBlock) {
             LOGGER.info(
                     "DIRT BLOCK >> {}",
@@ -239,6 +244,9 @@ public class until_eternity {
                 if (ModList.get()
                         .isLoaded("bettercombat")) {
                     HeadChefGlovesBetterCombatCompat
+                            .register();
+
+                    TarotStarBetterCombatCompat
                             .register();
                 }
             });

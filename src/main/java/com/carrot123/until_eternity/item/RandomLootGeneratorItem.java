@@ -9,10 +9,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -30,23 +28,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public final class RandomLootGeneratorItem extends Item {
-    public RandomLootGeneratorItem() {
-        super(new Item.Properties().stacksTo(1));
-    }
 
-    @Override
-    public void inventoryTick(
-            @NotNull ItemStack stack,
-            @NotNull Level level,
-            @NotNull Entity entity,
-            int slot,
-            boolean selected
-    ) {
-        super.inventoryTick(stack, level, entity, slot, selected);
-        if (!level.isClientSide && entity instanceof Player player
-                && ensureLootTableAssigned(stack, player.getRandom())) {
-            player.getInventory().setChanged();
-        }
+    public RandomLootGeneratorItem() {
+        super(new Item.Properties().stacksTo(64));
     }
 
     @Override
@@ -56,40 +40,66 @@ public final class RandomLootGeneratorItem extends Item {
             @NotNull InteractionHand hand
     ) {
         ItemStack generator = player.getItemInHand(hand);
+
         if (level.isClientSide) {
             return InteractionResultHolder.success(generator);
         }
+
         if (!(level instanceof ServerLevel serverLevel)) {
             return InteractionResultHolder.fail(generator);
         }
 
-        if (ensureLootTableAssigned(generator, player.getRandom())) {
-            player.getInventory().setChanged();
-        }
+        ResourceLocation lootTableId =
+                RandomLootGeneratorData.getRandomLootTable(
+                        player.getRandom()
+                );
 
-        String storedId = generator.getOrCreateTag().getString(RandomLootGeneratorData.TAG_LOOT_TABLE);
-        ResourceLocation lootTableId = RandomLootGeneratorData.parseLootTableId(storedId);
-        if (lootTableId == null) {
-            return fail(player, generator, storedId, null);
-        }
+        LootTable lootTable =
+                serverLevel.getServer()
+                        .getLootData()
+                        .getElement(
+                                new LootDataId<>(
+                                        LootDataType.TABLE,
+                                        lootTableId
+                                )
+                        );
 
-        LootTable lootTable = serverLevel.getServer().getLootData().getElement(
-                new LootDataId<>(LootDataType.TABLE, lootTableId)
-        );
         if (lootTable == null) {
-            return fail(player, generator, storedId, null);
+            return fail(
+                    player,
+                    generator,
+                    lootTableId,
+                    null
+            );
         }
 
         final List<ItemStack> rewards;
+
         try {
-            LootParams params = new LootParams.Builder(serverLevel)
-                    .withParameter(LootContextParams.ORIGIN, player.position())
-                    .withOptionalParameter(LootContextParams.THIS_ENTITY, player)
-                    .withLuck(player.getLuck())
-                    .create(LootContextParamSets.CHEST);
-            rewards = lootTable.getRandomItems(params);
+            LootParams params =
+                    new LootParams.Builder(serverLevel)
+                            .withParameter(
+                                    LootContextParams.ORIGIN,
+                                    player.position()
+                            )
+                            .withOptionalParameter(
+                                    LootContextParams.THIS_ENTITY,
+                                    player
+                            )
+                            .withLuck(player.getLuck())
+                            .create(
+                                    LootContextParamSets.CHEST
+                            );
+
+            rewards =
+                    lootTable.getRandomItems(params);
         } catch (RuntimeException exception) {
-            return fail(player, generator, storedId, exception);
+            return fail(
+                    player,
+                    generator,
+                    lootTableId,
+                    exception
+            );
         }
 
         if (!player.isCreative()) {
@@ -97,16 +107,27 @@ public final class RandomLootGeneratorItem extends Item {
         }
 
         for (ItemStack reward : rewards) {
+            if (reward.isEmpty()) {
+                continue;
+            }
+
+            player.getInventory().add(reward);
+
             if (!reward.isEmpty()) {
-                player.getInventory().add(reward);
-                if (!reward.isEmpty()) {
-                    player.drop(reward, false);
-                }
+                player.drop(
+                        reward,
+                        false
+                );
             }
         }
 
-        player.awardStat(Stats.ITEM_USED.get(this));
-        BlockPos position = player.blockPosition();
+        player.awardStat(
+                Stats.ITEM_USED.get(this)
+        );
+
+        BlockPos position =
+                player.blockPosition();
+
         serverLevel.playSound(
                 null,
                 position,
@@ -115,7 +136,10 @@ public final class RandomLootGeneratorItem extends Item {
                 1.0F,
                 1.0F
         );
-        return InteractionResultHolder.consume(generator);
+
+        return InteractionResultHolder.consume(
+                generator
+        );
     }
 
     @Override
@@ -125,19 +149,28 @@ public final class RandomLootGeneratorItem extends Item {
             @NotNull List<Component> tooltip,
             @NotNull TooltipFlag flag
     ) {
-        tooltip.add(Component.translatable("tooltip.until_eternity.random_loot_generator")
-                .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-        super.appendHoverText(stack, level, tooltip, flag);
-    }
+        tooltip.add(
+                Component.translatable(
+                                "tooltip.until_eternity.random_loot_generator"
+                        )
+                        .withStyle(
+                                ChatFormatting.GRAY,
+                                ChatFormatting.ITALIC
+                        )
+        );
 
-    private static boolean ensureLootTableAssigned(ItemStack stack, RandomSource random) {
-        return RandomLootGeneratorData.assignLootTableIfMissing(stack.getOrCreateTag(), random);
+        super.appendHoverText(
+                stack,
+                level,
+                tooltip,
+                flag
+        );
     }
 
     private InteractionResultHolder<ItemStack> fail(
             Player player,
             ItemStack generator,
-            String storedId,
+            ResourceLocation lootTableId,
             @Nullable RuntimeException exception
     ) {
         if (exception == null) {
@@ -145,21 +178,27 @@ public final class RandomLootGeneratorItem extends Item {
                     "Player {} ({}) tried to open a random loot generator with invalid loot table '{}'",
                     player.getGameProfile().getName(),
                     player.getUUID(),
-                    storedId
+                    lootTableId
             );
         } else {
             until_eternity.LOGGER.warn(
                     "Failed to generate loot table '{}' for player {} ({})",
-                    storedId,
+                    lootTableId,
                     player.getGameProfile().getName(),
                     player.getUUID(),
                     exception
             );
         }
+
         player.displayClientMessage(
-                Component.translatable("message.until_eternity.random_loot_generator.failed"),
+                Component.translatable(
+                        "message.until_eternity.random_loot_generator.failed"
+                ),
                 true
         );
-        return InteractionResultHolder.fail(generator);
+
+        return InteractionResultHolder.fail(
+                generator
+        );
     }
 }

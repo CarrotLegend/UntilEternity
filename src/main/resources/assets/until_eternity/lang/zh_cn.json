@@ -35,7 +35,6 @@
   "item.until_eternity.cosmic_aegis": "寰宇庇护",
   "item.until_eternity.empowered_shield": "强能护盾",
   "item.until_eternity.proof_of_spurner": "蔑神者之证",
-  "item.until_eternity.crystal_of_drawn_bow": "终末挽弓魂晶",
   "item.until_eternity.sword_wraith": "附剑亡魂",
   "item.until_eternity.wrought_iron": "坚硬锻铁",
   "item.until_eternity.immortal_heart": "不朽者之心",
@@ -418,5 +417,9 @@
   "message.until_eternity.blessing_scroll.upgraded": "恩赐卷轴伤害增幅上限已提升至 %s",
   "message.until_eternity.blessing_scroll.upgraded_unlimited": "恩赐卷轴伤害增幅已解除上限",
   "attribute.name.until_eternity.charge_speed": "蓄力速度",
-  "tooltip.until_eternity.guttering_candle.absorption": "攻击会为自己施加临时生命值，最多2000点。"
+  "tooltip.until_eternity.guttering_candle.absorption": "攻击会为自己施加临时生命值，最多2000点。",
+  "tooltip.until_eternity.tarot.single.justice": "受到攻击时，对攻击者造成 20 点固定伤害",
+  "tooltip.until_eternity.tarot.single.strength": "攻击伤害 +2",
+  "tooltip.until_eternity.tarot.single.the_magician": "所有工具不会损坏",
+  "tooltip.until_eternity.tarot.single.the_star": "攻击距离 +50%"
 }

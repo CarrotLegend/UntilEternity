@@ -131,7 +131,6 @@ public class ModItems {
             () -> new RedemptionCharmItem(CurioAttributeProfile.UNSTABLE_HALO));
     public static final RegistryObject<Item> KABBALAH_TREE = ITEMS.register("kabbalah_tree",
             () -> new RedemptionCharmItem(CurioAttributeProfile.KABBALAH_TREE));
-    public static final RegistryObject<Item> CRYSTAL_OF_DRAWN_BOW = ITEMS.register("crystal_of_drawn_bow", () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> SWORD_WRAITH = ITEMS.register("sword_wraith", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> WROUGHT_IRON = ITEMS.register("wrought_iron", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> IMMORTAL_HEART = ITEMS.register("immortal_heart", () -> new Item(new Item.Properties().rarity(Rarity.RARE).fireResistant()));

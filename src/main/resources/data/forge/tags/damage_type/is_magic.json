@@ -1,0 +1,193 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#irons_spellbooks:fire_magic",
+      "required": false
+    },
+    {
+      "id": "#irons_spellbooks:ice_magic",
+      "required": false
+    },
+    {
+      "id": "#irons_spellbooks:lightning_magic",
+      "required": false
+    },
+    {
+      "id": "#irons_spellbooks:holy_magic",
+      "required": false
+    },
+    {
+      "id": "#irons_spellbooks:ender_magic",
+      "required": false
+    },
+    {
+      "id": "#irons_spellbooks:blood_magic",
+      "required": false
+    },
+    {
+      "id": "#irons_spellbooks:evocation_magic",
+      "required": false
+    },
+    {
+      "id": "#irons_spellbooks:eldritch_magic",
+      "required": false
+    },
+    {
+      "id": "#irons_spellbooks:nature_magic",
+      "required": false
+    },
+    {
+      "id": "goety:shock",
+      "required": false
+    },
+    {
+      "id": "goety:direct_shock",
+      "required": false
+    },
+    {
+      "id": "goety:indirect_shock",
+      "required": false
+    },
+    {
+      "id": "goety:lightning",
+      "required": false
+    },
+
+    {
+      "id": "goety:direct_freeze",
+      "required": false
+    },
+    {
+      "id": "goety:indirect_freeze",
+      "required": false
+    },
+    {
+      "id": "goety:ice_spike",
+      "required": false
+    },
+
+    {
+      "id": "goety:drench",
+      "required": false
+    },
+    {
+      "id": "goety:direct_drench",
+      "required": false
+    },
+    {
+      "id": "goety:indirect_drench",
+      "required": false
+    },
+
+    {
+      "id": "goety:sword",
+      "required": false
+    },
+    {
+      "id": "goety:wind_blast",
+      "required": false
+    },
+    {
+      "id": "goety:ice_bouquet",
+      "required": false
+    },
+
+    {
+      "id": "goety:hellfire",
+      "required": false
+    },
+    {
+      "id": "goety:indirect_hellfire",
+      "required": false
+    },
+    {
+      "id": "goety:magic_fire",
+      "required": false
+    },
+    {
+      "id": "goety:magic_fireball",
+      "required": false
+    },
+    {
+      "id": "goety:no_owner_magic_fireball",
+      "required": false
+    },
+    {
+      "id": "goety:fire_breath",
+      "required": false
+    },
+
+    {
+      "id": "goety:frost_breath",
+      "required": false
+    },
+    {
+      "id": "goety:bubble_stream",
+      "required": false
+    },
+    {
+      "id": "goety:magic_bolt",
+      "required": false
+    },
+
+    {
+      "id": "goety:soul_leech",
+      "required": false
+    },
+    {
+      "id": "goety:life_leech",
+      "required": false
+    },
+
+    {
+      "id": "goety:rot",
+      "required": false
+    },
+    {
+      "id": "goety:acid",
+      "required": false
+    },
+    {
+      "id": "goety:venom",
+      "required": false
+    },
+    {
+      "id": "goety:spike",
+      "required": false
+    },
+    {
+      "id": "goety:boiling",
+      "required": false
+    },
+    {
+      "id": "goety:phobia",
+      "required": false
+    },
+    {
+      "id": "goety:choke",
+      "required": false
+    },
+    {
+      "id": "goety:swarm",
+      "required": false
+    },
+
+    {
+      "id": "goety:voided",
+      "required": false
+    },
+    {
+      "id": "goety:rage",
+      "required": false
+    },
+    {
+      "id": "goety:doom",
+      "required": false
+    },
+    {
+      "id": "goety:death",
+      "required": false
+    }
+  ]
+}

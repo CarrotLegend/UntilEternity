@@ -1,5 +1,9 @@
 package com.carrot123.until_eternity.mixin.compat.goetyrevelation;
 
+import com.Polarice3.Goety.common.entities.projectiles.DeathArrow;
+import com.Polarice3.Goety.utils.CuriosFinder;
+import com.Polarice3.Goety.utils.LichdomHelper;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.carrot123.until_eternity.compat.goetyrevelation.BowOfRevelationEffectEvents;
 import com.carrot123.until_eternity.effect.VoidCorrosionEffectApplier;
 import net.minecraft.resources.ResourceLocation;
@@ -8,16 +12,17 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Mixin(Arrow.class)
+@Mixin(value = DeathArrow.class, priority = 2000)
 public abstract class BowOfRevelationArrowEffectMixin {
 
     private static final int DURATION = 200;
@@ -91,8 +96,8 @@ public abstract class BowOfRevelationArrowEffectMixin {
             LivingEntity target,
             CallbackInfo ci
     ) {
-        Arrow arrow =
-                (Arrow) (Object) this;
+        DeathArrow arrow =
+                (DeathArrow) (Object) this;
 
         if (!arrow.getPersistentData().getBoolean(
                 BowOfRevelationEffectEvents.REVELATION_ARROW_TAG
@@ -106,15 +111,40 @@ public abstract class BowOfRevelationArrowEffectMixin {
             return;
         }
 
+        target.invulnerableTime = 0;
+
+        preserveDeathArrowOwnerEffects(
+                arrow,
+                target
+        );
+
+        List<ResourceLocation> availableEffects =
+                new ArrayList<>();
+
+        for (ResourceLocation effectId : EFFECT_POOL) {
+            if (VOID_CORROSION.equals(effectId)) {
+                availableEffects.add(effectId);
+                continue;
+            }
+
+            if (ForgeRegistries.MOB_EFFECTS
+                    .getValue(effectId) != null) {
+                availableEffects.add(effectId);
+            }
+        }
+
+        if (availableEffects.isEmpty()) {
+            return;
+        }
+
         ResourceLocation effectId =
-                EFFECT_POOL.get(
+                availableEffects.get(
                         arrow.level().random.nextInt(
-                                EFFECT_POOL.size()
+                                availableEffects.size()
                         )
                 );
 
-        Entity owner =
-                arrow.getOwner();
+        Entity owner = arrow.getOwner();
 
         if (VOID_CORROSION.equals(effectId)) {
             if (owner instanceof Player player) {
@@ -122,29 +152,10 @@ public abstract class BowOfRevelationArrowEffectMixin {
                         target,
                         player
                 );
-            } else {
-                applyNormalEffect(
-                        target,
-                        owner,
-                        effectId
-                );
             }
-
             return;
         }
 
-        applyNormalEffect(
-                target,
-                owner,
-                effectId
-        );
-    }
-
-    private static void applyNormalEffect(
-            LivingEntity target,
-            Entity owner,
-            ResourceLocation effectId
-    ) {
         MobEffect effect =
                 ForgeRegistries.MOB_EFFECTS
                         .getValue(effectId);
@@ -161,5 +172,47 @@ public abstract class BowOfRevelationArrowEffectMixin {
                 ),
                 owner
         );
+    }
+
+    private static void preserveDeathArrowOwnerEffects(
+            DeathArrow arrow,
+            LivingEntity target
+    ) {
+        Entity owner = arrow.getOwner();
+
+        if (!(owner instanceof LivingEntity livingOwner)) {
+            return;
+        }
+
+        if (!CuriosFinder.hasUnholySet(livingOwner)) {
+            return;
+        }
+
+        if (livingOwner.level().dimension() == Level.NETHER) {
+            float voidDamage =
+                    target.getMaxHealth() * 0.05F;
+
+            if (target.getHealth() > voidDamage + 1.0F) {
+                target.heal(-voidDamage);
+            }
+        }
+
+        if (!(livingOwner instanceof Player player)) {
+            return;
+        }
+
+        if (!LichdomHelper.isLich(player)) {
+            return;
+        }
+
+        if (LichdomHelper.smited(player) > 0) {
+            return;
+        }
+
+        if (MobUtil.healthIsHalved(player)) {
+            player.heal(4.0F);
+        } else {
+            player.heal(1.0F);
+        }
     }
 }
