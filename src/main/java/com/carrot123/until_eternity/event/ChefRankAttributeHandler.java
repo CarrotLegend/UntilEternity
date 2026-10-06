@@ -1,12 +1,12 @@
 package com.carrot123.until_eternity.event;
 
-import com.carrot123.until_eternity.compat.eternalcareer.ChefRank;
-import com.carrot123.until_eternity.compat.eternalcareer.ChefRankHelper;
-import com.carrot123.until_eternity.until_eternity;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+
+import com.carrot123.until_eternity.compat.eternalcareer.ChefRank;
+import com.carrot123.until_eternity.compat.eternalcareer.ChefRankHelper;
+import com.carrot123.until_eternity.until_eternity;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -14,7 +14,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -342,10 +341,10 @@ public final class ChefRankAttributeHandler {
         ) {
             return switch (rank) {
                 case APPRENTICE -> new RankBonuses(1.0D, 0.0D, 0.25D, 0.0D, 20.0D);
-                case INTERMEDIATE -> new RankBonuses(2.0D, 0.5D, 0.45D, 10.0D, 40.0D);
-                case ADVANCED -> new RankBonuses(2.0D, 1.0D, 0.55D, 10.0D, 65.0D);
-                case SENIOR -> new RankBonuses(2.0D, 1.0D, 0.75D, 10.0D, 90.0D);
-                case MASTER -> new RankBonuses(3.0D, 2.0D, 0.95D, 20.0D, 90.0D);
+                case INTERMEDIATE -> new RankBonuses(2.0D, 0.5D, 0.45D, 8.0D, 20.0D);
+                case ADVANCED -> new RankBonuses(2.0D, 1.0D, 0.55D, 10.0D, 30.0D);
+                case SENIOR -> new RankBonuses(2.0D, 1.0D, 0.75D, 10.0D, 40.0D);
+                case MASTER -> new RankBonuses(3.0D, 2.0D, 0.95D, 12.0D, 40.0D);
                 case NONE -> NONE;
             };
         }

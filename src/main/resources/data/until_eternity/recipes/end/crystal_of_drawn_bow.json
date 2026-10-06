@@ -2,9 +2,9 @@
   "type": "until_eternity:end_crafting",
   "pattern": [
     "  Z  ",
-    " ABA",
+    " ABA ",
     "ZPDPZ",
-    " AEA",
+    " AEA ",
     "  Z  "
   ],
   "key": {
