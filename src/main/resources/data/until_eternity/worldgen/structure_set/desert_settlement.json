@@ -1,7 +1,7 @@
 {
   "structures": [
     {
-      "structure": "until_eternity:plains_settlement",
+      "structure": "until_eternity:desert_settlement",
       "weight": 1
     }
   ],
@@ -9,6 +9,6 @@
     "type": "minecraft:random_spread",
     "spacing": 34,
     "separation": 8,
-    "salt": 172839451
+    "salt": 172839452
   }
 }

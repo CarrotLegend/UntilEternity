@@ -122,6 +122,10 @@ public abstract class SunSpiritResetMixin extends PathfinderMob {
             "until_eternity:sun_spirit_initialized_v2";
 
     @Unique
+    private static final String UNTIL_ETERNITY_SUN_SPIRIT_IGNIS_FIREBALL =
+            "until_eternity:sun_spirit_ignis_fireball";
+
+    @Unique
     private static final ResourceLocation UNTIL_ETERNITY_FIRE_CRYSTAL_ID =
             new ResourceLocation(
                     "aether",
@@ -242,6 +246,14 @@ private void untilEternity$replaceDamageLogic(
         float amount,
         CallbackInfoReturnable<Boolean> cir
 ) {
+    if (!this.isBossFight()) {
+        cir.setReturnValue(
+                false
+        );
+
+        return;
+    }
+
     if (untilEternity$hasLivingMinion()) {
         cir.setReturnValue(
                 false
@@ -276,7 +288,6 @@ private void untilEternity$replaceDamageLogic(
             )
     );
 }
-
     @Inject(
             method = {
                     "isInvulnerableTo(Lnet/minecraft/world/damagesource/DamageSource;)Z",
@@ -783,65 +794,126 @@ private void untilEternity$replaceDamageLogic(
     }
 
     @Unique
-    private void untilEternity$shootIgnisFireball(
-            LivingEntity target
-    ) {
-        Vec3 spawn =
-                this.position()
-                        .add(
-                                0.0D,
-                                this.getBbHeight()
-                                        * 0.65D,
-                                0.0D
-                        );
+private void untilEternity$shootIgnisFireball(
+        LivingEntity target
+) {
+    Vec3 center =
+            this.position()
+                    .add(
+                            0.0D,
+                            this.getBbHeight()
+                                    * 0.55D,
+                            0.0D
+                    );
 
-        Vec3 targetPos =
-                target.position()
-                        .add(
-                                0.0D,
-                                target.getBbHeight()
-                                        * 0.5D,
-                                0.0D
-                        );
+    Vec3 targetPos =
+            target.position()
+                    .add(
+                            0.0D,
+                            target.getBbHeight()
+                                    * 0.5D,
+                            0.0D
+                    );
 
-        Vec3 direction =
-                targetPos.subtract(
-                        spawn
-                );
+    Vec3 initialDirection =
+            targetPos.subtract(
+                    center
+            );
 
-        if (direction.lengthSqr()
-                <= 1.0E-8D) {
-            return;
-        }
-
-        Ignis_Fireball_Entity fireball =
-                new Ignis_Fireball_Entity(
-                        this.level(),
-                        this
-                );
-
-        fireball.setPos(
-                spawn.x,
-                spawn.y,
-                spawn.z
-        );
-
-        fireball.shoot(
-                direction.x,
-                direction.y,
-                direction.z,
-                0.25F,
-                0.0F
-        );
-
-        fireball.setUp(
-                0
-        );
-
-        this.level().addFreshEntity(
-                fireball
-        );
+    if (initialDirection.lengthSqr()
+            <= 1.0E-8D) {
+        return;
     }
+
+    Vec3 horizontalDirection =
+            new Vec3(
+                    initialDirection.x,
+                    0.0D,
+                    initialDirection.z
+            );
+
+    if (horizontalDirection.lengthSqr()
+            <= 1.0E-8D) {
+        Vec3 look =
+                this.getLookAngle();
+
+        horizontalDirection =
+                new Vec3(
+                        look.x,
+                        0.0D,
+                        look.z
+                );
+    }
+
+    if (horizontalDirection.lengthSqr()
+            <= 1.0E-8D) {
+        horizontalDirection =
+                new Vec3(
+                        0.0D,
+                        0.0D,
+                        1.0D
+                );
+    }
+
+    horizontalDirection =
+            horizontalDirection.normalize();
+
+    double spawnDistance =
+            this.getBbWidth()
+                    * 0.5D
+                    + 1.0D;
+
+    Vec3 spawn =
+            center.add(
+                    horizontalDirection.scale(
+                            spawnDistance
+                    )
+            );
+
+    Vec3 direction =
+            targetPos.subtract(
+                    spawn
+            );
+
+    if (direction.lengthSqr()
+            <= 1.0E-8D) {
+        return;
+    }
+
+    Ignis_Fireball_Entity fireball =
+            new Ignis_Fireball_Entity(
+                    this.level(),
+                    this
+            );
+
+    fireball.setPos(
+            spawn.x,
+            spawn.y,
+            spawn.z
+    );
+
+    fireball.getPersistentData()
+            .putBoolean(
+                    UNTIL_ETERNITY_SUN_SPIRIT_IGNIS_FIREBALL,
+                    true
+            );
+
+    fireball.shoot(
+            direction.x,
+            direction.y,
+            direction.z,
+            0.25F,
+            0.0F
+    );
+
+    fireball.setUp(
+            4
+    );
+
+    this.level().addFreshEntity(
+            fireball
+    );
+}
 
     @Unique
     private void untilEternity$shootSunFireball(

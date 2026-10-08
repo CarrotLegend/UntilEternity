@@ -1,0 +1,77 @@
+{
+  "fallback": "until_eternity:plains_settlement/terminators",
+  "elements": [
+    {
+      "weight": 6,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "until_eternity:plains_settlement/roads/straight",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "until_eternity:plains_settlement/roads/straight_decor",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "until_eternity:plains_settlement/roads/straight_special",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "until_eternity:plains_settlement/roads/turn_left",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "until_eternity:plains_settlement/roads/turn_right",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "until_eternity:plains_settlement/roads/junction_t",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "until_eternity:plains_settlement/roads/junction_cross",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "until_eternity:plains_settlement/roads/end",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    }
+  ]
+}

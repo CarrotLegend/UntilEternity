@@ -37,6 +37,8 @@
     "compat.enigmaticlegacy.CursedScrollConfigMixin",
     "compat.enigmaticlegacy.CursedScrollMiningMixin",
     "compat.enigmaticlegacy.CursedScrollDamageCapMixin",
+    "compat.enigmaticlegacy.CurioInventoryCursedReloadMixin",
+    "compat.enigmaticlegacy.DynamicStackHandlerCursedReloadMixin",
     "compat.enigmaticdelicacy.InfinimealCompatMixin",
     "compat.enigmaticaddons.InsigniaMiningRestrictionMixin",
     "compat.goety.ApostleTrueChefsKnifeMixin",
