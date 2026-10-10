@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#until_eternity:has_structure/large_ancient_battlefield",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none",
+  "start_pool": "until_eternity:large_ancient_battlefield/start_pool",
+  "size": 1,
+  "start_height": {
+    "absolute": 33
+  },
+  "max_distance_from_center": 64,
+  "use_expansion_hack": false
+}

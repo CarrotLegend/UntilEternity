@@ -27,6 +27,7 @@
     "MonsterSpawnerLightMixin",
     "BaseSpawnerMixin",
     "AquamiraeSmithingCompatMixin",
+    "EnderManProjectileMixin",
     "compat.curios.CurioStacksHandlerShrinkFixMixin",
     "compat.curios.CuriosItemStackHandlerBoundsMixin",
     "compat.curios.DynamicStackHandlerBoundsMixin",

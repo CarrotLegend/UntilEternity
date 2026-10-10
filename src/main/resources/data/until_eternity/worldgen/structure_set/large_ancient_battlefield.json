@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "until_eternity:large_ancient_battlefield",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 80,
+    "separation": 40,
+    "spread_type": "linear",
+    "salt": 172839453
+  }
+}

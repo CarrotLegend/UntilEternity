@@ -39,11 +39,26 @@ public final class CurioMutualExclusionHandler {
             id("dark_cage")
     );
 
+    private static final Set<ResourceLocation> REDEMPTION_STAR_GROUP = Set.of(
+            id("redemption_star")
+    );
+
+    private static final Set<ResourceLocation> UNSTABLE_HALO_GROUP = Set.of(
+            id("unstable_halo")
+    );
+
+    private static final Set<ResourceLocation> KABBALAH_TREE_GROUP = Set.of(
+            id("kabbalah_tree")
+    );
+
     private static final List<Set<ResourceLocation>> GROUPS = List.of(
             SHIELD_GROUP,
             SHARK_TOOTH_GROUP,
             LIFE_CHARM_GROUP,
-            DARK_CAGE_GROUP
+            DARK_CAGE_GROUP,
+            REDEMPTION_STAR_GROUP,
+            UNSTABLE_HALO_GROUP,
+            KABBALAH_TREE_GROUP
     );
 
     private CurioMutualExclusionHandler() {

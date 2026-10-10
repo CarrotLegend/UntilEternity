@@ -320,6 +320,8 @@
   "structure.until_eternity.storm_dynasty_ruins": "风暴王朝遗迹",
   "structure.until_eternity.tavern": "被遗忘的酒馆",
   "structure.until_eternity.plains_settlement": "平原聚落",
+  "structure.until_eternity.desert_settlement": "沙漠聚落",
+  "structure.until_eternity.large_ancient_battlefield": "大型远古战场",
   "enchantment.until_eternity.armor_rend": "甲胄撕裂",
   "enchantment.until_eternity.armor_rend.desc": "目标护甲值高于 5 时，每级提高 10% 近战伤害。",
   "tooltip.until_eternity.cursed_scroll.attack_speed": "§6+%1$s §d攻击速度",
