@@ -42,7 +42,6 @@
     "compat.enigmaticlegacy.DynamicStackHandlerCursedReloadMixin",
     "compat.soulcurse.CurioInventorySoulReloadMixin",
     "compat.soulcurse.DynamicStackHandlerSoulReloadMixin",
-    "compat.eternalcareer.SoulBlessingStormAltarMixin",
     "compat.enigmaticdelicacy.InfinimealCompatMixin",
     "compat.enigmaticaddons.InsigniaMiningRestrictionMixin",
     "compat.goety.ApostleTrueChefsKnifeMixin",

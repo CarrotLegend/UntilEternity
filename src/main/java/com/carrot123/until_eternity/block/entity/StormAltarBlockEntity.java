@@ -77,7 +77,7 @@ public final class StormAltarBlockEntity extends BlockEntity {
         List<StormAltarRecipe> recipes = server.getRecipeManager().getAllRecipesFor(ModRecipeTypes.STORM_ALTAR.get());
         if (inputA.isEmpty()) {
             Optional<StormAltarRecipe> found = recipes.stream().filter(recipe -> recipe.acceptsFirst(held)).findFirst();
-            if (found.isEmpty()) return wrongMaterial(player, hand);
+            if (found.isEmpty()) return message(player, "wrong_material");
             int count = found.get().inputA().count();
             inputA = consume(held, count);
             owner = player.getUUID();
@@ -88,7 +88,7 @@ public final class StormAltarBlockEntity extends BlockEntity {
         if (!inputB.isEmpty()) return message(player, "invalid_recipe");
         Optional<StormAltarRecipe> found = recipes.stream()
                 .filter(recipe -> recipe.inputA().matches(inputA) && recipe.inputB().matches(held)).findFirst();
-        if (found.isEmpty()) return wrongMaterial(player, hand);
+        if (found.isEmpty()) return message(player, "wrong_material");
         StormAltarRecipe recipe = found.get();
         inputB = consume(held, recipe.inputB().count());
         recipeId = recipe.getId();
@@ -112,10 +112,6 @@ public final class StormAltarBlockEntity extends BlockEntity {
     private InteractionResult message(Player player, String key) {
         player.displayClientMessage(Component.translatable("message.until_eternity.storm_altar." + key), true);
         return InteractionResult.CONSUME;
-    }
-    private InteractionResult wrongMaterial(Player player, InteractionHand hand) {
-        message(player, "wrong_material");
-        return hand == InteractionHand.MAIN_HAND ? InteractionResult.PASS : InteractionResult.CONSUME;
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, StormAltarBlockEntity altar) {

@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import org.joml.AxisAngle4f;
 import com.mojang.math.Axis;
 
 public final class StormAltarBlockEntityRenderer implements BlockEntityRenderer<StormAltarBlockEntity> {

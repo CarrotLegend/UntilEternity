@@ -2,7 +2,6 @@ package com.carrot123.until_eternity.block;
 
 import com.carrot123.until_eternity.block.entity.ModBlockEntities;
 import com.carrot123.until_eternity.block.entity.StormAltarBlockEntity;
-import com.carrot123.until_eternity.recipe.ModRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -44,21 +43,8 @@ public final class StormAltarBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
                                  InteractionHand hand, BlockHitResult hit) {
+        if (level.isClientSide) return InteractionResult.SUCCESS;
         if (level.getBlockEntity(pos) instanceof StormAltarBlockEntity altar) {
-            if (level.isClientSide) {
-                if (hand == InteractionHand.MAIN_HAND && !player.isShiftKeyDown()
-                        && altar.output().isEmpty() && !altar.isFusing()) {
-                    var held = player.getItemInHand(hand);
-                    if (held.isEmpty()) return InteractionResult.PASS;
-                    var recipes = level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.STORM_ALTAR.get());
-                    boolean accepted = altar.inputA().isEmpty()
-                            ? recipes.stream().anyMatch(recipe -> recipe.acceptsFirst(held))
-                            : recipes.stream().anyMatch(recipe -> recipe.inputA().matches(altar.inputA())
-                                    && recipe.inputB().matches(held));
-                    if (!accepted) return InteractionResult.PASS;
-                }
-                return InteractionResult.SUCCESS;
-            }
             return altar.interact(player, hand);
         }
         return InteractionResult.PASS;

@@ -1,7 +1,9 @@
 package com.carrot123.until_eternity.recipe;
 
+import com.carrot123.until_eternity.until_eternity;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
@@ -11,6 +13,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
@@ -22,12 +25,8 @@ public final class StormAltarRecipe implements Recipe<SimpleContainer> {
                     && (nbt == null || NbtUtils.compareNbt(nbt, stack.getTag(), true));
         }
         public ItemStack[] displayStacks() {
-            ItemStack[] options = ingredient.getItems();
-            ItemStack[] result = new ItemStack[options.length];
-            for (int i = 0; i < options.length; i++) {
-                result[i] = options[i].copy();
-                result[i].setCount(count);
-            }
+            ItemStack[] result = ingredient.getItems();
+            for (ItemStack stack : result) stack.setCount(count);
             return result;
         }
     }

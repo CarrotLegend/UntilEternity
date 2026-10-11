@@ -418,6 +418,5 @@
   "message.until_eternity.storm_altar.wrong_material": "These materials do not match an altar recipe",
   "message.until_eternity.storm_altar.invalid_recipe": "The recipe is no longer valid; sneak-right-click to retrieve the materials",
   "message.until_eternity.storm_altar.inserted_a": "First material inserted",
-  "message.until_eternity.storm_altar.started": "Storm fusion started",
-  "tooltip.until_eternity.storm_altar.enhanced": "Storm Altar enhanced: +4% All Damage"
+  "message.until_eternity.storm_altar.started": "Storm fusion started"
 }

@@ -435,6 +435,5 @@
   "message.until_eternity.storm_altar.wrong_material": "材料与祭坛配方不匹配",
   "message.until_eternity.storm_altar.invalid_recipe": "配方已失效，请潜行右键取回材料",
   "message.until_eternity.storm_altar.inserted_a": "已放入第一件材料",
-  "message.until_eternity.storm_altar.started": "风暴融合开始",
-  "tooltip.until_eternity.storm_altar.enhanced": "风暴祭坛强化：全部伤害 +4%"
+  "message.until_eternity.storm_altar.started": "风暴融合开始"
 }
