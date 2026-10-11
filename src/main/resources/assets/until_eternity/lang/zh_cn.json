@@ -423,5 +423,18 @@
   "tooltip.until_eternity.tarot.single.justice": "受到攻击时，对攻击者造成 20 点固定伤害",
   "tooltip.until_eternity.tarot.single.strength": "攻击伤害 +2",
   "tooltip.until_eternity.tarot.single.the_magician": "所有工具不会损坏",
-  "tooltip.until_eternity.tarot.single.the_star": "攻击距离 +50%"
+  "tooltip.until_eternity.tarot.single.the_star": "攻击距离 +50%",
+  "block.until_eternity.storm_altar": "风暴祭坛",
+  "jei.until_eternity.storm_altar": "风暴祭坛",
+  "message.until_eternity.storm_altar.owner_only": "仅放入材料的玩家可以操作祭坛",
+  "message.until_eternity.storm_altar.inventory_full": "背包没有足够空间",
+  "message.until_eternity.storm_altar.settling": "灵魂加护正在稳定，请稍候",
+  "message.until_eternity.storm_altar.collected": "已领取灵魂加护",
+  "message.until_eternity.storm_altar.locked": "材料正在融合，暂时无法取回",
+  "message.until_eternity.storm_altar.retrieved": "已取回祭坛材料",
+  "message.until_eternity.storm_altar.wrong_material": "材料与祭坛配方不匹配",
+  "message.until_eternity.storm_altar.invalid_recipe": "配方已失效，请潜行右键取回材料",
+  "message.until_eternity.storm_altar.inserted_a": "已放入第一件材料",
+  "message.until_eternity.storm_altar.started": "风暴融合开始",
+  "tooltip.until_eternity.storm_altar.enhanced": "风暴祭坛强化：全部伤害 +4%"
 }

@@ -24,6 +24,8 @@ public class ModBlocks {
             ImmortalAltarBlock::new);
     public static final RegistryObject<Block> END_CRAFTING_TABLE = BLOCKS.register("end_crafting_table",
             EndCraftingTableBlock::new);
+    public static final RegistryObject<Block> STORM_ALTAR = BLOCKS.register("storm_altar",
+            StormAltarBlock::new);
 
     public static final RegistryObject<Block> DIVINE_CALCITE = BLOCKS.register("divine_calcite",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.CALCITE)

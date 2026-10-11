@@ -406,5 +406,18 @@
   "message.until_eternity.blessing_scroll.upgraded": "Blessing Scroll damage bonus cap raised to %s",
   "message.until_eternity.blessing_scroll.upgraded_unlimited": "Blessing Scroll damage bonus cap removed",
   "attribute.name.until_eternity.charge_speed": "Charge Speed",
-  "tooltip.until_eternity.guttering_candle.absorption": "Attacks grant temporary health, up to 2000."
+  "tooltip.until_eternity.guttering_candle.absorption": "Attacks grant temporary health, up to 2000.",
+  "block.until_eternity.storm_altar": "Storm Altar",
+  "jei.until_eternity.storm_altar": "Storm Altar",
+  "message.until_eternity.storm_altar.owner_only": "Only the player who inserted the materials can use this altar",
+  "message.until_eternity.storm_altar.inventory_full": "Not enough inventory space",
+  "message.until_eternity.storm_altar.settling": "The soul blessing is still stabilizing",
+  "message.until_eternity.storm_altar.collected": "Soul blessing collected",
+  "message.until_eternity.storm_altar.locked": "The materials are fusing and cannot be retrieved yet",
+  "message.until_eternity.storm_altar.retrieved": "Altar materials retrieved",
+  "message.until_eternity.storm_altar.wrong_material": "These materials do not match an altar recipe",
+  "message.until_eternity.storm_altar.invalid_recipe": "The recipe is no longer valid; sneak-right-click to retrieve the materials",
+  "message.until_eternity.storm_altar.inserted_a": "First material inserted",
+  "message.until_eternity.storm_altar.started": "Storm fusion started",
+  "tooltip.until_eternity.storm_altar.enhanced": "Storm Altar enhanced: +4% All Damage"
 }

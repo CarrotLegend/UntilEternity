@@ -29,6 +29,10 @@ public final class ModRecipeTypes {
                         }
                     }
             );
+    public static final RegistryObject<RecipeType<StormAltarRecipe>> STORM_ALTAR =
+            TYPES.register("storm_altar", () -> new RecipeType<>() {
+                @Override public String toString() { return until_eternity.MODID + ":storm_altar"; }
+            });
 
     public static final RegistryObject<RecipeType<ChefRankAnvilRecipe>>
             CHEF_RANK_ANVIL =

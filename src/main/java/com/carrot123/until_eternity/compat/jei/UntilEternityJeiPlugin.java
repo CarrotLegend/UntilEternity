@@ -10,6 +10,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import com.carrot123.until_eternity.recipe.EndCraftingRecipe;
+import com.carrot123.until_eternity.recipe.StormAltarRecipe;
 import com.carrot123.until_eternity.recipe.ModRecipeTypes;
 import com.carrot123.until_eternity.item.ModItems;
 import net.minecraft.client.Minecraft;
@@ -26,6 +27,8 @@ public final class UntilEternityJeiPlugin implements IModPlugin {
                     StaffAffixRerollJeiRecipe.class);
     public static final RecipeType<EndCraftingRecipe> END_CRAFTING_TYPE =
             RecipeType.create(until_eternity.MODID, "end_crafting", EndCraftingRecipe.class);
+    public static final RecipeType<StormAltarRecipe> STORM_ALTAR_TYPE =
+            RecipeType.create(until_eternity.MODID, "storm_altar", StormAltarRecipe.class);
     private static final ResourceLocation UID = new ResourceLocation(
             until_eternity.MODID, "staff_affix_reroll_plugin");
 
@@ -40,7 +43,8 @@ public final class UntilEternityJeiPlugin implements IModPlugin {
     ) {
         registration.addRecipeCategories(
                 new StaffAffixRerollCategory(registration.getJeiHelpers().getGuiHelper()),
-                new EndCraftingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+                new EndCraftingRecipeCategory(registration.getJeiHelpers().getGuiHelper()),
+                new StormAltarRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -56,12 +60,15 @@ public final class UntilEternityJeiPlugin implements IModPlugin {
         if (Minecraft.getInstance().level != null) {
             registration.addRecipes(END_CRAFTING_TYPE,
                     Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.END_CRAFTING.get()));
+            registration.addRecipes(STORM_ALTAR_TYPE,
+                    Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.STORM_ALTAR.get()));
         }
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(ModItems.END_CRAFTING_TABLE.get(), END_CRAFTING_TYPE);
+        registration.addRecipeCatalyst(ModItems.STORM_ALTAR.get(), STORM_ALTAR_TYPE);
     }
 
     @Override

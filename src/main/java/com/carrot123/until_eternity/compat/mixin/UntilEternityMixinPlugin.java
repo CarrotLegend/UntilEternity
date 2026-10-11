@@ -25,6 +25,8 @@ public final class UntilEternityMixinPlugin
 
     private static final String REVELATION_FIX_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.revelationfix.";
+    private static final String ETERNAL_CAREER_COMPAT =
+            "com.carrot123.until_eternity.mixin.compat.eternalcareer.";
 
     private static final String MOWZIES_MOBS_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.mowziesmobs.";
@@ -101,6 +103,10 @@ public final class UntilEternityMixinPlugin
                     && isModLoaded(
                     "revelationfix"
             );
+        }
+
+        if (mixinClassName.startsWith(ETERNAL_CAREER_COMPAT)) {
+            return isModLoaded("eternal_career");
         }
 
         if (mixinClassName.startsWith(

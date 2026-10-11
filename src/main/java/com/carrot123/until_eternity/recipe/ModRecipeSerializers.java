@@ -42,6 +42,8 @@ public final class ModRecipeSerializers {
                     "end_crafting",
                     EndCraftingRecipeSerializer::new
             );
+    public static final RegistryObject<RecipeSerializer<StormAltarRecipe>> STORM_ALTAR =
+            RECIPE_SERIALIZERS.register("storm_altar", StormAltarRecipeSerializer::new);
 
     public static final RegistryObject<RecipeSerializer<ChefRankAnvilRecipe>>
             CHEF_RANK_ANVIL =

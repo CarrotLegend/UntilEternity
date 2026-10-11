@@ -1,0 +1,19 @@
+{
+  "type": "forge:conditional",
+  "recipes": [{
+    "conditions": [
+      {"type":"forge:mod_loaded","modid":"aether"},
+      {"type":"forge:mod_loaded","modid":"aquamirae"},
+      {"type":"forge:mod_loaded","modid":"eternal_career"}
+    ],
+    "recipe": {
+      "type":"until_eternity:storm_altar",
+      "mode":"fusion",
+      "input_a":{"item":"aether:leather_gloves","count":1},
+      "input_b":{"item":"aquamirae:oxygen_tank","count":1},
+      "duration":60,
+      "result":{"item":"eternal_career:generic_left_boot_blessing","count":1,
+        "attribute_overrides":[{"attribute":"until_eternity:all_damage","amount":0.04,"operation":"multiply_base"}]}
+    }
+  }]
+}

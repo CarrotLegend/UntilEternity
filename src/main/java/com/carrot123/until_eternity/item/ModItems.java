@@ -79,6 +79,8 @@ public class ModItems {
     public static final RegistryObject<Item> END_CRAFTING_TABLE = ITEMS.register("end_crafting_table",
             () -> new EndCraftingTableBlockItem(ModBlocks.END_CRAFTING_TABLE.get(),
                     new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> STORM_ALTAR = ITEMS.register("storm_altar",
+            () -> new BlockItem(ModBlocks.STORM_ALTAR.get(), new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> DIVINE_CALCITE = ITEMS.register("divine_calcite",
             () -> new BlockItem(ModBlocks.DIVINE_CALCITE.get(), new Item.Properties()));
     public static final RegistryObject<MobContainerItem> MOB_CONTAINER =

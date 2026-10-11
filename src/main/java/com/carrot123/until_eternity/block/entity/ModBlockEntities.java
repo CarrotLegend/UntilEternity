@@ -23,6 +23,9 @@ public final class ModBlockEntities {
                     () -> BlockEntityType.Builder.of(
                             EndCraftingTableBlockEntity::new,
                             ModBlocks.END_CRAFTING_TABLE.get()).build(null));
+    public static final RegistryObject<BlockEntityType<StormAltarBlockEntity>> STORM_ALTAR =
+            BLOCK_ENTITIES.register("storm_altar", () -> BlockEntityType.Builder.of(
+                    StormAltarBlockEntity::new, ModBlocks.STORM_ALTAR.get()).build(null));
 
     private ModBlockEntities() {
     }

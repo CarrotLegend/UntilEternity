@@ -35,6 +35,7 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.UNIVERSAL_SMITHING_TEMPLATE.get());
                 output.accept(ModItems.IMMORTAL_ALTAR.get());
                 output.accept(ModItems.END_CRAFTING_TABLE.get());
+                output.accept(ModItems.STORM_ALTAR.get());
                 output.accept(ModItems.DIVINE_CALCITE.get());
                 output.accept(ModItems.MOB_CONTAINER.get());
                 output.accept(ModItems.SATURATED_EARTH_PARTICLE.get());
