@@ -1,9 +1,8 @@
+
 package com.carrot123.until_eternity.recipe;
 
 import com.carrot123.until_eternity.until_eternity;
-
 import net.minecraft.world.item.crafting.RecipeType;
-
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -24,15 +23,22 @@ public final class ModRecipeTypes {
                     () -> new RecipeType<EndCraftingRecipe>() {
                         @Override
                         public String toString() {
-                            return until_eternity.MODID
-                                    + ":end_crafting";
+                            return until_eternity.MODID + ":end_crafting";
                         }
                     }
             );
-    public static final RegistryObject<RecipeType<StormAltarRecipe>> STORM_ALTAR =
-            TYPES.register("storm_altar", () -> new RecipeType<>() {
-                @Override public String toString() { return until_eternity.MODID + ":storm_altar"; }
-            });
+
+    public static final RegistryObject<RecipeType<StormAltarRecipe>>
+            STORM_ALTAR =
+            TYPES.register(
+                    "storm_altar",
+                    () -> new RecipeType<StormAltarRecipe>() {
+                        @Override
+                        public String toString() {
+                            return until_eternity.MODID + ":storm_altar";
+                        }
+                    }
+            );
 
     public static final RegistryObject<RecipeType<ChefRankAnvilRecipe>>
             CHEF_RANK_ANVIL =
@@ -41,8 +47,7 @@ public final class ModRecipeTypes {
                     () -> new RecipeType<ChefRankAnvilRecipe>() {
                         @Override
                         public String toString() {
-                            return until_eternity.MODID
-                                    + ":chef_rank_anvil";
+                            return until_eternity.MODID + ":chef_rank_anvil";
                         }
                     }
             );
