@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> d54727729f4d48edd467ed748ed5c3c102c5b92c
 package com.carrot123.until_eternity.compat.soulcurse;
 
 public final class SoulCurioReloadGuard {
@@ -15,7 +18,10 @@ public final class SoulCurioReloadGuard {
 
     public static void exit() {
         int depth = DEPTH.get() - 1;
+<<<<<<< HEAD
 
+=======
+>>>>>>> d54727729f4d48edd467ed748ed5c3c102c5b92c
         if (depth <= 0) {
             DEPTH.remove();
         } else {
