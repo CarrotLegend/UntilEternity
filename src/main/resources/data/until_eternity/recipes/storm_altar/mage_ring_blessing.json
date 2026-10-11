@@ -1,0 +1,34 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "eternal_career"
+        },
+        {
+          "type": "forge:mod_loaded",
+          "modid": "irons_spellbooks"
+        }
+      ],
+      "recipe": {
+        "type": "until_eternity:storm_altar",
+        "mode": "upgrade",
+        "input_a": {
+          "item": "eternal_career:generic_ring_blessing",
+          "count": 1
+        },
+        "input_b": {
+          "item": "irons_spellbooks:blank_rune",
+          "count": 1
+        },
+        "duration": 60,
+        "result": {
+          "item": "eternal_career:mage_ring_blessing",
+          "count": 1
+        }
+      }
+    }
+  ]
+}

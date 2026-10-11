@@ -32,10 +32,13 @@ public final class StormAltarBlock extends BaseEntityBlock {
     }
 
     @Override public RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
+
     @Override public VoxelShape getShape(BlockState state, net.minecraft.world.level.BlockGetter level,
-                                          BlockPos pos, CollisionContext context) { return SHAPE; }
+                                         BlockPos pos, CollisionContext context) { return SHAPE; }
+
     @Override public VoxelShape getCollisionShape(BlockState state, net.minecraft.world.level.BlockGetter level,
-                                                   BlockPos pos, CollisionContext context) { return SHAPE; }
+                                                  BlockPos pos, CollisionContext context) { return SHAPE; }
+
     @Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new StormAltarBlockEntity(pos, state);
     }
@@ -54,8 +57,11 @@ public final class StormAltarBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                    BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.STORM_ALTAR.get(),
-                StormAltarBlockEntity::serverTick);
+        return level.isClientSide
+                ? createTickerHelper(type, ModBlockEntities.STORM_ALTAR.get(),
+                        StormAltarBlockEntity::clientTick)
+                : createTickerHelper(type, ModBlockEntities.STORM_ALTAR.get(),
+                        StormAltarBlockEntity::serverTick);
     }
 
     @Override

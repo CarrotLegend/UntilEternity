@@ -1,0 +1,34 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "eternal_career"
+        },
+        {
+          "type": "forge:mod_loaded",
+          "modid": "legendary_monsters"
+        }
+      ],
+      "recipe": {
+        "type": "until_eternity:storm_altar",
+        "mode": "upgrade",
+        "input_a": {
+          "item": "eternal_career:generic_right_boot_blessing",
+          "count": 1
+        },
+        "input_b": {
+          "item": "legendary_monsters:portal_shard",
+          "count": 1
+        },
+        "duration": 60,
+        "result": {
+          "item": "eternal_career:warrior_right_boot_blessing",
+          "count": 1
+        }
+      }
+    }
+  ]
+}

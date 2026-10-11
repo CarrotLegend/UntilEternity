@@ -37,6 +37,7 @@ public final class StormAltarBlockEntity extends BlockEntity {
     private int duration;
     private int outputTicks;
     private boolean invalidRecipe;
+    private int visualProgress;
 
     public StormAltarBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.STORM_ALTAR.get(), pos, state);
@@ -46,9 +47,11 @@ public final class StormAltarBlockEntity extends BlockEntity {
     public ItemStack inputB() { return inputB; }
     public ItemStack output() { return output; }
     public int progress() { return progress; }
+    public int visualProgress() { return visualProgress; }
     public int duration() { return duration; }
     public int outputTicks() { return outputTicks; }
     public boolean isFusing() { return recipeId != null && !invalidRecipe && !inputB.isEmpty(); }
+
     @Override public net.minecraft.world.phys.AABB getRenderBoundingBox() {
         return new net.minecraft.world.phys.AABB(worldPosition).inflate(1.0, 1.0, 1.0);
     }
@@ -100,18 +103,31 @@ public final class StormAltarBlockEntity extends BlockEntity {
     }
 
     private boolean isOwner(Player player) { return owner != null && owner.equals(player.getUUID()); }
+
     private static ItemStack consume(ItemStack held, int count) {
-        ItemStack taken = held.copy(); taken.setCount(count); held.shrink(count); return taken;
+        ItemStack taken = held.copy();
+        taken.setCount(count);
+        held.shrink(count);
+        return taken;
     }
+
     private static void giveOrDrop(Player player, ItemStack stack) {
         if (stack.isEmpty()) return;
         ItemStack remaining = stack.copy();
         player.getInventory().add(remaining);
         if (!remaining.isEmpty()) player.drop(remaining, false);
     }
+
     private InteractionResult message(Player player, String key) {
         player.displayClientMessage(Component.translatable("message.until_eternity.storm_altar." + key), true);
         return InteractionResult.CONSUME;
+    }
+
+    public static void clientTick(Level level, BlockPos pos, BlockState state, StormAltarBlockEntity altar) {
+        if (!level.isClientSide) return;
+        if (altar.isFusing() && altar.visualProgress < altar.duration) {
+            altar.visualProgress++;
+        }
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, StormAltarBlockEntity altar) {
@@ -127,6 +143,7 @@ public final class StormAltarBlockEntity extends BlockEntity {
                 return;
             }
             altar.progress++;
+            altar.setChanged();
             if (altar.progress >= altar.duration) {
                 altar.output = found.get().craft(altar.inputA);
                 altar.inputA = ItemStack.EMPTY;
@@ -138,7 +155,7 @@ public final class StormAltarBlockEntity extends BlockEntity {
                 server.playSound(null, pos, SoundEvents.TRIDENT_THUNDER, SoundSource.BLOCKS, 0.7f, 1.3f);
                 server.sendParticles(ParticleTypes.ELECTRIC_SPARK, pos.getX() + 0.5, pos.getY() + 1.2,
                         pos.getZ() + 0.5, 12, 0.25, 0.2, 0.25, 0.06);
-            } else if (altar.progress % 5 == 0) altar.sync();
+            }
         } else if (!altar.output.isEmpty()) {
             altar.outputTicks++;
             if (altar.outputTicks == 20) altar.sync();
@@ -179,8 +196,12 @@ public final class StormAltarBlockEntity extends BlockEntity {
             if (!stack.isEmpty()) Containers.dropItemStack(level, worldPosition.getX() + 0.5,
                     worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, stack);
         }
-        inputA = ItemStack.EMPTY; inputB = ItemStack.EMPTY; output = ItemStack.EMPTY;
-        recipeId = null; owner = null; setChanged();
+        inputA = ItemStack.EMPTY;
+        inputB = ItemStack.EMPTY;
+        output = ItemStack.EMPTY;
+        recipeId = null;
+        owner = null;
+        setChanged();
     }
 
     private void sync() {
@@ -195,8 +216,10 @@ public final class StormAltarBlockEntity extends BlockEntity {
         tag.put("Output", output.save(new CompoundTag()));
         if (owner != null) tag.putUUID("Owner", owner);
         if (recipeId != null) tag.putString("Recipe", recipeId.toString());
-        tag.putInt("Progress", progress); tag.putInt("Duration", duration);
-        tag.putInt("OutputTicks", outputTicks); tag.putBoolean("InvalidRecipe", invalidRecipe);
+        tag.putInt("Progress", progress);
+        tag.putInt("Duration", duration);
+        tag.putInt("OutputTicks", outputTicks);
+        tag.putBoolean("InvalidRecipe", invalidRecipe);
     }
 
     @Override public void load(CompoundTag tag) {
@@ -205,13 +228,21 @@ public final class StormAltarBlockEntity extends BlockEntity {
         inputB = ItemStack.of(tag.getCompound("InputB"));
         output = ItemStack.of(tag.getCompound("Output"));
         owner = tag.hasUUID("Owner") ? tag.getUUID("Owner") : null;
-        recipeId = tag.contains("Recipe") ? net.minecraft.resources.ResourceLocation.tryParse(tag.getString("Recipe")) : null;
-        progress = tag.getInt("Progress"); duration = tag.getInt("Duration");
-        outputTicks = tag.getInt("OutputTicks"); invalidRecipe = tag.getBoolean("InvalidRecipe");
+        recipeId = tag.contains("Recipe")
+                ? net.minecraft.resources.ResourceLocation.tryParse(tag.getString("Recipe")) : null;
+        progress = tag.getInt("Progress");
+        visualProgress = progress;
+        duration = tag.getInt("Duration");
+        outputTicks = tag.getInt("OutputTicks");
+        invalidRecipe = tag.getBoolean("InvalidRecipe");
     }
 
     @Override public CompoundTag getUpdateTag() { return saveWithoutMetadata(); }
-    @Nullable @Override public ClientboundBlockEntityDataPacket getUpdatePacket() { return ClientboundBlockEntityDataPacket.create(this); }
+
+    @Nullable @Override public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
     @Override public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
         if (packet.getTag() != null) load(packet.getTag());
     }

@@ -1,0 +1,34 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bosses_of_mass_destruction"
+        },
+        {
+          "type": "forge:mod_loaded",
+          "modid": "eternal_career"
+        }
+      ],
+      "recipe": {
+        "type": "until_eternity:storm_altar",
+        "mode": "upgrade",
+        "input_a": {
+          "item": "eternal_career:generic_hand_blessing",
+          "count": 1
+        },
+        "input_b": {
+          "item": "bosses_of_mass_destruction:blazing_eye",
+          "count": 1
+        },
+        "duration": 60,
+        "result": {
+          "item": "eternal_career:warlock_hand_blessing",
+          "count": 1
+        }
+      }
+    }
+  ]
+}
