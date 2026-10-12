@@ -1,0 +1,30 @@
+{
+  "type": "until_eternity:divine_realm",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "until_eternity:eden",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:stone",
+          "height": 124
+        },
+        {
+          "block": "minecraft:dirt",
+          "height": 2
+        },
+        {
+          "block": "minecraft:grass_block",
+          "height": 1
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

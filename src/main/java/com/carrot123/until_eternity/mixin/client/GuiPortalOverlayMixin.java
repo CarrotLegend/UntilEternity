@@ -24,29 +24,15 @@ abstract class GuiPortalOverlayMixin {
             require = 1,
             remap = false
     )
-    private TextureAtlasSprite untilEternity$usePortalSprite(
-            TextureAtlasSprite original
-    ) {
-        BlockState portalState = switch (
-                PortalVisualTracker.currentType()
-        ) {
-            case CHAOS ->
-                    ModBlocks.CHAOS_PORTAL.get().defaultBlockState();
-
-            case IMMORTAL ->
-                    BlockInit.EROSION_PORTAL.get().defaultBlockState();
-
-            case NONE ->
-                    null;
+    private TextureAtlasSprite untilEternity$usePortalSprite(TextureAtlasSprite original) {
+        BlockState state = switch (PortalVisualTracker.currentType()) {
+            case CHAOS -> ModBlocks.CHAOS_PORTAL.get().defaultBlockState();
+            case IMMORTAL -> BlockInit.EROSION_PORTAL.get().defaultBlockState();
+            case DIVINE -> ModBlocks.DIVINE_PORTAL.get().defaultBlockState();
+            case NONE -> null;
         };
-
-        if (portalState == null) {
-            return original;
-        }
-
-        return Minecraft.getInstance()
-                .getBlockRenderer()
-                .getBlockModelShaper()
-                .getParticleIcon(portalState);
+        if (state == null) return original;
+        return Minecraft.getInstance().getBlockRenderer()
+                .getBlockModelShaper().getParticleIcon(state);
     }
 }

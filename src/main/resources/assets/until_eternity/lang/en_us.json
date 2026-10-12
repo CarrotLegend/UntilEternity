@@ -418,5 +418,8 @@
   "message.until_eternity.storm_altar.wrong_material": "These materials do not match an altar recipe",
   "message.until_eternity.storm_altar.invalid_recipe": "The recipe is no longer valid; sneak-right-click to retrieve the materials",
   "message.until_eternity.storm_altar.inserted_a": "First material inserted",
-  "message.until_eternity.storm_altar.started": "Storm fusion started"
+  "message.until_eternity.storm_altar.started": "Storm fusion started",
+  "dimension.until_eternity.divine_realm": "Divine Realm",
+  "biome.until_eternity.eden": "Garden of Eden",
+  "block.until_eternity.divine_portal": "Divine Portal"
 }

@@ -16,10 +16,11 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> CHAOS_PORTAL = BLOCKS.register("chaos_portal",
             ChaosPortalBlock::new);
+    public static final RegistryObject<Block> DIVINE_PORTAL = BLOCKS.register("divine_portal",
+            DivinePortalBlock::new);
 
     public static final RegistryObject<Block> FINAL_KEY_MOLD = BLOCKS.register("final_key_mold",
             FinalKeyMoldBlock::new);
-
     public static final RegistryObject<Block> IMMORTAL_ALTAR = BLOCKS.register("immortal_altar",
             ImmortalAltarBlock::new);
     public static final RegistryObject<Block> END_CRAFTING_TABLE = BLOCKS.register("end_crafting_table",

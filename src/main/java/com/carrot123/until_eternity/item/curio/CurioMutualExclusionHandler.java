@@ -51,6 +51,10 @@ public final class CurioMutualExclusionHandler {
             id("kabbalah_tree")
     );
 
+    private static final Set<ResourceLocation> DYING_FURY_GROUP = Set.of(
+        id("dying_fury")
+    );
+
     private static final List<Set<ResourceLocation>> GROUPS = List.of(
             SHIELD_GROUP,
             SHARK_TOOTH_GROUP,
@@ -58,7 +62,8 @@ public final class CurioMutualExclusionHandler {
             DARK_CAGE_GROUP,
             REDEMPTION_STAR_GROUP,
             UNSTABLE_HALO_GROUP,
-            KABBALAH_TREE_GROUP
+            KABBALAH_TREE_GROUP,
+            DYING_FURY_GROUP
     );
 
     private CurioMutualExclusionHandler() {

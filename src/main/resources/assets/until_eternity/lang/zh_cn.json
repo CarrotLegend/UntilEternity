@@ -435,5 +435,8 @@
   "message.until_eternity.storm_altar.wrong_material": "材料与祭坛配方不匹配",
   "message.until_eternity.storm_altar.invalid_recipe": "配方已失效，请潜行右键取回材料",
   "message.until_eternity.storm_altar.inserted_a": "已放入第一件材料",
-  "message.until_eternity.storm_altar.started": "风暴融合开始"
+  "message.until_eternity.storm_altar.started": "风暴融合开始",
+  "dimension.until_eternity.divine_realm": "神界",
+  "biome.until_eternity.eden": "伊甸园",
+  "block.until_eternity.divine_portal": "神界传送门"
 }

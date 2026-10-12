@@ -12,9 +12,10 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModParticles {
     public static final DeferredRegister<ParticleType<?>> PARTICLES =
             DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, until_eternity.MODID);
-
     public static final RegistryObject<SimpleParticleType> CHAOS_PARTICLE =
             PARTICLES.register("chaos_particle", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> DIVINE_PORTAL_PARTICLE =
+            PARTICLES.register("divine_portal_particle", () -> new SimpleParticleType(false));
 
     public static void register(IEventBus eventBus) {
         PARTICLES.register(eventBus);

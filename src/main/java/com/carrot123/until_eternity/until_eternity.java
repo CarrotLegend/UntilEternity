@@ -48,207 +48,71 @@ import org.slf4j.Logger;
 
 @Mod(until_eternity.MODID)
 public class until_eternity {
+    public static final String MODID = "until_eternity";
+    public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final String MODID =
-            "until_eternity";
-
-    public static final Logger LOGGER =
-            LogUtils.getLogger();
-
-    public until_eternity(
-            FMLJavaModLoadingContext context
-    ) {
-        IEventBus modEventBus =
-                context.getModEventBus();
-
-        modEventBus.addListener(
-                this::commonSetup
-        );
-
-        ModBlocks.register(
-                modEventBus
-        );
-
-        ModPoiTypes.register(
-                modEventBus
-        );
-
-        ModBlockEntities.register(
-                modEventBus
-        );
-
-        ModItems.register(
-                modEventBus
-        );
-
-        ModEnchantments.register(
-                modEventBus
-        );
-
-        ModParticles.register(
-                modEventBus
-        );
-
-        ModCreativeModeTabs.register(
-                modEventBus
-        );
-
-        ModLootModifiers.register(
-                modEventBus
-        );
-
-        ModRecipeSerializers.register(
-                modEventBus
-        );
-
-        ModRecipeTypes.register(
-                modEventBus
-        );
-
-        ModMenuTypes.register(
-                modEventBus
-        );
-
-        ModAttributes.register(
-                modEventBus
-        );
-
-        ModMobEffects.register(
-                modEventBus
-        );
-
-        ModPotions.register(
-                modEventBus
-        );
-
-        ModFeatures.register(
-                modEventBus
-        );
-
-        ModStructureTypes.register(
-                modEventBus
-        );
-
-        MinecraftForge.EVENT_BUS.register(
-                this
-        );
-
-        MinecraftForge.EVENT_BUS.register(
-                new CurioEventHandler()
-        );
-
-        MinecraftForge.EVENT_BUS.register(
-                new EnchantmentEventHandler()
-        );
-
-        RevelationFixAbsoluteDamageBootstrap
-                .registerIfLoaded();
-
-        EnigmaticLegacyCompat
-                .registerIfLoaded();
-
-        modEventBus.addListener(
-                this::addCreative
-        );
-
-        context.registerConfig(
-                ModConfig.Type.COMMON,
-                Config.SPEC
-        );
+    public until_eternity(FMLJavaModLoadingContext context) {
+        IEventBus modEventBus = context.getModEventBus();
+        modEventBus.addListener(this::commonSetup);
+        ModBlocks.register(modEventBus);
+        ModPoiTypes.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
+        ModItems.register(modEventBus);
+        ModEnchantments.register(modEventBus);
+        ModParticles.register(modEventBus);
+        ModCreativeModeTabs.register(modEventBus);
+        ModLootModifiers.register(modEventBus);
+        ModRecipeSerializers.register(modEventBus);
+        ModRecipeTypes.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
+        ModAttributes.register(modEventBus);
+        ModMobEffects.register(modEventBus);
+        ModPotions.register(modEventBus);
+        ModFeatures.register(modEventBus);
+        ModStructureTypes.register(modEventBus);
+        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new CurioEventHandler());
+        MinecraftForge.EVENT_BUS.register(new EnchantmentEventHandler());
+        RevelationFixAbsoluteDamageBootstrap.registerIfLoaded();
+        EnigmaticLegacyCompat.registerIfLoaded();
+        modEventBus.addListener(this::addCreative);
+        context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    private void commonSetup(
-            final FMLCommonSetupEvent event
-    ) {
-        LOGGER.info(
-                "HELLO FROM COMMON SETUP"
-        );
-
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        LOGGER.info("HELLO FROM COMMON SETUP");
         event.enqueueWork(() -> {
             ModNetworking.register();
             SandstormCrystalCurioCompat.register();
         });
-
         if (Config.logDirtBlock) {
-            LOGGER.info(
-                    "DIRT BLOCK >> {}",
-                    ForgeRegistries.BLOCKS.getKey(
-                            Blocks.DIRT
-                    )
-            );
+            LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
         }
-
-        LOGGER.info(
-                Config.magicNumberIntroduction
-                        + Config.magicNumber
-        );
-
-        Config.items.forEach(
-                item ->
-                        LOGGER.info(
-                                "ITEM >> {}",
-                                item.toString()
-                        )
-        );
+        LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
+        Config.items.forEach(item -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
-    private void addCreative(
-            BuildCreativeModeTabContentsEvent event
-    ) {
-    }
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {}
 
     @SubscribeEvent
-    public void onServerStarting(
-            ServerStartingEvent event
-    ) {
-        LOGGER.info(
-                "HELLO from server starting"
-        );
+    public void onServerStarting(ServerStartingEvent event) {
+        LOGGER.info("HELLO from server starting");
     }
 
-    @Mod.EventBusSubscriber(
-            modid = MODID,
-            bus = Mod.EventBusSubscriber.Bus.MOD,
-            value = Dist.CLIENT
-    )
+    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
-
         @SubscribeEvent
-        public static void onClientSetup(
-                FMLClientSetupEvent event
-        ) {
-            LOGGER.info(
-                    "HELLO FROM CLIENT SETUP"
-            );
-
-            LOGGER.info(
-                    "MINECRAFT NAME >> {}",
-                    Minecraft.getInstance()
-                            .getUser()
-                            .getName()
-            );
-
-            ItemBlockRenderTypes.setRenderLayer(
-                    ModBlocks.CHAOS_PORTAL.get(),
-                    RenderType.translucent()
-            );
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            LOGGER.info("HELLO FROM CLIENT SETUP");
+            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.CHAOS_PORTAL.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.DIVINE_PORTAL.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.STORM_ALTAR.get(), RenderType.translucent());
-
             event.enqueueWork(() -> {
-                MenuScreens.register(
-                        ModMenuTypes
-                                .END_CRAFTING_TABLE
-                                .get(),
-                        EndCraftingTableScreen::new
-                );
-
-                if (ModList.get()
-                        .isLoaded("bettercombat")) {
-                    HeadChefGlovesBetterCombatCompat
-                            .register();
-
-                    TarotStarBetterCombatCompat
-                            .register();
+                MenuScreens.register(ModMenuTypes.END_CRAFTING_TABLE.get(), EndCraftingTableScreen::new);
+                if (ModList.get().isLoaded("bettercombat")) {
+                    HeadChefGlovesBetterCombatCompat.register();
+                    TarotStarBetterCombatCompat.register();
                 }
             });
         }
