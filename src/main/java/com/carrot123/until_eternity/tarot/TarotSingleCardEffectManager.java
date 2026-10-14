@@ -38,6 +38,8 @@ public final class TarotSingleCardEffectManager {
                     )
             );
 
+    private static final ThreadLocal<Boolean> JUSTICE_REFLECTING = ThreadLocal.withInitial(() -> false);
+
     private static final UUID STRENGTH_UUID =
             UUID.nameUUIDFromBytes(
                     "until_eternity:tarot_strength"
@@ -102,6 +104,10 @@ public final class TarotSingleCardEffectManager {
     public static void onJusticeHurt(
             LivingHurtEvent event
     ) {
+        if (JUSTICE_REFLECTING.get()) {
+            return;
+        }
+
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }
@@ -132,24 +138,26 @@ public final class TarotSingleCardEffectManager {
 
         var holder =
                 player.level()
-                    .registryAccess()
-                    .registryOrThrow(
-                            Registries.DAMAGE_TYPE
-                    )
-                    .getHolderOrThrow(
-                            JUSTICE_DAMAGE
-                    );
+                        .registryAccess()
+                        .registryOrThrow(
+                                Registries.DAMAGE_TYPE
+                        )
+                        .getHolderOrThrow(
+                                JUSTICE_DAMAGE
+                        );
 
         DamageSource source =
-            new DamageSource(
-                    holder,
-                    player
-            );
+                new DamageSource(
+                        holder,
+                        player
+                );
 
-       attacker.hurt(
-            source,
-            20.0F
-        );
+        JUSTICE_REFLECTING.set(true);
+        try {
+            attacker.hurt(source, 20.0F);
+        } finally {
+            JUSTICE_REFLECTING.remove();
+        }
     }
 
     private static void updateModifier(

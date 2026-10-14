@@ -23,14 +23,13 @@ import com.carrot123.until_eternity.item.curio.ProofOfSpurnerItem;
 import com.carrot123.until_eternity.item.lore.LoreBookItem;
 import com.carrot123.until_eternity.until_eternity;
 import com.carrot123.until_eternity.item.curio.HeadChefGlovesItem;
+import com.carrot123.until_eternity.item.curio.HellPendantItem;
 import com.carrot123.until_eternity.item.TavernOwnerDiaryItem;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.item.UpgradeOrbItem;
 import io.redspace.ironsspellbooks.item.armor.UpgradeOrbType;
 import io.redspace.ironsspellbooks.registries.UpgradeOrbTypeRegistry;
-
 import net.minecraft.resources.ResourceKey;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
@@ -42,108 +41,51 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
 import java.util.List;
 
 @SuppressWarnings("null")
 public class ModItems {
-    public static final DeferredRegister<Item> ITEMS =
-        DeferredRegister.create(ForgeRegistries.ITEMS, until_eternity.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, until_eternity.MODID);
     public static final RegistryObject<Item> DRAGONBREATH_INGOT = ITEMS.register("dragonbreath_ingot", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BLOOD_COPPER_INGOT = ITEMS.register("blood_copper_ingot", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> ELEMENTAL_CORE = ITEMS.register("elemental_core", () -> new Item(new Item.Properties().rarity(Rarity.RARE).fireResistant()));
-    public static final RegistryObject<Item> TAINTED_ABYSSAL_HEART = ITEMS.register(
-            "tainted_abyssal_heart",
-            () -> new Item(new Item.Properties()
-                    .rarity(Rarity.EPIC)
-                    .stacksTo(1)
-                    .fireResistant()));
-    public static final RegistryObject<ReplicaGelItem> REPLICA_GEL =
-            ITEMS.register("replica_gel", ReplicaGelItem::new);
+    public static final RegistryObject<Item> TAINTED_ABYSSAL_HEART = ITEMS.register("tainted_abyssal_heart", () -> new Item(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant()));
+    public static final RegistryObject<ReplicaGelItem> REPLICA_GEL = ITEMS.register("replica_gel", ReplicaGelItem::new);
     public static final RegistryObject<Item> SATURATED_GOLD_PARTICLE = ITEMS.register("saturated_gold_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SATURATED_WOOD_PARTICLE = ITEMS.register("saturated_wood_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SATURATED_WATER_PARTICLE = ITEMS.register("saturated_water_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SATURATED_FIRE_PARTICLE = ITEMS.register("saturated_fire_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SATURATED_EARTH_PARTICLE = ITEMS.register("saturated_earth_particle", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> FINALITE_INGOT = ITEMS.register("finalite_ingot", () -> new Item(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
-    public static final RegistryObject<Item> FINAL_KEY = ITEMS.register("final_key",
-            () -> new Item(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant()));
-    public static final RegistryObject<Item> FINAL_KEY_MOLD = ITEMS.register("final_key_mold",
-            () -> new BlockItem(ModBlocks.FINAL_KEY_MOLD.get(), new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
-    public static final RegistryObject<Item> FINAL_KEY_CASTING_FLUID = ITEMS.register("final_key_casting_fluid",
-            () -> new Item(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant()));
-    public static final RegistryObject<UniversalSmithingTemplateItem> UNIVERSAL_SMITHING_TEMPLATE =
-            ITEMS.register("universal_smithing_template", UniversalSmithingTemplateItem::new);
-    public static final RegistryObject<Item> IMMORTAL_ALTAR = ITEMS.register("immortal_altar",
-            () -> new ImmortalAltarBlockItem(ModBlocks.IMMORTAL_ALTAR.get(), new Item.Properties()));
-    public static final RegistryObject<Item> END_CRAFTING_TABLE = ITEMS.register("end_crafting_table",
-            () -> new EndCraftingTableBlockItem(ModBlocks.END_CRAFTING_TABLE.get(),
-                    new Item.Properties().rarity(Rarity.RARE)));
-    public static final RegistryObject<Item> STORM_ALTAR = ITEMS.register("storm_altar",
-            () -> new BlockItem(ModBlocks.STORM_ALTAR.get(), new Item.Properties().rarity(Rarity.RARE)));
-    public static final RegistryObject<Item> DIVINE_CALCITE = ITEMS.register("divine_calcite",
-            () -> new BlockItem(ModBlocks.DIVINE_CALCITE.get(), new Item.Properties()));
-    public static final RegistryObject<MobContainerItem> MOB_CONTAINER =
-            ITEMS.register("mob_container", MobContainerItem::new);
-    public static final RegistryObject<Item> ELEMENTAL_GAUNTLET = ITEMS.register("elemental_gauntlet",
-            () -> new AttributeCurioItem(
-                    new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(),
-                    CurioAttributeProfile.ELEMENTAL_GAUNTLET));
-    public static final RegistryObject<Item> VOID_GRIP = ITEMS.register(
-            "void_grip",
-            () -> new VoidGripItem(new Item.Properties()
-                    .rarity(Rarity.EPIC)
-                    .stacksTo(1)
-                    .fireResistant()));
-    public static final RegistryObject<Item> REAPER_TOOTH_NECKLACE = ITEMS.register("reaper_tooth_necklace",
-            () -> new AttributeCurioItem(
-                    new Item.Properties().stacksTo(1).rarity(Rarity.EPIC),
-                    CurioAttributeProfile.REAPER_TOOTH_NECKLACE));
-    public static final RegistryObject<Item> SAND_SHARK_TOOTH_NECKLACE =
-            ITEMS.register("sand_shark_tooth_necklace",
-                    () -> new AttributeCurioItem(
-                            new Item.Properties().stacksTo(1),
-                            CurioAttributeProfile.SAND_SHARK_TOOTH_NECKLACE));
-    public static final RegistryObject<Item> REGENERATOR = ITEMS.register("regenerator",
-            () -> new LifeCapItem(
-                    new Item.Properties().stacksTo(1),
-                    0.5f,
-                    false,
-                    CurioAttributeProfile.REGENERATOR));
-    public static final RegistryObject<Item> GUTTERING_CANDLE = ITEMS.register("guttering_candle",
-            () -> new LifeCapItem(
-                    new Item.Properties().stacksTo(1),
-                    1.0f,
-                    true,
-                    CurioAttributeProfile.GUTTERING_CANDLE));
-    public static final RegistryObject<Item> COSMIC_AEGIS = ITEMS.register("cosmic_aegis",
-            () -> new ImmuneCurioItem(
-                    new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(),
-                    ImmuneCurioItem.CurioType.ALL,
-                    CurioAttributeProfile.COSMIC_AEGIS));
-    public static final RegistryObject<Item> EMPOWERED_SHIELD = ITEMS.register("empowered_shield",
-            () -> new ImmuneCurioItem(
-                    new Item.Properties().stacksTo(1).fireResistant(),
-                    ImmuneCurioItem.CurioType.LIMITED,
-                    CurioAttributeProfile.EMPOWERED_SHIELD));
+    public static final RegistryObject<Item> FINAL_KEY = ITEMS.register("final_key", () -> new Item(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant()));
+    public static final RegistryObject<Item> FINAL_KEY_MOLD = ITEMS.register("final_key_mold", () -> new BlockItem(ModBlocks.FINAL_KEY_MOLD.get(), new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
+    public static final RegistryObject<Item> FINAL_KEY_CASTING_FLUID = ITEMS.register("final_key_casting_fluid", () -> new Item(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant()));
+    public static final RegistryObject<UniversalSmithingTemplateItem> UNIVERSAL_SMITHING_TEMPLATE = ITEMS.register("universal_smithing_template", UniversalSmithingTemplateItem::new);
+    public static final RegistryObject<Item> IMMORTAL_ALTAR = ITEMS.register("immortal_altar", () -> new ImmortalAltarBlockItem(ModBlocks.IMMORTAL_ALTAR.get(), new Item.Properties()));
+    public static final RegistryObject<Item> END_CRAFTING_TABLE = ITEMS.register("end_crafting_table", () -> new EndCraftingTableBlockItem(ModBlocks.END_CRAFTING_TABLE.get(), new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> STORM_ALTAR = ITEMS.register("storm_altar", () -> new BlockItem(ModBlocks.STORM_ALTAR.get(), new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> DIVINE_CALCITE = ITEMS.register("divine_calcite", () -> new BlockItem(ModBlocks.DIVINE_CALCITE.get(), new Item.Properties()));
+    public static final RegistryObject<MobContainerItem> MOB_CONTAINER = ITEMS.register("mob_container", MobContainerItem::new);
+    public static final RegistryObject<Item> ELEMENTAL_GAUNTLET = ITEMS.register("elemental_gauntlet", () -> new AttributeCurioItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(), CurioAttributeProfile.ELEMENTAL_GAUNTLET));
+    public static final RegistryObject<Item> VOID_GRIP = ITEMS.register("void_grip", () -> new VoidGripItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant()));
+    public static final RegistryObject<Item> REAPER_TOOTH_NECKLACE = ITEMS.register("reaper_tooth_necklace", () -> new AttributeCurioItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC), CurioAttributeProfile.REAPER_TOOTH_NECKLACE));
+    public static final RegistryObject<Item> SAND_SHARK_TOOTH_NECKLACE = ITEMS.register("sand_shark_tooth_necklace", () -> new AttributeCurioItem(new Item.Properties().stacksTo(1), CurioAttributeProfile.SAND_SHARK_TOOTH_NECKLACE));
+    public static final RegistryObject<Item> REGENERATOR = ITEMS.register("regenerator", () -> new LifeCapItem(new Item.Properties().stacksTo(1), 0.5f, false, CurioAttributeProfile.REGENERATOR));
+    public static final RegistryObject<Item> GUTTERING_CANDLE = ITEMS.register("guttering_candle", () -> new LifeCapItem(new Item.Properties().stacksTo(1), 1.0f, true, CurioAttributeProfile.GUTTERING_CANDLE));
+    public static final RegistryObject<Item> COSMIC_AEGIS = ITEMS.register("cosmic_aegis", () -> new ImmuneCurioItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(), ImmuneCurioItem.CurioType.ALL, CurioAttributeProfile.COSMIC_AEGIS));
+    public static final RegistryObject<Item> EMPOWERED_SHIELD = ITEMS.register("empowered_shield", () -> new ImmuneCurioItem(new Item.Properties().stacksTo(1).fireResistant(), ImmuneCurioItem.CurioType.LIMITED, CurioAttributeProfile.EMPOWERED_SHIELD));
     public static final RegistryObject<Item> PROOF_OF_SPURNER = ITEMS.register("proof_of_spurner", ProofOfSpurnerItem::new);
-    public static final RegistryObject<Item> REDEMPTION_STAR = ITEMS.register("redemption_star",
-            () -> new RedemptionCharmItem(CurioAttributeProfile.REDEMPTION_STAR));
-    public static final RegistryObject<Item> UNSTABLE_HALO = ITEMS.register("unstable_halo",
-            () -> new RedemptionCharmItem(CurioAttributeProfile.UNSTABLE_HALO));
-    public static final RegistryObject<Item> KABBALAH_TREE = ITEMS.register("kabbalah_tree",
-            () -> new RedemptionCharmItem(CurioAttributeProfile.KABBALAH_TREE));
+    public static final RegistryObject<Item> REDEMPTION_STAR = ITEMS.register("redemption_star", () -> new RedemptionCharmItem(CurioAttributeProfile.REDEMPTION_STAR));
+    public static final RegistryObject<Item> UNSTABLE_HALO = ITEMS.register("unstable_halo", () -> new RedemptionCharmItem(CurioAttributeProfile.UNSTABLE_HALO));
+    public static final RegistryObject<Item> KABBALAH_TREE = ITEMS.register("kabbalah_tree", () -> new RedemptionCharmItem(CurioAttributeProfile.KABBALAH_TREE));
     public static final RegistryObject<Item> SWORD_WRAITH = ITEMS.register("sword_wraith", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> WROUGHT_IRON = ITEMS.register("wrought_iron", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> IMMORTAL_HEART = ITEMS.register("immortal_heart", () -> new Item(new Item.Properties().rarity(Rarity.RARE).fireResistant()));
     public static final RegistryObject<Item> IMMORTAL_ESSENCE = ITEMS.register("immortal_essence", () -> new Item(new Item.Properties().fireResistant()));
-    public static final RegistryObject<Item> TRUE_CHEFS_KNIFE = ITEMS.register("true_chefs_knife",
-            () -> new TrueChefsKnifeItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
+    public static final RegistryObject<Item> TRUE_CHEFS_KNIFE = ITEMS.register("true_chefs_knife", () -> new TrueChefsKnifeItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
     public static final RegistryObject<Item> ANCIENT_NETHERITE_BLADE = ITEMS.register("ancient_netherite_blade", () -> new SwordItem(ModTiers.ANCIENT_NETHERITE_BLADE, 0, -1.8F, new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> CALAMITY_DAGGER = ITEMS.register("calamity_dagger", () -> new SwordItem(ModTiers.CALAMITY_DAGGER, 0, -1.8F, new Item.Properties().fireResistant()));
-    public static final RegistryObject<BloodSplashDaggerItem> BLOOD_SPLASH_DAGGER =
-            ITEMS.register("blood_splash_dagger",
-                    () -> new BloodSplashDaggerItem(new Item.Properties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<BloodSplashDaggerItem> BLOOD_SPLASH_DAGGER = ITEMS.register("blood_splash_dagger", () -> new BloodSplashDaggerItem(new Item.Properties().rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> TATTERED_CLOAK = ITEMS.register("tattered_cloak", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> WITHER_FRAGMENT = ITEMS.register("wither_fragment", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BROKEN_CROWN = ITEMS.register("broken_crown", () -> new Item(new Item.Properties()));
@@ -158,155 +100,50 @@ public class ModItems {
     public static final RegistryObject<Item> EMPTY_POTTERY_SHARD = ITEMS.register("empty_pottery_shard", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> INERT_FINALITE_INGOT = ITEMS.register("inert_finalite_ingot", () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> OMINOUS_TOTEM = ITEMS.register("ominous_totem", () -> new OminousTotem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> CHAOS_ELIXIR = ITEMS.register("chaos_elixir",
-            () -> new ChaosElixirItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    public static final RegistryObject<Item> CHAOS_ELIXIR = ITEMS.register("chaos_elixir", () -> new ChaosElixirItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
     public static final RegistryObject<Item> DARK_CAGE = ITEMS.register("dark_cage", DarkCageItem::new);
-    public static final RegistryObject<Item> SPAWNER_FRAGMENT = ITEMS.register("spawner_fragment",
-            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> SPAWNER_FRAGMENT = ITEMS.register("spawner_fragment", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> MITHRIL_GLOVES = ITEMS.register("mithril_gloves", MithrilGlovesItem::new);
     public static final RegistryObject<Item> PEWTER_GLOVES = ITEMS.register("pewter_gloves", PewterGlovesItem::new);
-    public static final RegistryObject<Item> DIVINE_SOUL_LAMP =
-            ITEMS.register("divine_soul_lamp", DivineSoulLampItem::new);
-    public static final RegistryObject<Item> DYING_FURY =
-            ITEMS.register("dying_fury", DyingFuryItem::new);
-    public static final RegistryObject<Item> HORROR_HUNT =
-            ITEMS.register("horror_hunt", HorrorHuntItem::new);
-    public static final RegistryObject<RandomLootGeneratorItem> RANDOM_LOOT_GENERATOR =
-            ITEMS.register("random_loot_generator", RandomLootGeneratorItem::new);
+    public static final RegistryObject<Item> DIVINE_SOUL_LAMP = ITEMS.register("divine_soul_lamp", DivineSoulLampItem::new);
+    public static final RegistryObject<Item> DYING_FURY = ITEMS.register("dying_fury", DyingFuryItem::new);
+    public static final RegistryObject<Item> HORROR_HUNT = ITEMS.register("horror_hunt", HorrorHuntItem::new);
+    public static final RegistryObject<RandomLootGeneratorItem> RANDOM_LOOT_GENERATOR = ITEMS.register("random_loot_generator", RandomLootGeneratorItem::new);
     public static final RegistryObject<Item> ROCK = ITEMS.register("rock", AncientRockItem::new);
-    public static final RegistryObject<Item> MINER_LOG = ITEMS.register("miner_log",
-            () -> new LoreBookItem(LoreBookItem.Type.MINER_LOG));
-    public static final RegistryObject<Item> DAMP_DIARY = ITEMS.register("damp_diary",
-            DampDiaryItem::new);
-    public static final RegistryObject<Item> TORN_PAPER_1 = ITEMS.register("torn_paper_1",
-            () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_1));
-    public static final RegistryObject<Item> TORN_PAPER_2 = ITEMS.register("torn_paper_2",
-            () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_2));
-    public static final RegistryObject<Item> TORN_PAPER_3 = ITEMS.register("torn_paper_3",
-            () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_3));
-    public static final RegistryObject<Item> TORN_PAPER_4 = ITEMS.register("torn_paper_4",
-            () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_4));
-    public static final RegistryObject<Item> TORN_PAPER_5 = ITEMS.register("torn_paper_5",
-            () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_5));
+    public static final RegistryObject<Item> MINER_LOG = ITEMS.register("miner_log", () -> new LoreBookItem(LoreBookItem.Type.MINER_LOG));
+    public static final RegistryObject<Item> DAMP_DIARY = ITEMS.register("damp_diary", DampDiaryItem::new);
+    public static final RegistryObject<Item> TORN_PAPER_1 = ITEMS.register("torn_paper_1", () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_1));
+    public static final RegistryObject<Item> TORN_PAPER_2 = ITEMS.register("torn_paper_2", () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_2));
+    public static final RegistryObject<Item> TORN_PAPER_3 = ITEMS.register("torn_paper_3", () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_3));
+    public static final RegistryObject<Item> TORN_PAPER_4 = ITEMS.register("torn_paper_4", () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_4));
+    public static final RegistryObject<Item> TORN_PAPER_5 = ITEMS.register("torn_paper_5", () -> new LoreBookItem(LoreBookItem.Type.TORN_PAPER_5));
 
     // Iron's Spells 'n Spellbooks Curios
-    public static final RegistryObject<Item> EMPOWERED_RING =
-            ITEMS.register("empowered_ring",
-                    () -> new IronAttributeCurioItem(
-                            new Item.Properties().rarity(Rarity.RARE).fireResistant(),itemId("empowered_ring"),
-                            List.of(CurioAttributeSpec.of(
-                                    AttributeRegistry.SPELL_POWER::get,
-                                    "empowered_ring/spell_power",0.10D,AttributeModifier.Operation.MULTIPLY_BASE)),3));
-    public static final RegistryObject<Item> ADVANCED_EMPOWERED_RING =
-            ITEMS.register("advanced_empowered_ring",
-                    () -> new IronAttributeCurioItem(
-                            new Item.Properties().rarity(Rarity.EPIC).fireResistant(),itemId("advanced_empowered_ring"),
-                            List.of(CurioAttributeSpec.of(
-                                    AttributeRegistry.SPELL_POWER::get,
-                                    "advanced_empowered_ring/spell_power",0.20D,AttributeModifier.Operation.MULTIPLY_BASE)),2));
-    public static final RegistryObject<Item> AETHERLIGHT_RING =
-            ITEMS.register("aetherlight_ring",
-                    () -> new IronAttributeCurioItem(
-                            new Item.Properties().rarity(Rarity.EPIC).fireResistant(),itemId("aetherlight_ring"),
-                            List.of(
-                                    CurioAttributeSpec.of(
-                                            AttributeRegistry.SPELL_POWER::get,"aetherlight_ring/spell_power",0.25D,AttributeModifier.Operation.MULTIPLY_BASE),
-                                    CurioAttributeSpec.of(
-                                            AttributeRegistry.MAX_MANA::get,"aetherlight_ring/max_mana",200.0D,AttributeModifier.Operation.ADDITION),
-                                    CurioAttributeSpec.of(
-                                            AttributeRegistry.MANA_REGEN::get,"aetherlight_ring/mana_regen",0.15D,AttributeModifier.Operation.MULTIPLY_BASE)),1));
-    public static final RegistryObject<Item> RESONANCE_ARMOR =
-            ITEMS.register("resonance_armor",
-                    () -> new IronAttributeCurioItem(
-                            new Item.Properties().rarity(Rarity.EPIC).fireResistant(),itemId("resonance_armor"),
-                            List.of(CurioAttributeSpec.of(
-                                    AttributeRegistry.COOLDOWN_REDUCTION::get,"resonance_armor/cooldown_reduction",0.10D,AttributeModifier.Operation.MULTIPLY_BASE)),1,
-                            "tooltip.until_eternity.resonance_armor.mana_power"));
-    public static final RegistryObject<Item> GREATER_ARCANE_RING =
-            ITEMS.register("greater_arcane_ring",
-                    () -> new IronAttributeCurioItem(
-                            new Item.Properties().rarity(Rarity.RARE).fireResistant(),itemId("greater_arcane_ring"),
-                            List.of(
-                                    CurioAttributeSpec.of(
-                                            AttributeRegistry.MAX_MANA::get,"greater_arcane_ring/max_mana_flat",400.0D,AttributeModifier.Operation.ADDITION),
-                                    CurioAttributeSpec.of(
-                                            AttributeRegistry.MAX_MANA::get,"greater_arcane_ring/max_mana_percent",0.10D,AttributeModifier.Operation.MULTIPLY_BASE)),3,
-                            "tooltip.until_eternity.greater_arcane_ring.mana_regeneration"));
+    public static final RegistryObject<Item> EMPOWERED_RING = ITEMS.register("empowered_ring", () -> new IronAttributeCurioItem(new Item.Properties().rarity(Rarity.RARE).fireResistant(), itemId("empowered_ring"), List.of(CurioAttributeSpec.of(AttributeRegistry.SPELL_POWER::get, "empowered_ring/spell_power", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE)), 3));
+    public static final RegistryObject<Item> ADVANCED_EMPOWERED_RING = ITEMS.register("advanced_empowered_ring", () -> new IronAttributeCurioItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), itemId("advanced_empowered_ring"), List.of(CurioAttributeSpec.of(AttributeRegistry.SPELL_POWER::get, "advanced_empowered_ring/spell_power", 0.20D, AttributeModifier.Operation.MULTIPLY_BASE)), 2));
+    public static final RegistryObject<Item> AETHERLIGHT_RING = ITEMS.register("aetherlight_ring", () -> new IronAttributeCurioItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), itemId("aetherlight_ring"), List.of(CurioAttributeSpec.of(AttributeRegistry.SPELL_POWER::get, "aetherlight_ring/spell_power", 0.25D, AttributeModifier.Operation.MULTIPLY_BASE), CurioAttributeSpec.of(AttributeRegistry.MAX_MANA::get, "aetherlight_ring/max_mana", 200.0D, AttributeModifier.Operation.ADDITION), CurioAttributeSpec.of(AttributeRegistry.MANA_REGEN::get, "aetherlight_ring/mana_regen", 0.15D, AttributeModifier.Operation.MULTIPLY_BASE)), 1));
+    public static final RegistryObject<Item> RESONANCE_ARMOR = ITEMS.register("resonance_armor", () -> new IronAttributeCurioItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), itemId("resonance_armor"), List.of(CurioAttributeSpec.of(AttributeRegistry.COOLDOWN_REDUCTION::get, "resonance_armor/cooldown_reduction", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE)), 1, "tooltip.until_eternity.resonance_armor.mana_power"));
+    public static final RegistryObject<Item> GREATER_ARCANE_RING = ITEMS.register("greater_arcane_ring", () -> new IronAttributeCurioItem(new Item.Properties().rarity(Rarity.RARE).fireResistant(), itemId("greater_arcane_ring"), List.of(CurioAttributeSpec.of(AttributeRegistry.MAX_MANA::get, "greater_arcane_ring/max_mana_flat", 400.0D, AttributeModifier.Operation.ADDITION), CurioAttributeSpec.of(AttributeRegistry.MAX_MANA::get, "greater_arcane_ring/max_mana_percent", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE)), 3, "tooltip.until_eternity.greater_arcane_ring.mana_regeneration"));
+    public static final RegistryObject<Item> BASIC_MAGE_CRYSTAL = ITEMS.register("basic_mage_crystal", () -> new IronAttributeCurioItem(new Item.Properties().rarity(Rarity.RARE).fireResistant(), itemId("basic_mage_crystal"), List.of(CurioAttributeSpec.of(AttributeRegistry.SPELL_POWER::get, "basic_mage_crystal/spell_power", 0.45D, AttributeModifier.Operation.MULTIPLY_BASE), CurioAttributeSpec.of(AttributeRegistry.COOLDOWN_REDUCTION::get, "basic_mage_crystal/cooldown_reduction", 0.15D, AttributeModifier.Operation.MULTIPLY_BASE)), 1, "tooltip.until_eternity.basic_mage_crystal.penetration"));
+    public static final RegistryObject<Item> ADVANCED_MAGE_CRYSTAL = ITEMS.register("advanced_mage_crystal", () -> new IronAttributeCurioItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), itemId("advanced_mage_crystal"), List.of(CurioAttributeSpec.of(AttributeRegistry.SPELL_POWER::get, "advanced_mage_crystal/spell_power", 0.90D, AttributeModifier.Operation.MULTIPLY_BASE), CurioAttributeSpec.of(AttributeRegistry.COOLDOWN_REDUCTION::get, "advanced_mage_crystal/cooldown_reduction", 0.30D, AttributeModifier.Operation.MULTIPLY_BASE)), 1, "tooltip.until_eternity.advanced_mage_crystal.penetration"));
 
     // 巫戒
-    public static final RegistryObject<Item> RING_OF_WARPED_MAGIC = ITEMS.register("ring_of_warped_magic",
-            () -> new WarpedRingItem(itemId("ring_of_warped_magic"),
-                    goetyRevelationAttribute("spell_power"), "spell_power",
-                    0.15, AttributeModifier.Operation.ADDITION, 3));
-    public static final RegistryObject<Item> ADVANCED_RING_OF_WARPED_MAGIC = ITEMS.register("advanced_ring_of_warped_magic",
-            () -> new WarpedRingItem(itemId("advanced_ring_of_warped_magic"),
-                    goetyRevelationAttribute("spell_power_multiplier"),
-                    "spell_power_multiplier",
-                    0.3, AttributeModifier.Operation.ADDITION, 2));
-    public static final RegistryObject<Item> RING_OF_SOUL_CRAVING = ITEMS.register("ring_of_soul_craving",
-            () -> new WarpedRingItem(itemId("ring_of_soul_craving"),
-                    goetyRevelationAttribute("soul_increase_efficiency"),
-                    "soul_increase_efficiency",
-                    0.08, AttributeModifier.Operation.MULTIPLY_BASE, 3));
-    public static final RegistryObject<Item> RING_OF_PURITY = ITEMS.register("ring_of_purity",
-            () -> new WarpedRingItem(itemId("ring_of_purity"),
-                    goetyRevelationAttribute("soul_decrease_reduction"),
-                    "soul_decrease_reduction",
-                    0.05, AttributeModifier.Operation.MULTIPLY_BASE, 3));
-    public static final RegistryObject<Item> RING_OF_WARPED_CHANTING = ITEMS.register("ring_of_warped_chanting",
-            () -> new WarpedRingItem(itemId("ring_of_warped_chanting"),
-                    goetyRevelationAttribute("cast_duration"), "cast_duration",
-                    0.05, AttributeModifier.Operation.ADDITION, 3));
-    public static final RegistryObject<Item> RING_OF_WARPED_COOLING = ITEMS.register("ring_of_warped_cooling",
-            () -> new WarpedRingItem(itemId("ring_of_warped_cooling"),
-                    GoetyRevelationAttributesCompat.SPELL_COOLDOWN,
-                    "spell_cooldown",
-                    0.05, AttributeModifier.Operation.ADDITION, 3));
-    public static final RegistryObject<Item> VOID_RING =
-            ITEMS.register("void_ring", VoidRingItem::new);
-    public static final RegistryObject<CelestialOnionItem> CELESTIAL_ONION =
-            ITEMS.register("celestial_onion", CelestialOnionItem::new);
-    public static final ResourceKey<UpgradeOrbType> SPELL_POWER_ORB_TYPE =
-        ResourceKey.create(
-                UpgradeOrbTypeRegistry.UPGRADE_ORB_REGISTRY_KEY,
-                new ResourceLocation("until_eternity", "spell_power")
-        );
-    public static final RegistryObject<Item> SPELL_POWER_UPGRADE_ORB = ITEMS.register(
-        "spell_power_upgrade_orb",
-        () -> new UpgradeOrbItem(
-                new Item.Properties(),
-                SPELL_POWER_ORB_TYPE
-        ));
-        public static final RegistryObject<Item> TRUE_BEDROCK =
-            ITEMS.register(
-                    "true_bedrock",
-                    () -> new TrueBedrockItem(
-                            new Item.Properties()
-                                    .stacksTo(1)
-                                    .rarity(Rarity.EPIC)
-                                    .fireResistant()
-        ));
-    public static final RegistryObject<Item> HEAD_CHEF_GLOVES =
-        ITEMS.register(
-                "head_chef_gloves",
-                HeadChefGlovesItem::new
-        );
-    public static final RegistryObject<Item> ANCIENT_SHIELD =
-        ITEMS.register(
-                "ancient_shield",
-                () -> new AttributeCurioItem(
-                        new Item.Properties().stacksTo(1),
-                        CurioAttributeProfile.ANCIENT_SHIELD
-                )
-        );
-    public static final RegistryObject<Item> PERMAFROST_CRYSTAL = ITEMS.register(
-            "permafrost_crystal",
-            () -> new AttributeCurioItem(new Item.Properties().stacksTo(1),
-                    CurioAttributeProfile.PERMAFROST_CRYSTAL, "bracelet"));
-    public static final RegistryObject<Item> TAVERN_OWNER_DIARY = ITEMS.register(
-        "tavern_owner_diary",
-        () -> new TavernOwnerDiaryItem(new Item.Properties())
-);
+    public static final RegistryObject<Item> RING_OF_WARPED_MAGIC = ITEMS.register("ring_of_warped_magic", () -> new WarpedRingItem(itemId("ring_of_warped_magic"), goetyRevelationAttribute("spell_power"), "spell_power", 0.15, AttributeModifier.Operation.ADDITION, 3));
+    public static final RegistryObject<Item> ADVANCED_RING_OF_WARPED_MAGIC = ITEMS.register("advanced_ring_of_warped_magic", () -> new WarpedRingItem(itemId("advanced_ring_of_warped_magic"), goetyRevelationAttribute("spell_power_multiplier"), "spell_power_multiplier", 0.3, AttributeModifier.Operation.ADDITION, 2));
+    public static final RegistryObject<Item> RING_OF_SOUL_CRAVING = ITEMS.register("ring_of_soul_craving", () -> new WarpedRingItem(itemId("ring_of_soul_craving"), goetyRevelationAttribute("soul_increase_efficiency"), "soul_increase_efficiency", 0.08, AttributeModifier.Operation.MULTIPLY_BASE, 3));
+    public static final RegistryObject<Item> RING_OF_PURITY = ITEMS.register("ring_of_purity", () -> new WarpedRingItem(itemId("ring_of_purity"), goetyRevelationAttribute("soul_decrease_reduction"), "soul_decrease_reduction", 0.05, AttributeModifier.Operation.MULTIPLY_BASE, 3));
+    public static final RegistryObject<Item> RING_OF_WARPED_CHANTING = ITEMS.register("ring_of_warped_chanting", () -> new WarpedRingItem(itemId("ring_of_warped_chanting"), goetyRevelationAttribute("cast_duration"), "cast_duration", 0.05, AttributeModifier.Operation.ADDITION, 3));
+    public static final RegistryObject<Item> RING_OF_WARPED_COOLING = ITEMS.register("ring_of_warped_cooling", () -> new WarpedRingItem(itemId("ring_of_warped_cooling"), GoetyRevelationAttributesCompat.SPELL_COOLDOWN, "spell_cooldown", 0.05, AttributeModifier.Operation.ADDITION, 3));
+    public static final RegistryObject<Item> VOID_RING = ITEMS.register("void_ring", VoidRingItem::new);
+    public static final RegistryObject<CelestialOnionItem> CELESTIAL_ONION = ITEMS.register("celestial_onion", CelestialOnionItem::new);
+    public static final ResourceKey<UpgradeOrbType> SPELL_POWER_ORB_TYPE = ResourceKey.create(UpgradeOrbTypeRegistry.UPGRADE_ORB_REGISTRY_KEY, new ResourceLocation("until_eternity", "spell_power"));
+    public static final RegistryObject<Item> SPELL_POWER_UPGRADE_ORB = ITEMS.register("spell_power_upgrade_orb", () -> new UpgradeOrbItem(new Item.Properties(), SPELL_POWER_ORB_TYPE));
+    public static final RegistryObject<Item> TRUE_BEDROCK = ITEMS.register("true_bedrock", () -> new TrueBedrockItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    public static final RegistryObject<Item> HEAD_CHEF_GLOVES = ITEMS.register("head_chef_gloves", HeadChefGlovesItem::new);
+    public static final RegistryObject<Item> ANCIENT_SHIELD = ITEMS.register("ancient_shield", () -> new AttributeCurioItem(new Item.Properties().stacksTo(1), CurioAttributeProfile.ANCIENT_SHIELD));
+    public static final RegistryObject<Item> PERMAFROST_CRYSTAL = ITEMS.register("permafrost_crystal", () -> new AttributeCurioItem(new Item.Properties().stacksTo(1), CurioAttributeProfile.PERMAFROST_CRYSTAL, "bracelet"));
+    public static final RegistryObject<Item> TAVERN_OWNER_DIARY = ITEMS.register("tavern_owner_diary", () -> new TavernOwnerDiaryItem(new Item.Properties()));
+    public static final RegistryObject<Item> HELL_PENDANT = ITEMS.register("hell_pendant", () -> new HellPendantItem(new Item.Properties().stacksTo(1)));
 
     private static ResourceLocation goetyRevelationAttribute(String path) {
         return new ResourceLocation("goety_revelation", path);

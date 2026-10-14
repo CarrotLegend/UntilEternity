@@ -128,6 +128,9 @@ public class ModCreativeModeTabs {
                 output.accept(ModItems.ANCIENT_SHIELD.get());
                 output.accept(ModItems.PERMAFROST_CRYSTAL.get());
                 output.accept(ModItems.TAVERN_OWNER_DIARY.get());
+                output.accept(ModItems.HELL_PENDANT.get());
+                output.accept(ModItems.BASIC_MAGE_CRYSTAL.get());
+                output.accept(ModItems.ADVANCED_MAGE_CRYSTAL.get());
             }).build());
 
     public static void register(IEventBus eventBus) {

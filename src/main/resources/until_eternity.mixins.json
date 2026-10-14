@@ -33,6 +33,7 @@
     "compat.curios.DynamicStackHandlerBoundsMixin",
     "compat.eeeabsmobs.NamelessGuardianTrueChefsKnifeMixin",
     "compat.eeeabsmobs.ImmortalSkeletonShieldCooldownMixin",
+    "compat.eeeabsmobs.ImmortalDamageCapMixin",
     "compat.aethersdelight.HolystoneStoveFarmerDelightCompatMixin",
     "compat.mowziesmobs.WroughtnautTrueChefsKnifeMixin",
     "compat.enigmaticlegacy.CursedScrollConfigMixin",

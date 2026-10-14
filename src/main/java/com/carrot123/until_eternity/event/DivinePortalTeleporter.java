@@ -56,8 +56,13 @@ public final class DivinePortalTeleporter implements ITeleporter {
             relativePosition = PortalShape.getRelativePosition(sourceRectangle,
                     axis, entity.position(), entity.getDimensions(entity.getPose()));
         }
-        return PortalShape.createPortalInfo(destination, found.get(), axis, relativePosition,
+        PortalInfo info = PortalShape.createPortalInfo(destination, found.get(), axis, relativePosition,
                 entity, entity.getDeltaMovement(), entity.getYRot(), entity.getXRot());
+        if (destination.dimension().equals(DivinePortalEvents.DIVINE_REALM) && info.pos.y < 64.0D) {
+            return new PortalInfo(new Vec3(info.pos.x, 64.0D, info.pos.z),
+                    info.speed, info.yRot, info.xRot);
+        }
+        return info;
     }
 
     @Override

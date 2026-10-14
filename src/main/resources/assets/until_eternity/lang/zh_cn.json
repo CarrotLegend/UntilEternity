@@ -438,5 +438,18 @@
   "message.until_eternity.storm_altar.started": "风暴融合开始",
   "dimension.until_eternity.divine_realm": "神界",
   "biome.until_eternity.eden": "伊甸园",
-  "block.until_eternity.divine_portal": "神界传送门"
+  "block.until_eternity.divine_portal": "神界传送门",
+  "item.until_eternity.hell_pendant": "地狱吊坠",
+
+"tooltip.until_eternity.hell_pendant.health": "最大生命值-50%",
+"tooltip.until_eternity.hell_pendant.fire_damage": "受到火焰伤害+100%",
+"tooltip.until_eternity.hell_pendant.eternal_fire": "火焰无法被水和雨水扑灭",
+"tooltip.until_eternity.hell_pendant.damage_taken": "受到伤害+20%",
+"tooltip.until_eternity.hell_pendant.blessing": "但是，使用下界之星右键它会给予你祝福。",
+"tooltip.until_eternity.hell_pendant.blessed": "但是，全部伤害+400%，普通伤害抗性+25%。",
+"item.until_eternity.basic_mage_crystal": "初级法师结晶",
+"item.until_eternity.advanced_mage_crystal": "高级法师结晶",
+
+"tooltip.until_eternity.basic_mage_crystal.penetration": "法术攻击穿透敌人10%防御。",
+"tooltip.until_eternity.advanced_mage_crystal.penetration": "法术攻击穿透敌人20%防御。"
 }

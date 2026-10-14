@@ -421,5 +421,10 @@
   "message.until_eternity.storm_altar.started": "Storm fusion started",
   "dimension.until_eternity.divine_realm": "Divine Realm",
   "biome.until_eternity.eden": "Garden of Eden",
-  "block.until_eternity.divine_portal": "Divine Portal"
+  "block.until_eternity.divine_portal": "Divine Portal",
+  "item.until_eternity.basic_mage_crystal": "Basic Mage Crystal",
+"item.until_eternity.advanced_mage_crystal": "Advanced Mage Crystal",
+
+"tooltip.until_eternity.basic_mage_crystal.penetration": "Spell attacks penetrate 10% of the enemy's defenses.",
+"tooltip.until_eternity.advanced_mage_crystal.penetration": "Spell attacks penetrate 20% of the enemy's defenses."
 }

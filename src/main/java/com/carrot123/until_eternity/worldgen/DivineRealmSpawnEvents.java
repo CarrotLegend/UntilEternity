@@ -30,8 +30,7 @@ public final class DivineRealmSpawnEvents {
         MobSpawnType type = event.getSpawnType();
         if (type == MobSpawnType.NATURAL
                 || type == MobSpawnType.CHUNK_GENERATION
-                || type == MobSpawnType.PATROL
-                || type == MobSpawnType.PHANTOM) {
+                || type == MobSpawnType.PATROL) {
             event.setResult(Event.Result.DENY);
         }
     }
