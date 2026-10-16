@@ -113,7 +113,7 @@
     "compat.irons_spellbooks.TooltipsUtilsMixin",
     "client.irons_spellbooks.AlchemistCauldronJeiMixin",
     "compat.summoningrituals.SummoningRitualsMobIngredientMixin",
-    "client.BloodPotionColorMixin"
+    "client.SpawnerConfigGuiTextureMixin"
   ],
   "injectors": {
     "defaultRequire": 1

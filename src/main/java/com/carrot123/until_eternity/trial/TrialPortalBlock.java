@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -38,7 +39,7 @@ public final class TrialPortalBlock extends BaseEntityBlock {
         registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.X));
     }
 
-    @Override public RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
+    @Override public RenderShape getRenderShape(BlockState state) { return RenderShape.INVISIBLE; }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) { builder.add(AXIS); }
     @Override public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return state.getValue(AXIS) == Direction.Axis.X ? X_SHAPE : Z_SHAPE;
@@ -48,13 +49,26 @@ public final class TrialPortalBlock extends BaseEntityBlock {
         return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.TRIAL_PORTAL.get(), TrialPortalBlockEntity::tick);
     }
     @Override public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (!level.isClientSide) TrialPortalTravel.touch(level, entity);
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof TrialPortalBlockEntity portal
+                && portal.shapeVersion() == 2 && portal.anchor() != null
+                && TrialPortalGeometry.intersects(portal.anchor(), state.getValue(AXIS), entity.getBoundingBox()))
+            TrialPortalTravel.touch(level, pos, entity);
     }
     @Override public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (!(level.getBlockEntity(pos) instanceof TrialPortalBlockEntity portal)
+                || portal.shapeVersion() != 2 || !pos.equals(portal.anchor())) return;
         if (random.nextInt(80) == 0) level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(),
                 SoundEvents.PORTAL_AMBIENT, SoundSource.BLOCKS, 0.4f, 1.2f, false);
-        for (int i = 0; i < 2; i++) level.addParticle(ParticleTypes.PORTAL,
-                pos.getX() + random.nextDouble(), pos.getY() + random.nextDouble(), pos.getZ() + random.nextDouble(),
-                0, 0, 0);
+        Vec3 center = TrialPortalGeometry.center(pos, state.getValue(AXIS));
+        for (int i = 0; i < 2; i++) {
+            double angle = random.nextDouble() * Math.PI * 2;
+            double radius = 1.92 + random.nextDouble() * .16;
+            double horizontal = Math.cos(angle) * radius;
+            double normal = (random.nextDouble() - .5) * .2;
+            boolean alongX = state.getValue(AXIS) == Direction.Axis.X;
+            level.addParticle(ParticleTypes.PORTAL, center.x + (alongX ? horizontal : normal),
+                    center.y + Math.sin(angle) * radius, center.z + (alongX ? normal : horizontal),
+                    0, 0, 0);
+        }
     }
 }

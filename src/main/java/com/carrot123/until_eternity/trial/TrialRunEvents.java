@@ -47,7 +47,12 @@ public final class TrialRunEvents {
         if (!tag.hasUUID(TrialMonumentBlockEntity.MOB_RUN)) return;
         BlockPos pos = BlockPos.of(tag.getLong(TrialMonumentBlockEntity.MOB_MONUMENT));
         if (!(level.getBlockEntity(pos) instanceof TrialMonumentBlockEntity monument)
-                || !monument.hasRun(tag.getUUID(TrialMonumentBlockEntity.MOB_RUN))) event.setCanceled(true);
+                || !monument.hasRun(tag.getUUID(TrialMonumentBlockEntity.MOB_RUN))) {
+            until_eternity.LOGGER.info("Discarding stale trial mob on join: uuid={} type={} pos={} monument={} run={}",
+                    entity.getUUID(), entity.getType(), entity.blockPosition(), pos,
+                    tag.getUUID(TrialMonumentBlockEntity.MOB_RUN));
+            event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent public static void onLevelTick(TickEvent.LevelTickEvent event) {

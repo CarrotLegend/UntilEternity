@@ -1,6 +1,5 @@
 package com.carrot123.until_eternity.trial;
 
-import com.carrot123.until_eternity.block.ModBlocks;
 import com.carrot123.until_eternity.item.ModItems;
 import com.carrot123.until_eternity.until_eternity;
 import net.minecraft.core.BlockPos;
@@ -8,18 +7,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -44,7 +38,7 @@ public final class TrialPortalTravel {
     private static final Map<UUID, Long> EXIT_REQUIRED = new HashMap<>();
     private TrialPortalTravel() {}
 
-    public static void touch(Level level, Entity entity) {
+    public static void touch(Level level, BlockPos portalPos, Entity entity) {
         if (!(level instanceof ServerLevel source) || !(entity instanceof ServerPlayer player)
                 || entity.isPassenger() || entity.isVehicle() || !entity.canChangeDimensions()) return;
         if (EXIT_REQUIRED.containsKey(player.getUUID())) {
@@ -62,30 +56,34 @@ public final class TrialPortalTravel {
         contact.lastTouched = now;
         if (contact.ticks < Math.max(20, entity.getPortalWaitTime())) return;
         CONTACTS.remove(player.getUUID());
-        travel(player, source);
+        travel(player, source, portalPos);
     }
 
-    private static void travel(ServerPlayer player, ServerLevel source) {
+    private static void travel(ServerPlayer player, ServerLevel source, BlockPos portalPos) {
+        if (!(source.getBlockEntity(portalPos) instanceof TrialPortalBlockEntity portal)) return;
         boolean outbound = source.dimension().equals(TrialRealm.KEY);
+        if (!outbound && !source.dimension().equals(Level.OVERWORLD)) return;
         MinecraftServer server = source.getServer();
         CompoundTag data = persisted(player);
+        CompoundTag previousReturn = data.copy();
         ServerLevel destination;
         Vec3 target;
         float yaw = player.getYRot(), pitch = player.getXRot();
         if (outbound) {
-            ResourceLocation id = ResourceLocation.tryParse(data.getString("ReturnDimension"));
-            ResourceKey<Level> key = id == null ? Level.OVERWORLD : ResourceKey.create(Registries.DIMENSION, id);
-            destination = server.getLevel(key);
-            if (destination == null) destination = server.overworld();
-            target = data.contains("ReturnX", Tag.TAG_DOUBLE)
+            destination = server.overworld();
+            boolean recordedOverworld = Level.OVERWORLD.location().toString().equals(data.getString("ReturnDimension"));
+            target = recordedOverworld && data.contains("ReturnX", Tag.TAG_DOUBLE)
                     ? new Vec3(data.getDouble("ReturnX"), data.getDouble("ReturnY"), data.getDouble("ReturnZ"))
-                    : Vec3.atBottomCenterOf(destination.getSharedSpawnPos());
-            yaw = data.contains("ReturnYaw") ? data.getFloat("ReturnYaw") : yaw;
-            pitch = data.contains("ReturnPitch") ? data.getFloat("ReturnPitch") : pitch;
-            if (!safe(destination, target)) {
+                    : safeSpawn(destination);
+            if (recordedOverworld) {
+                yaw = data.contains("ReturnYaw") ? data.getFloat("ReturnYaw") : yaw;
+                pitch = data.contains("ReturnPitch") ? data.getFloat("ReturnPitch") : pitch;
+            }
+            if (target == null || !safe(destination, target)) {
                 destination = server.overworld();
                 target = safeSpawn(destination);
             }
+            if (target == null || !safe(destination, target)) return;
         } else {
             destination = server.getLevel(TrialRealm.KEY);
             if (destination == null) return;
@@ -97,15 +95,17 @@ public final class TrialPortalTravel {
             data.putDouble("ReturnZ", player.getZ());
             data.putFloat("ReturnYaw", yaw);
             data.putFloat("ReturnPitch", pitch);
-            ensureReturnPortal(destination);
         }
-        player.setPortalCooldown();
         Entity result = player.changeDimension(destination, new FixedTeleporter(target, yaw, pitch));
         if (result instanceof ServerPlayer moved) {
             moved.setPortalCooldown();
             EXIT_REQUIRED.put(moved.getUUID(), destination.getGameTime());
             if (outbound) clearReturn(persisted(moved));
             else grantMonument(moved);
+            TrialPortalPlacement.remove(source, portalPos, portal);
+        } else if (!outbound) {
+            clearReturn(data);
+            data.merge(previousReturn);
         }
     }
 
@@ -125,24 +125,20 @@ public final class TrialPortalTravel {
 
     private static Vec3 safeSpawn(ServerLevel level) {
         BlockPos spawn = level.getSharedSpawnPos();
-        for (int dy = 0; dy <= 16; dy++) {
-            Vec3 pos = Vec3.atBottomCenterOf(spawn.above(dy));
-            if (safe(level, pos)) return pos;
-        }
-        return Vec3.atBottomCenterOf(level.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawn));
-    }
-
-    private static void ensureReturnPortal(ServerLevel level) {
-        BlockPos first = TrialRealm.RETURN_PORTAL;
-        BlockState state = ModBlocks.TRIAL_PORTAL.get().defaultBlockState().setValue(TrialPortalBlock.AXIS, Direction.Axis.Z);
-        for (int x = 0; x < 2; x++) for (int y = 0; y < 3; y++) {
-            BlockPos pos = first.south(x).above(y);
-            if (level.getBlockState(pos).isAir()) {
-                level.setBlock(pos, state, 3);
-                if (level.getBlockEntity(pos) instanceof TrialPortalBlockEntity portal) portal.setExpiresAt(-1);
+        for (int radius = 0; radius <= 16; radius++) {
+            for (int dx = -radius; dx <= radius; dx++) for (int dz = -radius; dz <= radius; dz++) {
+                if (Math.max(Math.abs(dx), Math.abs(dz)) != radius) continue;
+                BlockPos near = spawn.offset(dx, 0, dz);
+                BlockPos surface = level.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, near);
+                Vec3 pos = Vec3.atBottomCenterOf(surface);
+                if (safe(level, pos)) return pos;
+                for (int dy = 0; dy <= 16; dy++) {
+                    pos = Vec3.atBottomCenterOf(near.above(dy));
+                    if (safe(level, pos)) return pos;
+                }
             }
         }
-        level.playSound(null, first, SoundEvents.PORTAL_TRIGGER, SoundSource.BLOCKS, 0.6f, 1.0f);
+        return null;
     }
 
     private static void grantMonument(ServerPlayer player) {
@@ -168,11 +164,8 @@ public final class TrialPortalTravel {
         if (old.contains(KEY, Tag.TAG_COMPOUND)) persisted(event.getEntity()).merge(old.getCompound(KEY).copy());
     }
     @SubscribeEvent public static void onChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player && event.getTo().equals(TrialRealm.KEY)
-                && player.level() instanceof ServerLevel level) {
-            ensureReturnPortal(level);
+        if (event.getTo().equals(TrialRealm.KEY) && event.getEntity() instanceof ServerPlayer player)
             grantMonument(player);
-        }
     }
     @SubscribeEvent public static void onTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
