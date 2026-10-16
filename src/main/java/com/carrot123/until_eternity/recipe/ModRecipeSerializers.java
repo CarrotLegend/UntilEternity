@@ -1,7 +1,7 @@
+
 package com.carrot123.until_eternity.recipe;
 
 import com.carrot123.until_eternity.until_eternity;
-
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -36,14 +36,28 @@ public final class ModRecipeSerializers {
                     )
             );
 
+    public static final RegistryObject<RecipeSerializer<VenomousWhipUpgradeRecipe>>
+            VENOMOUS_WHIP_UPGRADE =
+            RECIPE_SERIALIZERS.register(
+                    "venomous_whip_upgrade",
+                    () -> new SimpleCraftingRecipeSerializer<>(
+                            VenomousWhipUpgradeRecipe::new
+                    )
+            );
+
     public static final RegistryObject<RecipeSerializer<EndCraftingRecipe>>
             END_CRAFTING =
             RECIPE_SERIALIZERS.register(
                     "end_crafting",
                     EndCraftingRecipeSerializer::new
             );
-    public static final RegistryObject<RecipeSerializer<StormAltarRecipe>> STORM_ALTAR =
-            RECIPE_SERIALIZERS.register("storm_altar", StormAltarRecipeSerializer::new);
+
+    public static final RegistryObject<RecipeSerializer<StormAltarRecipe>>
+            STORM_ALTAR =
+            RECIPE_SERIALIZERS.register(
+                    "storm_altar",
+                    StormAltarRecipeSerializer::new
+            );
 
     public static final RegistryObject<RecipeSerializer<ChefRankAnvilRecipe>>
             CHEF_RANK_ANVIL =
@@ -51,12 +65,13 @@ public final class ModRecipeSerializers {
                     "chef_rank_anvil",
                     ChefRankAnvilRecipeSerializer::new
             );
+
     public static final RegistryObject<RecipeSerializer<NbtStonecuttingRecipe>>
-        NBT_STONECUTTING =
-        RECIPE_SERIALIZERS.register(
-                "nbt_stonecutting",
-                NbtStonecuttingRecipeSerializer::new
-        );
+            NBT_STONECUTTING =
+            RECIPE_SERIALIZERS.register(
+                    "nbt_stonecutting",
+                    NbtStonecuttingRecipeSerializer::new
+            );
 
     private ModRecipeSerializers() {
     }

@@ -451,5 +451,10 @@
 "item.until_eternity.advanced_mage_crystal": "高级法师结晶",
 
 "tooltip.until_eternity.basic_mage_crystal.penetration": "法术攻击穿透敌人10%防御。",
-"tooltip.until_eternity.advanced_mage_crystal.penetration": "法术攻击穿透敌人20%防御。"
+"tooltip.until_eternity.advanced_mage_crystal.penetration": "法术攻击穿透敌人20%防御。",
+  "whip_upgrade.until_eternity.blazing": "炽烈",
+  "whip_upgrade.until_eternity.sculk": "幽匿",
+  "whip_upgrade.until_eternity.ender": "末影",
+  "whip_upgrade.until_eternity.void": "虚空",
+  "whip_upgrade.until_eternity.unholy": "不洁"
 }

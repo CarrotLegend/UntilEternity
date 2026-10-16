@@ -426,5 +426,10 @@
 "item.until_eternity.advanced_mage_crystal": "Advanced Mage Crystal",
 
 "tooltip.until_eternity.basic_mage_crystal.penetration": "Spell attacks penetrate 10% of the enemy's defenses.",
-"tooltip.until_eternity.advanced_mage_crystal.penetration": "Spell attacks penetrate 20% of the enemy's defenses."
+"tooltip.until_eternity.advanced_mage_crystal.penetration": "Spell attacks penetrate 20% of the enemy's defenses.",
+  "whip_upgrade.until_eternity.blazing": "Blazing",
+  "whip_upgrade.until_eternity.sculk": "Sculk",
+  "whip_upgrade.until_eternity.ender": "Ender",
+  "whip_upgrade.until_eternity.void": "Void",
+  "whip_upgrade.until_eternity.unholy": "Unholy"
 }

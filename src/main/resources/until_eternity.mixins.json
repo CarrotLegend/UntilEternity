@@ -29,6 +29,7 @@
     "AquamiraeSmithingCompatMixin",
     "EnderManProjectileMixin",
     "compat.curios.CurioStacksHandlerShrinkFixMixin",
+    "compat.curios.CurioInventoryInvalidStackProtectionMixin",
     "compat.curios.CuriosItemStackHandlerBoundsMixin",
     "compat.curios.DynamicStackHandlerBoundsMixin",
     "compat.eeeabsmobs.NamelessGuardianTrueChefsKnifeMixin",

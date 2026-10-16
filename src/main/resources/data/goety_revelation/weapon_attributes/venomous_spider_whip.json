@@ -1,0 +1,7 @@
+
+{
+  "parent": "bettercombat:sickle",
+  "attributes": {
+    "two_handed": false
+  }
+}

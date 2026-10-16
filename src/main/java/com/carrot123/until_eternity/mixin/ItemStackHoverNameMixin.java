@@ -1,12 +1,12 @@
+
 package com.carrot123.until_eternity.mixin;
 
 import com.carrot123.until_eternity.compat.eternalcareer.ChefRankHelper;
+import com.carrot123.until_eternity.compat.goetyrevelation.VenomousWhipUpgradeHelper;
 import com.carrot123.until_eternity.compat.ironsspellbooks.StaffAffixHelper;
 import com.carrot123.until_eternity.tarot.TarotCardHelper;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,25 +28,14 @@ public abstract class ItemStackHoverNameMixin {
     private void untilEternity$composeDisplayName(
             CallbackInfoReturnable<Component> callback
     ) {
-        ItemStack stack =
-                (ItemStack) (Object) this;
+        ItemStack stack = (ItemStack) (Object) this;
 
-        Component result =
-                callback.getReturnValue().copy();
+        Component result = callback.getReturnValue().copy();
 
-        result =
-                StaffAffixHelper.composeHoverName(
-                        stack,
-                        result
-                );
-
-        result =
-                ChefRankHelper.composeHoverName(
-                        stack,
-                        result
-                );
-
+        result = StaffAffixHelper.composeHoverName(stack, result);
+        result = ChefRankHelper.composeHoverName(stack, result);
         result = TarotCardHelper.composeHoverName(stack, result);
+        result = VenomousWhipUpgradeHelper.composeHoverName(stack, result);
 
         callback.setReturnValue(result);
     }
