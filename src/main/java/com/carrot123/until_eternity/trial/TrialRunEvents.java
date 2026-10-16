@@ -5,9 +5,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.projectile.EvokerFangs;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -38,6 +42,25 @@ public final class TrialRunEvents {
         BlockPos pos = BlockPos.of(tag.getLong(TrialMonumentBlockEntity.MOB_MONUMENT));
         if (level.getBlockEntity(pos) instanceof TrialMonumentBlockEntity monument)
             monument.onMobDeath(entity.getUUID(), tag.getUUID(TrialMonumentBlockEntity.MOB_RUN));
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST) public static void onHurt(LivingHurtEvent event) {
+        if (event.isCanceled() || !(event.getEntity().level() instanceof ServerLevel level)
+                || !level.dimension().equals(TrialRealm.KEY)) return;
+        Entity attacker = event.getSource().getEntity();
+        if (!(attacker instanceof Mob) && event.getSource().getDirectEntity() instanceof Projectile projectile)
+            attacker = projectile.getOwner();
+        if (!(attacker instanceof Mob) && event.getSource().getDirectEntity() instanceof EvokerFangs fangs)
+            attacker = fangs.getOwner();
+        if (!(attacker instanceof Mob mob) || mob.level() != level) return;
+        CompoundTag tag = mob.getPersistentData();
+        if (!tag.hasUUID(TrialMonumentBlockEntity.MOB_RUN)
+                || !tag.contains(TrialMonumentBlockEntity.MOB_MONUMENT)) return;
+        BlockPos pos = BlockPos.of(tag.getLong(TrialMonumentBlockEntity.MOB_MONUMENT));
+        if (!level.hasChunkAt(pos)) return;
+        if (level.getBlockEntity(pos) instanceof TrialMonumentBlockEntity monument
+                && monument.tracksDamageSource(mob.getUUID(), tag.getUUID(TrialMonumentBlockEntity.MOB_RUN)))
+            event.setAmount((float)(event.getAmount() * monument.difficulty().damageMultiplier()));
     }
 
     @SubscribeEvent public static void onEntityLoad(EntityJoinLevelEvent event) {

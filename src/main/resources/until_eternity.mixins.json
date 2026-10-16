@@ -25,6 +25,7 @@
     "LivingEntityDamageInvoker",
     "AbstractArrowDirectHealthMixin",
     "MonsterSpawnerLightMixin",
+    "TrialMaxHealthLimitMixin",
     "BaseSpawnerMixin",
     "AquamiraeSmithingCompatMixin",
     "EnderManProjectileMixin",

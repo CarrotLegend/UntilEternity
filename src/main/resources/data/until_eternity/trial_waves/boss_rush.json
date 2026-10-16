@@ -1,22 +1,57 @@
 {
-  "wave_count": 5,
+  "wave_count": 13,
   "waves": [
     { "prepare_ticks": 60, "time_ticks": 4800, "mobs": [
-      { "id": "minecraft:zombie", "count": 4 }, 
-      { "id": "minecraft:skeleton", "count": 2 }
+      { "id": "mowziesmobs:frostmaw", "count": 1 }, 
+      { "id": "mowziesmobs:umvuthi", "count": 1 }
     ]},
     { "prepare_ticks": 100, "time_ticks": 4800, "mobs": [
-      { "id": "minecraft:vindicator", "count": 2 }, 
-      { "id": "minecraft:evoker", "count": 1 }
+      { "id": "legendary_monsters:frostbitten_golem", "count": 1 }, 
+      { "id": "legendary_monsters:overgrown_colossus", "count": 1 }, 
+      { "id": "legendary_monsters:ancient_guardian", "count": 1 }, 
+      { "id": "legendary_monsters:posessed_paladin", "count": 1 }
     ]},
     { "prepare_ticks": 100, "time_ticks": 4800, "mobs": [
-      { "id": "minecraft:ravager", "count": 2 }
+      { "id": "legendary_monsters:skeletosaurus", "count": 1 },
+      { "id": "legendary_monsters:withered_abomination", "count": 1 },
+      { "id": "legendary_monsters:lava_eater", "count": 1 }
     ]},
     { "prepare_ticks": 100, "time_ticks": 4800, "mobs": [
-      { "id": "minecraft:warden", "count": 1 }
+      { "id": "goety:vizier", "count": 1 },
+      { "id": "goety:skull_lord", "count": 1 },
+      { "id": "goety:wither_necromancer", "count": 1 }
     ]},
     { "prepare_ticks": 100, "time_ticks": 6000, "mobs": [
-      { "id": "minecraft:wither", "count": 1 }
+      { "id": "minecraft:warden", "count": 4 }
+    ]},
+    { "prepare_ticks": 100, "time_ticks": 6000, "mobs": [
+      { "id": "cataclysm:ancient_remnant", "count": 1 },
+      { "id": "cataclysm:scylla", "count": 1 },
+      { "id": "cataclysm:the_harbinger", "count": 1 }
+    ]},
+    { "prepare_ticks": 100, "time_ticks": 6000, "mobs": [
+      { "id": "goety:endersent", "count": 1 },
+      { "id": "legendary_monsters:cloud_golem", "count": 1 },
+      { "id": "legendary_monsters:the_obliterator", "count": 1 },
+      { "id": "cataclysm:maledictus", "count": 1 }
+    ]},
+    { "prepare_ticks": 100, "time_ticks": 6000, "mobs": [
+      { "id": "goety:ender_keeper", "count": 1 }
+    ]},
+    { "prepare_ticks": 100, "time_ticks": 6000, "mobs": [
+      { "id": "cataclysm:ender_guardian", "count": 1 }
+    ]},
+    { "prepare_ticks": 100, "time_ticks": 6000, "mobs": [
+      { "id": "cataclysm:ignis", "count": 1 }
+    ]},
+    { "prepare_ticks": 100, "time_ticks": 6000, "mobs": [
+      { "id": "aether:sun_spirit", "count": 1 }
+    ]},
+    { "prepare_ticks": 100, "time_ticks": 6000, "mobs": [
+      { "id": "eeeabsmobs:immortal", "count": 1 }
+    ]},
+    { "prepare_ticks": 100, "time_ticks": 6000, "mobs": [
+      { "id": "goety_revelation:summon_apollyon", "count": 1 }
     ]}
   ]
 }

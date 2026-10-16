@@ -2,6 +2,8 @@ package com.carrot123.until_eternity.trial;
 
 import com.carrot123.until_eternity.block.entity.ModBlockEntities;
 import com.carrot123.until_eternity.item.ModItems;
+import com.carrot123.until_eternity.network.ModNetworking;
+import com.carrot123.until_eternity.network.OpenTrialDialogueS2CPacket;
 import com.carrot123.until_eternity.until_eternity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,16 +18,25 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Unit;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.monster.warden.Warden;
+import net.minecraft.world.entity.monster.warden.WardenAi;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,6 +48,7 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
     public static final String MOB_RUN = "UntilEternityTrialRun";
     public static final String MOB_MONUMENT = "UntilEternityTrialMonument";
     public enum Phase { IDLE, PREPARE, ACTIVE, INTERMISSION, FAILED, COMPLETE }
+    private static final UUID HEALTH_MODIFIER = UUID.fromString("40ac5f79-8e11-4050-a83c-ff3d0a0ea123");
 
     private UUID owner;
     private UUID run;
@@ -46,6 +58,7 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
     private final Set<UUID> mobs = new HashSet<>();
     private boolean pendingRock;
     private boolean rewardIssued;
+    private TrialDifficulty difficulty = TrialDifficulty.NORMAL;
     private ServerBossEvent bar;
     private boolean checkOldRun;
     private int outsideTicks;
@@ -58,20 +71,38 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
 
     public void place(ServerPlayer player) {
         owner = player.getUUID();
+        phase = Phase.IDLE;
         setChanged();
-        start(player);
     }
 
     public void interact(ServerPlayer player) {
+        if (!(level instanceof ServerLevel server) || !server.dimension().equals(TrialRealm.KEY)
+                || player.level() != server || player.distanceToSqr(Vec3.atCenterOf(worldPosition)) > 64) return;
         if (!player.getUUID().equals(owner)) {
             player.displayClientMessage(Component.translatable("message.until_eternity.trial.not_owner"), true);
             return;
         }
-        if (pendingRock) { deliverRock(player); return; }
-        if (phase == Phase.IDLE || phase == Phase.FAILED || phase == Phase.COMPLETE) start(player);
+        if (canClaim(phase, pendingRock, rewardIssued)) { deliverRock(player); return; }
+        if (running()) {
+            player.displayClientMessage(Component.translatable("message.until_eternity.trial.already_running",
+                    Component.translatable("gui.until_eternity.trial.difficulty."
+                            + difficulty.name().toLowerCase(java.util.Locale.ROOT))), true);
+            return;
+        }
+        if (canSelect(phase, pendingRock, rewardIssued))
+            ModNetworking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new OpenTrialDialogueS2CPacket(worldPosition));
     }
 
-    private void start(ServerPlayer player) {
+    public void selectDifficulty(ServerPlayer player, TrialDifficulty selected) {
+        if (!(level instanceof ServerLevel server) || !server.dimension().equals(TrialRealm.KEY)
+                || !server.hasChunkAt(worldPosition) || server.getBlockEntity(worldPosition) != this
+                || selected == null || owner == null || !owner.equals(player.getUUID())
+                || player.level() != server || player.distanceToSqr(Vec3.atCenterOf(worldPosition)) > 64
+                || !canSelect(phase, pendingRock, rewardIssued)) return;
+        start(player, selected);
+    }
+
+    private void start(ServerPlayer player, TrialDifficulty selected) {
         if (!(level instanceof ServerLevel server) || !server.dimension().equals(TrialRealm.KEY)) return;
         if (server.getDifficulty() == Difficulty.PEACEFUL) {
             player.displayClientMessage(Component.translatable("message.until_eternity.trial.peaceful"), true);
@@ -86,6 +117,7 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
             player.displayClientMessage(Component.translatable("message.until_eternity.trial.too_close"), true);
             return;
         }
+        difficulty = selected;
         snapshot = config;
         run = UUID.randomUUID();
         waveIndex = 0;
@@ -112,10 +144,6 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         if (checkOldRun) {
             checkOldRun = false;
             if (running()) { fail(server, "restart"); return; }
-        }
-        if (pendingRock && phase == Phase.COMPLETE) {
-            ServerPlayer recipient = server.getServer().getPlayerList().getPlayer(owner);
-            if (recipient != null) deliverRock(recipient);
         }
         if (!running()) return;
         if (server.getDifficulty() == Difficulty.PEACEFUL) { fail(server, "difficulty changed to peaceful"); return; }
@@ -204,6 +232,23 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
                 until_eternity.LOGGER.warn("Trial mob insertion rejected: type={} uuid={} pos={}", mob.getType(), mob.getUUID(), feet);
                 return false;
             }
+
+            if (mob instanceof Warden warden) {
+                warden.getBrain().setMemoryWithExpiry(MemoryModuleType.DIG_COOLDOWN, Unit.INSTANCE, Long.MAX_VALUE);
+                warden.setPose(Pose.EMERGING);
+                warden.getBrain().setMemoryWithExpiry(MemoryModuleType.IS_EMERGING, Unit.INSTANCE, WardenAi.EMERGE_DURATION);
+            }
+
+            AttributeInstance health = mob.getAttribute(Attributes.MAX_HEALTH);
+            if (health == null) {
+                fail(server, "trial mob lacks MAX_HEALTH type=" + mob.getType());
+                return false;
+            }
+            if (health.getModifier(HEALTH_MODIFIER) == null)
+                health.addTransientModifier(new AttributeModifier(HEALTH_MODIFIER, "Trial difficulty health",
+                        difficulty.healthMultiplier() - 1.0, AttributeModifier.Operation.MULTIPLY_TOTAL));
+            mob.setHealth(mob.getMaxHealth());
+
             server.sendParticles(ParticleTypes.REVERSE_PORTAL, mob.getX(), mob.getY() + 1, mob.getZ(),
                     20, 0.5, 0.7, 0.5, 0.05);
             server.playSound(null, feet, SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 0.8f, 0.8f);
@@ -256,12 +301,22 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         server.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, worldPosition.getX() + 0.5, worldPosition.getY() + 1,
                 worldPosition.getZ() + 0.5, 70, 1, 1, 1, 0.1);
         closeRun(server);
-        if (player != null) deliverRock(player);
+        if (player != null) player.displayClientMessage(
+                Component.translatable("message.until_eternity.trial.claim_reward"), false);
         setChanged();
     }
 
     static boolean canComplete(Phase phase, boolean pendingRock, boolean rewardIssued) {
         return phase == Phase.ACTIVE && !pendingRock && !rewardIssued;
+    }
+
+    static boolean canClaim(Phase phase, boolean pendingRock, boolean rewardIssued) {
+        return phase == Phase.COMPLETE && pendingRock && !rewardIssued;
+    }
+
+    static boolean canSelect(Phase phase, boolean pendingRock, boolean rewardIssued) {
+        return !pendingRock && (phase == Phase.IDLE || phase == Phase.FAILED
+                || phase == Phase.COMPLETE && rewardIssued);
     }
 
     public void fail(ServerLevel server, String reason) {
@@ -296,12 +351,16 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
     }
 
     private void deliverRock(ServerPlayer player) {
-        if (!pendingRock || rewardIssued || !player.getUUID().equals(owner)) return;
+        if (!canClaim(phase, pendingRock, rewardIssued) || !player.getUUID().equals(owner)) return;
         ItemStack rock = new ItemStack(ModItems.ROCK.get());
-        if (!player.getInventory().add(rock) && player.drop(rock, false) == null) return;
+        if (!player.getInventory().add(rock)) {
+            player.displayClientMessage(Component.translatable("message.until_eternity.trial.inventory_full"), true);
+            return;
+        }
         pendingRock = false;
         rewardIssued = true;
         setChanged();
+        player.displayClientMessage(Component.translatable("message.until_eternity.trial.reward_claimed"), true);
     }
 
     private void updateBar(ServerLevel server) {
@@ -318,17 +377,16 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
     public void destroy() {
         if (!(level instanceof ServerLevel server)) return;
         if (running()) fail(server, "monument broken");
-        if (phase == Phase.COMPLETE && pendingRock && !rewardIssued) {
-            pendingRock = false;
-            rewardIssued = true;
-            net.minecraft.world.Containers.dropItemStack(server,
-                    worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5,
-                    new ItemStack(ModItems.ROCK.get()));
-        }
+        pendingRock = false;
+        rewardIssued = true;
     }
 
     private boolean running() { return phase == Phase.PREPARE || phase == Phase.ACTIVE || phase == Phase.INTERMISSION; }
     public boolean hasRun(UUID runId) { return running() && run != null && run.equals(runId); }
+    public boolean tracksDamageSource(UUID mobId, UUID runId) {
+        return phase == Phase.ACTIVE && run != null && run.equals(runId) && mobs.contains(mobId);
+    }
+    public TrialDifficulty difficulty() { return difficulty; }
     public UUID owner() { return owner; }
     private static void title(ServerPlayer player, String key) {
         player.connection.send(new ClientboundSetTitleTextPacket(Component.translatable(key)));
@@ -338,6 +396,7 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         if (level instanceof ServerLevel server && running()) fail(server, "chunk unloaded");
         super.onChunkUnloaded();
     }
+
     @Override protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         if (owner != null) tag.putUUID("Owner", owner);
@@ -351,7 +410,9 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         tag.put("Mobs", tracked);
         tag.putBoolean("PendingRock", pendingRock);
         tag.putBoolean("RewardIssued", rewardIssued);
+        tag.putString("TrialDifficulty", difficulty.name());
     }
+
     @Override public void load(CompoundTag tag) {
         super.load(tag);
         owner = tag.hasUUID("Owner") ? tag.getUUID("Owner") : null;
@@ -363,10 +424,10 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         waveLimit = tag.getInt("WaveLimit");
         mobs.clear();
         for (Tag entry : tag.getList("Mobs", Tag.TAG_COMPOUND)) if (((CompoundTag) entry).hasUUID("Id")) mobs.add(((CompoundTag) entry).getUUID("Id"));
-        // Legacy per-wave Rewards are deliberately discarded; they are never re-issued as rocks.
         pendingRock = tag.getBoolean("PendingRock");
         rewardIssued = tag.getBoolean("RewardIssued");
         if (rewardIssued) pendingRock = false;
+        difficulty = TrialDifficulty.fromSaved(tag.getString("TrialDifficulty"));
         checkOldRun = level == null && running();
     }
 }

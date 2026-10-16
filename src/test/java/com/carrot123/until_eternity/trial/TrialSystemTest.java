@@ -49,6 +49,32 @@ class TrialSystemTest {
         assertFalse(TrialMonumentBlockEntity.canComplete(TrialMonumentBlockEntity.Phase.ACTIVE, false, true));
     }
 
+    @Test void difficultyMultipliersAndLegacyNameAreStable() {
+        assertEquals(2.0, TrialDifficulty.EASY.healthMultiplier());
+        assertEquals(4.0, TrialDifficulty.NORMAL.healthMultiplier());
+        assertEquals(6.0, TrialDifficulty.HARD.healthMultiplier());
+        assertEquals(10.0, TrialDifficulty.MALICE.healthMultiplier());
+        assertEquals(1.0, TrialDifficulty.EASY.damageMultiplier());
+        assertEquals(1.0, TrialDifficulty.NORMAL.damageMultiplier());
+        assertEquals(1.5, TrialDifficulty.HARD.damageMultiplier());
+        assertEquals(3.0, TrialDifficulty.MALICE.damageMultiplier());
+        assertNull(TrialDifficulty.byNetworkId(-1));
+        assertNull(TrialDifficulty.byNetworkId(4));
+        assertEquals(TrialDifficulty.NORMAL, TrialDifficulty.fromSaved(""));
+        assertEquals(TrialDifficulty.MALICE, TrialDifficulty.fromSaved("MALICE"));
+    }
+
+    @Test void pendingRewardMustBeClaimedBeforeAnotherRun() {
+        assertTrue(TrialMonumentBlockEntity.canSelect(TrialMonumentBlockEntity.Phase.IDLE, false, false));
+        assertTrue(TrialMonumentBlockEntity.canSelect(TrialMonumentBlockEntity.Phase.FAILED, false, false));
+        assertFalse(TrialMonumentBlockEntity.canSelect(TrialMonumentBlockEntity.Phase.PREPARE, false, false));
+        assertFalse(TrialMonumentBlockEntity.canSelect(TrialMonumentBlockEntity.Phase.ACTIVE, false, false));
+        assertFalse(TrialMonumentBlockEntity.canSelect(TrialMonumentBlockEntity.Phase.COMPLETE, true, false));
+        assertTrue(TrialMonumentBlockEntity.canClaim(TrialMonumentBlockEntity.Phase.COMPLETE, true, false));
+        assertFalse(TrialMonumentBlockEntity.canClaim(TrialMonumentBlockEntity.Phase.COMPLETE, false, true));
+        assertTrue(TrialMonumentBlockEntity.canSelect(TrialMonumentBlockEntity.Phase.COMPLETE, false, true));
+    }
+
     private static String config(int count, int secondPrepare) {
         StringBuilder waves = new StringBuilder();
         for (int i = 0; i < 5; i++) {

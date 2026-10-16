@@ -21,7 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public final class TrialMonumentBlock extends BaseEntityBlock {
-    public TrialMonumentBlock() { super(BlockBehaviour.Properties.copy(Blocks.CRYING_OBSIDIAN).strength(5, 1200)); }
+    public TrialMonumentBlock() { super(BlockBehaviour.Properties.copy(Blocks.CRYING_OBSIDIAN).strength(-1, 3600000)); }
     @Override public RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
     @Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) { return new TrialMonumentBlockEntity(pos, state); }
     @Nullable @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
