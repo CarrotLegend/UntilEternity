@@ -26,6 +26,9 @@ public final class UntilEternityMixinPlugin
     private static final String REVELATION_FIX_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.revelationfix.";
 
+    private static final String TRIAL_GOETY_REVELATION_MIXIN =
+            "com.carrot123.until_eternity.mixin.compat.goetyrevelation.TrialSummonApostleTickMixin";
+
     private static final String MOWZIES_MOBS_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.mowziesmobs.";
 
@@ -68,6 +71,9 @@ public final class UntilEternityMixinPlugin
             String targetClassName,
             String mixinClassName
     ) {
+        if (mixinClassName.equals(TRIAL_GOETY_REVELATION_MIXIN)) {
+            return isModLoaded("goety") && isModLoaded("goety_revelation");
+        }
         if (mixinClassName.startsWith(
                 AETHER_COMPAT
         )) {

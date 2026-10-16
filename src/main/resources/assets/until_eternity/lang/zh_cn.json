@@ -15,7 +15,7 @@
   "message.until_eternity.trial.inventory_full": "背包空间不足，奖励仍保存在石碑中。",
   "message.until_eternity.trial.already_running": "当前试炼正在进行，难度：%s。",
   "message.until_eternity.trial.claim_reward": "请右键试炼石碑领取奖励。",
-  "message.until_eternity.trial.reward_claimed": "已领取古恒石。",
+  "message.until_eternity.trial.reward_claimed": "已领取 %s 个古恒石。",
   "gui.until_eternity.trial.dialogue_title": "试炼石碑",
   "gui.until_eternity.trial.dialogue_intro_1": "远道而来的挑战者，你是否已经做好接受试炼的准备？",
   "gui.until_eternity.trial.dialogue_intro_2": "选择你的试炼难度。切记，试炼一旦开始，便不可轻易退却。",

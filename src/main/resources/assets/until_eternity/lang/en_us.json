@@ -15,7 +15,7 @@
   "message.until_eternity.trial.inventory_full": "Make room in your inventory before claiming rewards.",
   "message.until_eternity.trial.already_running": "A trial is already underway. Difficulty: %s.",
   "message.until_eternity.trial.claim_reward": "Right-click the Trial Monument to claim your reward.",
-  "message.until_eternity.trial.reward_claimed": "Ancient Rock claimed.",
+  "message.until_eternity.trial.reward_claimed": "Ancient Rocks received: %s.",
   "gui.until_eternity.trial.dialogue_title": "Trial Monument",
   "gui.until_eternity.trial.dialogue_intro_1": "Traveler from afar, are you prepared to face the trial?",
   "gui.until_eternity.trial.dialogue_intro_2": "Choose your trial difficulty. Once begun, you cannot easily turn back.",

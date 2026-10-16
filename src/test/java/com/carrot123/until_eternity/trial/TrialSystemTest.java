@@ -58,9 +58,14 @@ class TrialSystemTest {
         assertEquals(1.0, TrialDifficulty.NORMAL.damageMultiplier());
         assertEquals(1.5, TrialDifficulty.HARD.damageMultiplier());
         assertEquals(3.0, TrialDifficulty.MALICE.damageMultiplier());
+        assertEquals(1, TrialDifficulty.EASY.rewardCount());
+        assertEquals(2, TrialDifficulty.NORMAL.rewardCount());
+        assertEquals(3, TrialDifficulty.HARD.rewardCount());
+        assertEquals(4, TrialDifficulty.MALICE.rewardCount());
         assertNull(TrialDifficulty.byNetworkId(-1));
         assertNull(TrialDifficulty.byNetworkId(4));
         assertEquals(TrialDifficulty.NORMAL, TrialDifficulty.fromSaved(""));
+        assertEquals(2, TrialDifficulty.fromSaved("").rewardCount());
         assertEquals(TrialDifficulty.MALICE, TrialDifficulty.fromSaved("MALICE"));
     }
 

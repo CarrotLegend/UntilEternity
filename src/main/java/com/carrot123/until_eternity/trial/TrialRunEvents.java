@@ -1,6 +1,7 @@
 package com.carrot123.until_eternity.trial;
 
 import com.carrot123.until_eternity.until_eternity;
+import com.carrot123.until_eternity.compat.goetyrevelation.TrialApollyonIdentity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -63,9 +64,25 @@ public final class TrialRunEvents {
             event.setAmount((float)(event.getAmount() * monument.difficulty().damageMultiplier()));
     }
 
-    @SubscribeEvent public static void onEntityLoad(EntityJoinLevelEvent event) {
-        if (!(event.getLevel() instanceof ServerLevel level) || !level.dimension().equals(TrialRealm.KEY)) return;
+    @SubscribeEvent(priority = EventPriority.LOWEST) public static void onEntityLoad(EntityJoinLevelEvent event) {
+        if (event.isCanceled() || !(event.getLevel() instanceof ServerLevel level)
+                || !level.dimension().equals(TrialRealm.KEY)) return;
         Entity entity = event.getEntity();
+        Entity source = TrialApollyonSpawnContext.source();
+        if (source != null && source.level() == level && entity instanceof Mob candidate
+                && TrialApollyonIdentity.isApollyon(candidate)) {
+            CompoundTag sourceTag = source.getPersistentData();
+            if (sourceTag.hasUUID(TrialMonumentBlockEntity.MOB_RUN)
+                    && sourceTag.contains(TrialMonumentBlockEntity.MOB_MONUMENT)) {
+                BlockPos monumentPos = BlockPos.of(sourceTag.getLong(TrialMonumentBlockEntity.MOB_MONUMENT));
+                if (level.hasChunkAt(monumentPos)
+                        && level.getBlockEntity(monumentPos) instanceof TrialMonumentBlockEntity monument
+                        && !monument.offerApollyonCandidate(source, candidate, true))
+                    until_eternity.LOGGER.warn("Trial Apollyon candidate rejected: summon={} boss={} run={} pos={}",
+                            source.getUUID(), candidate.getUUID(), sourceTag.getUUID(TrialMonumentBlockEntity.MOB_RUN),
+                            candidate.position());
+            }
+        }
         CompoundTag tag = entity.getPersistentData();
         if (!tag.hasUUID(TrialMonumentBlockEntity.MOB_RUN)) return;
         BlockPos pos = BlockPos.of(tag.getLong(TrialMonumentBlockEntity.MOB_MONUMENT));

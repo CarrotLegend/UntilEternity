@@ -67,6 +67,7 @@
     "compat.goety.IceBouquetDamageSourceMixin",
     "compat.goety.IronHideSpellMixin",
     "compat.goetyrevelation.QuietusStarPropertiesMixin",
+    "compat.goetyrevelation.TrialSummonApostleTickMixin",
     "compat.goetyrevelation.CommonEventHandlerPuzzleWhitelistMixin",
     "compat.goetyrevelation.BowOfRevelationArrowEffectMixin",
     "compat.revelationfix.LivingEntityOdamaneTargetingMixin",
