@@ -42,6 +42,23 @@ class TrialSystemTest {
         assertThrows(RuntimeException.class, () -> TrialWaveDocument.parse(JsonParser.parseString(config(2, 100).replace("\"mobs\"", "\"reward\":{},\"mobs\""))));
     }
 
+    @Test void onlyTheExplicitApostleVariantCreatesTrialApollyon() {
+        String ordinary = config(1, 100);
+        assertNull(TrialWaveDocument.parse(JsonParser.parseString(ordinary)).waves().get(0).mobs().get(0).variant());
+        String apollyon = ordinary.replace("minecraft:zombie", "goety:apostle")
+                .replace("\"count\":1", "\"variant\":\"apollyon\",\"count\":1");
+        assertEquals("apollyon", TrialWaveDocument.parse(JsonParser.parseString(apollyon))
+                .waves().get(0).mobs().get(0).variant());
+        assertNull(TrialWaveDocument.parse(JsonParser.parseString(ordinary.replace("minecraft:zombie", "goety:apostle")))
+                .waves().get(0).mobs().get(0).variant());
+        assertThrows(IllegalArgumentException.class, () -> TrialWaveDocument.parse(JsonParser.parseString(
+                ordinary.replace("\"count\":1", "\"variant\":\"apollyon\",\"count\":1"))));
+        assertThrows(IllegalArgumentException.class, () -> TrialWaveDocument.parse(JsonParser.parseString(
+                ordinary.replace("minecraft:zombie", "goety_revelation:summon_apollyon"))));
+        assertThrows(IllegalArgumentException.class, () -> TrialWaveDocument.parse(JsonParser.parseString(
+                apollyon.replace("\"apollyon\"", "\"ordinary\""))));
+    }
+
     @Test void completionCanOnlySettleOnce() {
         assertTrue(TrialMonumentBlockEntity.canComplete(TrialMonumentBlockEntity.Phase.ACTIVE, false, false));
         assertFalse(TrialMonumentBlockEntity.canComplete(TrialMonumentBlockEntity.Phase.COMPLETE, false, true));

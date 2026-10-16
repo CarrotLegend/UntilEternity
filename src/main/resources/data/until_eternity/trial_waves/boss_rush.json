@@ -51,7 +51,7 @@
       { "id": "eeeabsmobs:immortal", "count": 1 }
     ]},
     { "prepare_ticks": 100, "time_ticks": 6000, "mobs": [
-      { "id": "goety_revelation:summon_apollyon", "count": 1 }
+      { "id": "goety:apostle", "variant": "apollyon", "count": 1 }
     ]}
   ]
 }

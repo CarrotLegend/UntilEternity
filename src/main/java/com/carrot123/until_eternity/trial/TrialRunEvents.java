@@ -1,7 +1,6 @@
 package com.carrot123.until_eternity.trial;
 
 import com.carrot123.until_eternity.until_eternity;
-import com.carrot123.until_eternity.compat.goetyrevelation.TrialApollyonIdentity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -20,6 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = until_eternity.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class TrialRunEvents {
@@ -38,6 +38,15 @@ public final class TrialRunEvents {
         if (event.isCanceled()) return;
         Entity entity = event.getEntity();
         if (!(entity.level() instanceof ServerLevel level) || !level.dimension().equals(TrialRealm.KEY)) return;
+        TrialApollyonOwnership ownership = TrialApollyonOwnership.get(level);
+        TrialApollyonOwnership.Entry directBoss = ownership.active(entity);
+        if (directBoss != null) {
+            if (level.getBlockEntity(directBoss.monument) instanceof TrialMonumentBlockEntity monument
+                    && monument.ownsApollyon(level, entity))
+                monument.onMobDeath(entity.getUUID(), directBoss.run);
+            return;
+        }
+        if (ownership.knows(entity.getUUID())) return;
         CompoundTag tag = entity.getPersistentData();
         if (!tag.hasUUID(TrialMonumentBlockEntity.MOB_RUN) || !tag.contains(TrialMonumentBlockEntity.MOB_MONUMENT)) return;
         BlockPos pos = BlockPos.of(tag.getLong(TrialMonumentBlockEntity.MOB_MONUMENT));
@@ -54,6 +63,15 @@ public final class TrialRunEvents {
         if (!(attacker instanceof Mob) && event.getSource().getDirectEntity() instanceof EvokerFangs fangs)
             attacker = fangs.getOwner();
         if (!(attacker instanceof Mob mob) || mob.level() != level) return;
+        TrialApollyonOwnership ownership = TrialApollyonOwnership.get(level);
+        TrialApollyonOwnership.Entry directBoss = ownership.active(mob);
+        if (directBoss != null) {
+            if (level.getBlockEntity(directBoss.monument) instanceof TrialMonumentBlockEntity monument
+                    && monument.ownsApollyon(level, mob))
+                event.setAmount((float)(event.getAmount() * monument.difficulty().damageMultiplier()));
+            return;
+        }
+        if (ownership.knows(mob.getUUID())) return;
         CompoundTag tag = mob.getPersistentData();
         if (!tag.hasUUID(TrialMonumentBlockEntity.MOB_RUN)
                 || !tag.contains(TrialMonumentBlockEntity.MOB_MONUMENT)) return;
@@ -68,21 +86,14 @@ public final class TrialRunEvents {
         if (event.isCanceled() || !(event.getLevel() instanceof ServerLevel level)
                 || !level.dimension().equals(TrialRealm.KEY)) return;
         Entity entity = event.getEntity();
-        Entity source = TrialApollyonSpawnContext.source();
-        if (source != null && source.level() == level && entity instanceof Mob candidate
-                && TrialApollyonIdentity.isApollyon(candidate)) {
-            CompoundTag sourceTag = source.getPersistentData();
-            if (sourceTag.hasUUID(TrialMonumentBlockEntity.MOB_RUN)
-                    && sourceTag.contains(TrialMonumentBlockEntity.MOB_MONUMENT)) {
-                BlockPos monumentPos = BlockPos.of(sourceTag.getLong(TrialMonumentBlockEntity.MOB_MONUMENT));
-                if (level.hasChunkAt(monumentPos)
-                        && level.getBlockEntity(monumentPos) instanceof TrialMonumentBlockEntity monument
-                        && !monument.offerApollyonCandidate(source, candidate, true))
-                    until_eternity.LOGGER.warn("Trial Apollyon candidate rejected: summon={} boss={} run={} pos={}",
-                            source.getUUID(), candidate.getUUID(), sourceTag.getUUID(TrialMonumentBlockEntity.MOB_RUN),
-                            candidate.position());
-            }
+        TrialApollyonOwnership ownership = TrialApollyonOwnership.get(level);
+        if (ownership.shouldCancelJoin(entity)) {
+            event.setCanceled(true);
+            // A duplicate UUID must not erase the live boss's authoritative ownership.
+            if (ownership.pendingCleanup(entity.getUUID())) ownership.forget(entity.getUUID());
+            return;
         }
+        if (ownership.active(entity) != null || ownership.knows(entity.getUUID())) return;
         CompoundTag tag = entity.getPersistentData();
         if (!tag.hasUUID(TrialMonumentBlockEntity.MOB_RUN)) return;
         BlockPos pos = BlockPos.of(tag.getLong(TrialMonumentBlockEntity.MOB_MONUMENT));

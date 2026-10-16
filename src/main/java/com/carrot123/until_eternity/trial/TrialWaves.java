@@ -9,6 +9,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -54,7 +55,10 @@ public final class TrialWaves extends SimpleJsonResourceReloadListener {
                     EntityType<?> entityType = resolver.apply(mobId);
                     if (entityType == null || !entityType.canSummon())
                         throw new IllegalArgumentException("entity is not a summonable mob " + mobId);
-                    mobs.add(new MobSpec(entityType, mob.count()));
+                    if (mob.variant() != null && (!ModList.get().isLoaded("goety")
+                            || !ModList.get().isLoaded("goety_revelation")))
+                        throw new IllegalArgumentException("Apollyon variant requires Goety Revelation");
+                    mobs.add(new MobSpec(entityType, mob.variant(), mob.count()));
                 }
                 waves.add(new Wave(source.prepareTicks(), source.timeTicks(), List.copyOf(mobs)));
             }
@@ -68,5 +72,7 @@ public final class TrialWaves extends SimpleJsonResourceReloadListener {
     }
     public record Config(List<Wave> waves, int definedCount) {}
     public record Wave(int prepareTicks, int timeTicks, List<MobSpec> mobs) {}
-    public record MobSpec(EntityType<?> type, int count) {}
+    public record MobSpec(EntityType<?> type, String variant, int count) {
+        public boolean apollyon() { return "apollyon".equals(variant); }
+    }
 }

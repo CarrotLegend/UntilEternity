@@ -5,6 +5,7 @@ import com.carrot123.until_eternity.item.ModItems;
 import com.carrot123.until_eternity.network.ModNetworking;
 import com.carrot123.until_eternity.network.OpenTrialDialogueS2CPacket;
 import com.carrot123.until_eternity.compat.goetyrevelation.TrialApollyonIdentity;
+import com.carrot123.until_eternity.compat.goetyrevelation.TrialApollyonFactory;
 import com.carrot123.until_eternity.until_eternity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -67,7 +68,9 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
     private int outsideTicks;
     private final Map<UUID, Integer> missingTicks = new HashMap<>();
     private final Map<UUID, String> mobTrace = new HashMap<>();
-    private TrialApollyonHandoff apollyonHandoff;
+    private final Set<UUID> apollyonMobs = new HashSet<>();
+    private final Set<UUID> legacyHandoffCleanup = new HashSet<>();
+    private UUID legacyCandidate;
 
     public TrialMonumentBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.TRIAL_MONUMENT.get(), pos, state);
@@ -132,7 +135,9 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         mobs.clear();
         missingTicks.clear();
         mobTrace.clear();
-        apollyonHandoff = null;
+        apollyonMobs.clear();
+        legacyHandoffCleanup.clear();
+        legacyCandidate = null;
         outsideTicks = 0;
         bar = new ServerBossEvent(Component.translatable("title.until_eternity.trial.start"), BossEvent.BossBarColor.PURPLE,
                 BossEvent.BossBarOverlay.PROGRESS);
@@ -148,7 +153,11 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
     private void serverTick(ServerLevel server) {
         if (checkOldRun) {
             checkOldRun = false;
-            if (running()) { fail(server, "restart"); return; }
+            if (running()) {
+                if (legacyCandidate != null && run != null)
+                    TrialApollyonOwnership.get(server).rememberOld(legacyCandidate, run, worldPosition);
+                fail(server, "restart"); return;
+            }
         }
         if (!running()) return;
         if (server.getDifficulty() == Difficulty.PEACEFUL) { fail(server, "difficulty changed to peaceful"); return; }
@@ -160,9 +169,7 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
             if (++outsideTicks >= 40) { fail(server, "owner outside 48 blocks for 40 ticks"); return; }
         } else outsideTicks = 0;
         if (phase == Phase.ACTIVE) {
-            if (!processApollyonHandoff(server)) return;
             for (UUID id : mobs) {
-                if (apollyonHandoff != null && id.equals(apollyonHandoff.summonId)) continue;
                 Entity entity = server.getEntity(id);
                 if (entity == null) {
                     int missing = missingTicks.merge(id, 1, Integer::sum);
@@ -171,10 +178,14 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
                     continue;
                 }
                 missingTicks.remove(id);
+                if (apollyonMobs.contains(id) && !ownsApollyon(server, entity)) {
+                    fail(server, "tracked Apollyon ownership invalid uuid=" + id + " trace=" + mobTrace.get(id));
+                    return;
+                }
                 if (entity.isRemoved() || !entity.isAlive()
                         || entity.distanceToSqr(Vec3.atCenterOf(worldPosition)) > 64 * 64
-                        || !entity.getPersistentData().hasUUID(MOB_RUN)
-                        || !entity.getPersistentData().getUUID(MOB_RUN).equals(run)) {
+                        || !apollyonMobs.contains(id) && (!entity.getPersistentData().hasUUID(MOB_RUN)
+                        || !entity.getPersistentData().getUUID(MOB_RUN).equals(run))) {
                     fail(server, "tracked mob invalid uuid=" + id + " type=" + entity.getType() + " pos=" + entity.blockPosition()
                             + " removed=" + entity.isRemoved() + " reason=" + entity.getRemovalReason()
                             + " alive=" + entity.isAlive() + " runTag=" + entity.getPersistentData().getString(MOB_RUN)); return;
@@ -191,22 +202,20 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         TrialWaves.Wave wave = snapshot.waves().get(waveIndex);
         mobs.clear();
         for (TrialWaves.MobSpec spec : wave.mobs()) for (int i = 0; i < spec.count(); i++) {
-            Entity created;
-            try { created = spec.type().create(server); }
+            Mob created;
+            try { created = spec.apollyon() ? TrialApollyonFactory.create(server)
+                    : spec.type().create(server) instanceof Mob mob ? mob : null; }
             catch (RuntimeException ex) {
                 until_eternity.LOGGER.error("Trial mob factory failed: type={} wave={}", spec.type(), waveIndex, ex);
                 fail(server, "mob factory exception type=" + spec.type());
                 return;
             }
-            boolean special = TrialApollyonSpawnContext.SUMMON_ID.equals(
-                    net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(spec.type()));
-            if (special && (spec.count() != 1 || apollyonHandoff != null)) {
-                if (created != null) created.discard();
-                fail(server, "Apollyon summon must occur exactly once in a wave");
-                return;
+            boolean spawned = false;
+            if (created != null) try { spawned = spawnOne(server, created, spec.apollyon()); }
+            catch (RuntimeException ex) {
+                until_eternity.LOGGER.error("Trial mob initialization failed: type={} wave={}", spec.type(), waveIndex, ex);
             }
-            if (created == null || (!(created instanceof Mob) && !(special
-                    && TrialApollyonSpawnContext.isSummonApollyon(created))) || !spawnOne(server, created, special)) {
+            if (!spawned) {
                 if (created != null) created.discard();
                 fail(server, "spawn failure entity=" + spec.type() + " index=" + i + " wave=" + waveIndex); return;
             }
@@ -217,7 +226,7 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         setChanged();
     }
 
-    private boolean spawnOne(ServerLevel server, Entity entity, boolean apollyonSummon) {
+    private boolean spawnOne(ServerLevel server, Mob entity, boolean apollyon) {
         int invalidGround = 0, invalidBorder = 0, collisions = 0;
         for (int attempt = 0; attempt < 32; attempt++) {
             double angle = server.random.nextDouble() * Math.PI * 2;
@@ -236,30 +245,48 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
                     || !server.getEntities(entity, entity.getBoundingBox()).isEmpty()) {
                 collisions++; continue;
             }
+            if (apollyon) {
+                TrialApollyonFactory.initialize((com.Polarice3.Goety.common.entities.boss.Apostle) entity, server);
+                if (!TrialApollyonIdentity.isApollyon(entity)
+                        || !server.noCollision(entity, entity.getBoundingBox())
+                        || !server.getEntities(entity, entity.getBoundingBox()).isEmpty()) return false;
+            }
             entity.getPersistentData().putUUID(MOB_RUN, run);
             entity.getPersistentData().putLong(MOB_MONUMENT, worldPosition.asLong());
-            mobs.add(entity.getUUID());
-            mobTrace.put(entity.getUUID(), "type=" + entity.getType() + " spawn=" + feet + " chunkLoaded=" + server.hasChunkAt(feet));
-            if (apollyonSummon) apollyonHandoff = new TrialApollyonHandoff(
-                    entity.getUUID(), run, worldPosition, waveIndex, entity.position());
-            if (!server.addFreshEntity(entity)) {
-                mobs.remove(entity.getUUID());
-                mobTrace.remove(entity.getUUID());
-                if (apollyonSummon) apollyonHandoff = null;
+            TrialApollyonOwnership ownership = apollyon ? TrialApollyonOwnership.get(server) : null;
+            if (ownership != null && !ownership.register(entity, run, worldPosition)) {
+                until_eternity.LOGGER.warn("Trial Apollyon UUID already owned: {}", entity.getUUID());
+                return false;
+            }
+            boolean added;
+            try { added = server.addFreshEntity(entity); }
+            catch (RuntimeException ex) {
+                if (ownership != null) ownership.forget(entity.getUUID());
+                throw ex;
+            }
+            if (!added) {
+                if (ownership != null) ownership.forget(entity.getUUID());
                 until_eternity.LOGGER.warn("Trial mob insertion rejected: type={} uuid={} pos={}", entity.getType(), entity.getUUID(), feet);
                 return false;
             }
-            if (apollyonSummon) {
-                until_eternity.LOGGER.info("Trial Apollyon summon created: summon={} run={} monument={} wave={} pos={}",
-                        entity.getUUID(), run, worldPosition, waveIndex, entity.position());
-            } else if (entity instanceof Mob mob) {
-                if (mob instanceof Warden warden) {
+            if (apollyon && (server.getEntity(entity.getUUID()) != entity
+                    || !TrialApollyonIdentity.isApollyon(entity))) {
+                ownership.cleanup(server, entity.getUUID());
+                return false;
+            }
+            mobs.add(entity.getUUID());
+            mobTrace.put(entity.getUUID(), "type=" + entity.getType() + " spawn=" + feet + " chunkLoaded=" + server.hasChunkAt(feet));
+            if (apollyon) apollyonMobs.add(entity.getUUID());
+            if (apollyon) until_eternity.LOGGER.info("Trial Apollyon spawned directly: boss={} run={} monument={} wave={} pos={}",
+                    entity.getUUID(), run, worldPosition, waveIndex, entity.position());
+            if (!apollyon) {
+                if (entity instanceof Warden warden) {
                     warden.getBrain().setMemoryWithExpiry(MemoryModuleType.DIG_COOLDOWN, Unit.INSTANCE, Long.MAX_VALUE);
                     warden.setPose(Pose.EMERGING);
                     warden.getBrain().setMemoryWithExpiry(MemoryModuleType.IS_EMERGING, Unit.INSTANCE, WardenAi.EMERGE_DURATION);
                 }
-                if (!applyDifficultyHealth(mob)) return false;
             }
+            if (!applyDifficultyHealth(entity)) return false;
 
             server.sendParticles(ParticleTypes.REVERSE_PORTAL, entity.getX(), entity.getY() + 1, entity.getZ(),
                     20, 0.5, 0.7, 0.5, 0.05);
@@ -274,101 +301,21 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
     private boolean applyDifficultyHealth(Mob mob) {
         AttributeInstance health = mob.getAttribute(Attributes.MAX_HEALTH);
         if (health == null) return false;
-        if (health.getModifier(HEALTH_MODIFIER) == null)
-            health.addTransientModifier(new AttributeModifier(HEALTH_MODIFIER, "Trial difficulty health",
-                    difficulty.healthMultiplier() - 1.0, AttributeModifier.Operation.MULTIPLY_TOTAL));
+        addDifficultyHealthModifier(health, difficulty);
         mob.setHealth(mob.getMaxHealth());
         return true;
     }
 
-    public boolean awaitingApollyon(Entity source) {
-        return phase == Phase.ACTIVE && run != null && apollyonHandoff != null
-                && source.level() == level && mobs.contains(source.getUUID())
-                && source.getPersistentData().hasUUID(MOB_RUN)
-                && run.equals(source.getPersistentData().getUUID(MOB_RUN))
-                && apollyonHandoff.matchesSource(source.getUUID(), run, worldPosition, waveIndex);
-    }
-
-    public boolean offerApollyonCandidate(Entity source, Mob candidate, boolean isApollyon) {
-        if (!awaitingApollyon(source) || !(level instanceof ServerLevel server)
-                || candidate.level() != server || candidate.isRemoved()) return false;
-        if (!apollyonHandoff.offer(source.getUUID(), run, worldPosition, waveIndex,
-                candidate.getUUID(), candidate.position(), isApollyon, source.tickCount, server.getGameTime())) return false;
-        candidate.getPersistentData().putUUID(MOB_RUN, run);
-        candidate.getPersistentData().putLong(MOB_MONUMENT, worldPosition.asLong());
-        until_eternity.LOGGER.info("Trial Apollyon candidate joined: summon={} boss={} run={} monument={}",
-                source.getUUID(), candidate.getUUID(), run, worldPosition);
-        setChanged();
-        return true;
-    }
-
-    private boolean processApollyonHandoff(ServerLevel server) {
-        TrialApollyonHandoff handoff = apollyonHandoff;
-        if (handoff == null) return true;
-        if (handoff.stage == TrialApollyonHandoff.Stage.SUMMONING) {
-            Entity source = server.getEntity(handoff.summonId);
-            if (source == null || source.isRemoved()) {
-                int missing = missingTicks.merge(handoff.summonId, 1, Integer::sum);
-                if (missing >= 20) {
-                    fail(server, "Apollyon summon vanished before conversion uuid=" + handoff.summonId
-                            + " missingTicks=" + missing + " trace=" + mobTrace.get(handoff.summonId));
-                    return false;
-                }
-            } else {
-                missingTicks.remove(handoff.summonId);
-                if (!source.isAlive() || source.distanceToSqr(handoff.expectedPos) > 4.0D
-                        || !TrialApollyonSpawnContext.isSummonApollyon(source)) {
-                    fail(server, "Apollyon summon invalid uuid=" + handoff.summonId + " pos=" + source.position()
-                            + " removed=" + source.isRemoved() + " reason=" + source.getRemovalReason());
-                    return false;
-                }
-                if (source.tickCount > 470) {
-                    fail(server, "Apollyon summon passed tick 450 without a valid boss uuid=" + handoff.summonId
-                            + " age=" + source.tickCount);
-                    return false;
-                }
-            }
-            return true;
-        }
-        Entity candidate = server.getEntity(handoff.candidateId);
-        if (candidate == null) {
-            if (server.getGameTime() - handoff.candidateSince >= 20) {
-                fail(server, "Apollyon candidate never entered world uuid=" + handoff.candidateId
-                        + " summon=" + handoff.summonId);
-                return false;
-            }
-            return true;
-        }
-        if (!(candidate instanceof Mob boss) || candidate.isRemoved() || !candidate.isAlive()
-                || !TrialApollyonIdentity.isApollyon(candidate)
-                || !handoff.isCandidate(candidate.getUUID())
-                || !candidate.getPersistentData().hasUUID(MOB_RUN)
-                || !handoff.runId.equals(candidate.getPersistentData().getUUID(MOB_RUN))
-                || !candidate.getPersistentData().contains(MOB_MONUMENT)
-                || candidate.getPersistentData().getLong(MOB_MONUMENT) != worldPosition.asLong()
-                || candidate.distanceToSqr(handoff.expectedPos) > 4.0D) {
-            fail(server, "Apollyon candidate invalid uuid=" + handoff.candidateId + " pos=" + candidate.position()
-                    + " removed=" + candidate.isRemoved());
-            return false;
-        }
-        if (!applyDifficultyHealth(boss)) {
-            fail(server, "Apollyon boss lacks MAX_HEALTH uuid=" + boss.getUUID());
-            return false;
-        }
-        mobs.remove(handoff.summonId);
-        mobs.add(boss.getUUID());
-        missingTicks.remove(handoff.summonId);
-        mobTrace.remove(handoff.summonId);
-        mobTrace.put(boss.getUUID(), "Apollyon from summon=" + handoff.summonId + " pos=" + boss.position());
-        apollyonHandoff = null;
-        until_eternity.LOGGER.info("Trial Apollyon handoff complete: summon={} boss={} run={} monument={} difficulty={}",
-                handoff.summonId, boss.getUUID(), handoff.runId, worldPosition, difficulty);
-        setChanged();
-        return true;
+    static void addDifficultyHealthModifier(AttributeInstance health, TrialDifficulty difficulty) {
+        if (health.getModifier(HEALTH_MODIFIER) == null)
+            health.addTransientModifier(new AttributeModifier(HEALTH_MODIFIER, "Trial difficulty health",
+                    difficulty.healthMultiplier() - 1.0, AttributeModifier.Operation.MULTIPLY_TOTAL));
     }
 
     public void onMobDeath(UUID mobId, UUID runId) {
         if (phase != Phase.ACTIVE || !runId.equals(run) || !mobs.remove(mobId)) return;
+        if (apollyonMobs.remove(mobId) && level instanceof ServerLevel server)
+            TrialApollyonOwnership.get(server).forget(mobId);
         if (level instanceof ServerLevel server) {
             if (snapshot == null) {
                 fail(server, "tracked mob died before a restored run was invalidated");
@@ -442,13 +389,24 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
 
     private void cleanupMobs(ServerLevel server) {
         Set<UUID> cleanup = new HashSet<>(mobs);
-        if (apollyonHandoff != null) cleanup.addAll(apollyonHandoff.cleanupIds());
+        cleanup.addAll(legacyHandoffCleanup);
         for (UUID id : cleanup) {
+            if (apollyonMobs.contains(id)) {
+                TrialApollyonOwnership.get(server).cleanup(server, id);
+                continue;
+            }
             Entity entity = server.getEntity(id);
-            if (entity != null && run != null && entity.getPersistentData().hasUUID(MOB_RUN)
-                    && run.equals(entity.getPersistentData().getUUID(MOB_RUN))) entity.discard();
+            boolean legacy = legacyHandoffCleanup.contains(id);
+            if (entity != null && (legacy || run != null && entity.getPersistentData().hasUUID(MOB_RUN)
+                    && run.equals(entity.getPersistentData().getUUID(MOB_RUN)))) {
+                entity.discard();
+                if (id.equals(legacyCandidate)) TrialApollyonOwnership.get(server).forget(id);
+            }
         }
         mobs.clear();
+        apollyonMobs.clear();
+        legacyHandoffCleanup.clear();
+        legacyCandidate = null;
         missingTicks.clear();
         mobTrace.clear();
     }
@@ -458,7 +416,6 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         if (bar != null) { bar.removeAllPlayers(); bar = null; }
         run = null;
         snapshot = null;
-        apollyonHandoff = null;
     }
 
     private void deliverRock(ServerPlayer player) {
@@ -504,6 +461,13 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
     public boolean tracksDamageSource(UUID mobId, UUID runId) {
         return phase == Phase.ACTIVE && run != null && run.equals(runId) && mobs.contains(mobId);
     }
+    boolean ownsApollyon(ServerLevel server, Entity entity) {
+        if (entity == null || entity.level() != server || server.getEntity(entity.getUUID()) != entity
+                || !tracksDamageSource(entity.getUUID(), run) || !apollyonMobs.contains(entity.getUUID())
+                || !TrialApollyonIdentity.isApollyon(entity)) return false;
+        TrialApollyonOwnership.Entry entry = TrialApollyonOwnership.get(server).active(entity);
+        return entry != null && entry.matches(run, worldPosition, entry.live == entity);
+    }
     public TrialDifficulty difficulty() { return difficulty; }
     public UUID owner() { return owner; }
     private static void title(ServerPlayer player, String key) {
@@ -526,10 +490,12 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         ListTag tracked = new ListTag();
         for (UUID id : mobs) { CompoundTag entry = new CompoundTag(); entry.putUUID("Id", id); tracked.add(entry); }
         tag.put("Mobs", tracked);
+        ListTag apollyons = new ListTag();
+        for (UUID id : apollyonMobs) { CompoundTag entry = new CompoundTag(); entry.putUUID("Id", id); apollyons.add(entry); }
+        tag.put("ApollyonMobs", apollyons);
         tag.putBoolean("PendingRock", pendingRock);
         tag.putBoolean("RewardIssued", rewardIssued);
         tag.putString("TrialDifficulty", difficulty.name());
-        if (apollyonHandoff != null) tag.put("ApollyonHandoff", apollyonHandoff.save());
     }
 
     @Override public void load(CompoundTag tag) {
@@ -543,12 +509,23 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         waveLimit = tag.getInt("WaveLimit");
         mobs.clear();
         for (Tag entry : tag.getList("Mobs", Tag.TAG_COMPOUND)) if (((CompoundTag) entry).hasUUID("Id")) mobs.add(((CompoundTag) entry).getUUID("Id"));
+        apollyonMobs.clear();
+        for (Tag entry : tag.getList("ApollyonMobs", Tag.TAG_COMPOUND))
+            if (((CompoundTag) entry).hasUUID("Id")) apollyonMobs.add(((CompoundTag) entry).getUUID("Id"));
+        legacyHandoffCleanup.clear();
+        legacyCandidate = null;
+        if (tag.contains("ApollyonHandoff", Tag.TAG_COMPOUND)) {
+            CompoundTag legacy = tag.getCompound("ApollyonHandoff");
+            if (legacy.hasUUID("Summon")) legacyHandoffCleanup.add(legacy.getUUID("Summon"));
+            if (legacy.hasUUID("Candidate")) {
+                legacyCandidate = legacy.getUUID("Candidate");
+                legacyHandoffCleanup.add(legacyCandidate);
+            }
+        }
         pendingRock = tag.getBoolean("PendingRock");
         rewardIssued = tag.getBoolean("RewardIssued");
         if (rewardIssued) pendingRock = false;
         difficulty = TrialDifficulty.fromSaved(tag.getString("TrialDifficulty"));
-        apollyonHandoff = tag.contains("ApollyonHandoff", Tag.TAG_COMPOUND)
-                ? TrialApollyonHandoff.load(tag.getCompound("ApollyonHandoff")) : null;
         checkOldRun = level == null && running();
     }
 }

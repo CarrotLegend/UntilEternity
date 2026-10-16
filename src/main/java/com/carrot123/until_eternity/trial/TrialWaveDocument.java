@@ -34,11 +34,16 @@ final class TrialWaveDocument {
                 JsonObject entry = mobRaw.getAsJsonObject();
                 String id = entry.get("id").getAsString();
                 if (!id.matches("[a-z0-9_.-]+:[a-z0-9_./-]+")) throw new IllegalArgumentException("invalid entity ID " + id);
+                if (id.equals("goety_revelation:summon_apollyon"))
+                    throw new IllegalArgumentException("trial Apollyon must use goety:apostle variant=apollyon");
+                String variant = entry.has("variant") ? entry.get("variant").getAsString() : null;
+                if (variant != null && !(id.equals("goety:apostle") && variant.equals("apollyon")))
+                    throw new IllegalArgumentException("invalid entity variant " + id + "/" + variant);
                 int count = entry.get("count").getAsInt();
                 if (count <= 0 || count > 64) throw new IllegalArgumentException("invalid mob count " + count);
                 total += count;
                 if (total > 128) throw new IllegalArgumentException("too many mobs in one wave");
-                mobs.add(new Mob(id, count));
+                mobs.add(new Mob(id, variant, count));
             }
             waves.add(new Wave(prepare, time, List.copyOf(mobs)));
         }
@@ -47,5 +52,5 @@ final class TrialWaveDocument {
 
     record Definition(int waveCount, List<Wave> waves) {}
     record Wave(int prepareTicks, int timeTicks, List<Mob> mobs) {}
-    record Mob(String id, int count) {}
+    record Mob(String id, String variant, int count) {}
 }
