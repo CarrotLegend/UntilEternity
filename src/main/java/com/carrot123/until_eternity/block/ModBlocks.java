@@ -8,6 +8,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import com.carrot123.until_eternity.trial.TrialPortalBlock;
+import com.carrot123.until_eternity.trial.TrialMonumentBlock;
 
 @SuppressWarnings("null")
 public class ModBlocks {
@@ -27,6 +29,8 @@ public class ModBlocks {
             EndCraftingTableBlock::new);
     public static final RegistryObject<Block> STORM_ALTAR = BLOCKS.register("storm_altar",
             StormAltarBlock::new);
+    public static final RegistryObject<Block> TRIAL_PORTAL = BLOCKS.register("trial_portal", TrialPortalBlock::new);
+    public static final RegistryObject<Block> TRIAL_MONUMENT = BLOCKS.register("trial_monument", TrialMonumentBlock::new);
 
     public static final RegistryObject<Block> DIVINE_CALCITE = BLOCKS.register("divine_calcite",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.CALCITE)

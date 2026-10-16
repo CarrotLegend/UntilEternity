@@ -1,0 +1,9 @@
+{
+  "waves": [
+    { "time_ticks": 2400, "mobs": [{ "id": "minecraft:zombie", "count": 4 }, { "id": "minecraft:skeleton", "count": 2 }], "reward": { "id": "minecraft:iron_ingot", "count": 2 } },
+    { "time_ticks": 2400, "mobs": [{ "id": "minecraft:vindicator", "count": 2 }, { "id": "minecraft:evoker", "count": 1 }], "reward": { "id": "minecraft:emerald", "count": 2 } },
+    { "time_ticks": 3600, "mobs": [{ "id": "minecraft:ravager", "count": 2 }], "reward": { "id": "minecraft:diamond", "count": 1 } },
+    { "time_ticks": 4800, "mobs": [{ "id": "minecraft:warden", "count": 1 }], "reward": { "id": "minecraft:echo_shard", "count": 1 } },
+    { "time_ticks": 6000, "mobs": [{ "id": "minecraft:wither", "count": 1 }], "reward": { "id": "minecraft:nether_star", "count": 1 } }
+  ]
+}

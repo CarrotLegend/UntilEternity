@@ -1,0 +1,1 @@
+{ "variants": { "axis=x": { "model": "until_eternity:block/trial_portal_ew" }, "axis=z": { "model": "until_eternity:block/trial_portal_ns" } } }

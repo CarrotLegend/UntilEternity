@@ -108,6 +108,7 @@ public class until_eternity {
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CHAOS_PORTAL.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.DIVINE_PORTAL.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.STORM_ALTAR.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.TRIAL_PORTAL.get(), RenderType.translucent());
             event.enqueueWork(() -> {
                 MenuScreens.register(ModMenuTypes.END_CRAFTING_TABLE.get(), EndCraftingTableScreen::new);
                 if (ModList.get().isLoaded("bettercombat")) {

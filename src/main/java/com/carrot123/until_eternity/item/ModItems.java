@@ -25,6 +25,8 @@ import com.carrot123.until_eternity.until_eternity;
 import com.carrot123.until_eternity.item.curio.HeadChefGlovesItem;
 import com.carrot123.until_eternity.item.curio.HellPendantItem;
 import com.carrot123.until_eternity.item.TavernOwnerDiaryItem;
+import com.carrot123.until_eternity.trial.TrialKeyItem;
+import com.carrot123.until_eternity.trial.TrialMonumentItem;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.item.UpgradeOrbItem;
 import io.redspace.ironsspellbooks.item.armor.UpgradeOrbType;
@@ -64,6 +66,9 @@ public class ModItems {
     public static final RegistryObject<Item> IMMORTAL_ALTAR = ITEMS.register("immortal_altar", () -> new ImmortalAltarBlockItem(ModBlocks.IMMORTAL_ALTAR.get(), new Item.Properties()));
     public static final RegistryObject<Item> END_CRAFTING_TABLE = ITEMS.register("end_crafting_table", () -> new EndCraftingTableBlockItem(ModBlocks.END_CRAFTING_TABLE.get(), new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> STORM_ALTAR = ITEMS.register("storm_altar", () -> new BlockItem(ModBlocks.STORM_ALTAR.get(), new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> TRIAL_KEY = ITEMS.register("trial_key", TrialKeyItem::new);
+    public static final RegistryObject<Item> TRIAL_MONUMENT = ITEMS.register("trial_monument", () ->
+            new TrialMonumentItem(ModBlocks.TRIAL_MONUMENT.get(), new Item.Properties().rarity(Rarity.RARE).stacksTo(1)));
     public static final RegistryObject<Item> DIVINE_CALCITE = ITEMS.register("divine_calcite", () -> new BlockItem(ModBlocks.DIVINE_CALCITE.get(), new Item.Properties()));
     public static final RegistryObject<MobContainerItem> MOB_CONTAINER = ITEMS.register("mob_container", MobContainerItem::new);
     public static final RegistryObject<Item> ELEMENTAL_GAUNTLET = ITEMS.register("elemental_gauntlet", () -> new AttributeCurioItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant(), CurioAttributeProfile.ELEMENTAL_GAUNTLET));

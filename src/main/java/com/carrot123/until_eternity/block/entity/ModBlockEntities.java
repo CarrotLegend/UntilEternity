@@ -7,6 +7,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import com.carrot123.until_eternity.trial.TrialPortalBlockEntity;
+import com.carrot123.until_eternity.trial.TrialMonumentBlockEntity;
 
 public final class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
@@ -26,6 +28,12 @@ public final class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<StormAltarBlockEntity>> STORM_ALTAR =
             BLOCK_ENTITIES.register("storm_altar", () -> BlockEntityType.Builder.of(
                     StormAltarBlockEntity::new, ModBlocks.STORM_ALTAR.get()).build(null));
+    public static final RegistryObject<BlockEntityType<TrialPortalBlockEntity>> TRIAL_PORTAL =
+            BLOCK_ENTITIES.register("trial_portal", () -> BlockEntityType.Builder.of(
+                    TrialPortalBlockEntity::new, ModBlocks.TRIAL_PORTAL.get()).build(null));
+    public static final RegistryObject<BlockEntityType<TrialMonumentBlockEntity>> TRIAL_MONUMENT =
+            BLOCK_ENTITIES.register("trial_monument", () -> BlockEntityType.Builder.of(
+                    TrialMonumentBlockEntity::new, ModBlocks.TRIAL_MONUMENT.get()).build(null));
 
     private ModBlockEntities() {
     }

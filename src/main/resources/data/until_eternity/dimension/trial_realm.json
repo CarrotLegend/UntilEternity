@@ -1,0 +1,13 @@
+{
+  "type": "until_eternity:trial_realm",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "until_eternity:trial_realm",
+      "features": false,
+      "lakes": false,
+      "layers": [{ "block": "minecraft:bedrock", "height": 65 }],
+      "structure_overrides": []
+    }
+  }
+}
