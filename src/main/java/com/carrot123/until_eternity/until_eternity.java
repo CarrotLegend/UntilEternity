@@ -20,6 +20,7 @@ import com.carrot123.until_eternity.particle.ModParticles;
 import com.carrot123.until_eternity.recipe.ModRecipeSerializers;
 import com.carrot123.until_eternity.recipe.ModRecipeTypes;
 import com.carrot123.until_eternity.registry.ModAttributes;
+import com.carrot123.until_eternity.registry.ModEntities;
 import com.carrot123.until_eternity.registry.ModMobEffects;
 import com.carrot123.until_eternity.registry.ModPotions;
 import com.carrot123.until_eternity.worldgen.ModFeatures;
@@ -58,6 +59,7 @@ public class until_eternity {
         ModPoiTypes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModItems.register(modEventBus);
+        ModEntities.register(modEventBus);
         ModEnchantments.register(modEventBus);
         ModParticles.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);

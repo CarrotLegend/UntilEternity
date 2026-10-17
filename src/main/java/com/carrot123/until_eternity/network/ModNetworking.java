@@ -9,7 +9,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 public final class ModNetworking {
 
-    private static final String PROTOCOL_VERSION = "3";
+    private static final String PROTOCOL_VERSION = "4";
 
     public static final SimpleChannel CHANNEL =
             NetworkRegistry.newSimpleChannel(
@@ -63,6 +63,15 @@ public final class ModNetworking {
                 OpenTrialDialogueS2CPacket::encode, OpenTrialDialogueS2CPacket::decode, OpenTrialDialogueS2CPacket::handle);
         CHANNEL.registerMessage(packetId++, SelectTrialDifficultyC2SPacket.class,
                 SelectTrialDifficultyC2SPacket::encode, SelectTrialDifficultyC2SPacket::decode, SelectTrialDifficultyC2SPacket::handle);
+
+        CHANNEL.registerMessage(packetId++, OpenStormPriestessDialogueS2CPacket.class,
+                OpenStormPriestessDialogueS2CPacket::encode,
+                OpenStormPriestessDialogueS2CPacket::decode,
+                OpenStormPriestessDialogueS2CPacket::handle);
+        CHANNEL.registerMessage(packetId++, SelectStormPriestessExchangeC2SPacket.class,
+                SelectStormPriestessExchangeC2SPacket::encode,
+                SelectStormPriestessExchangeC2SPacket::decode,
+                SelectStormPriestessExchangeC2SPacket::handle);
     }
 
     public static void sendHurtAnimation(

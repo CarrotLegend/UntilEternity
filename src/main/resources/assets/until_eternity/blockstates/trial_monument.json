@@ -1,1 +1,16 @@
-{ "variants": { "": { "model": "until_eternity:block/trial_monument" } } }
+{
+  "variants": {
+    "half=lower,paired=false": {
+      "model": "until_eternity:block/trial_monument"
+    },
+    "half=lower,paired=true": {
+      "model": "until_eternity:block/trial_monument"
+    },
+    "half=upper,paired=false": {
+      "model": "until_eternity:block/trial_monument_upper"
+    },
+    "half=upper,paired=true": {
+      "model": "until_eternity:block/trial_monument_upper"
+    }
+  }
+}

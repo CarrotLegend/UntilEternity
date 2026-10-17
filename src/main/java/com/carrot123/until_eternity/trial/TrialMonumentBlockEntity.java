@@ -52,7 +52,9 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
     public static final String MOB_RUN = "UntilEternityTrialRun";
     public static final String MOB_MONUMENT = "UntilEternityTrialMonument";
     public enum Phase { IDLE, PREPARE, ACTIVE, INTERMISSION, FAILED, COMPLETE }
+
     private static final UUID HEALTH_MODIFIER = UUID.fromString("40ac5f79-8e11-4050-a83c-ff3d0a0ea123");
+    private static final UUID ARMOR_MODIFIER = UUID.fromString("68fb02e8-4217-45e5-961c-d71c3993201a");
 
     private UUID owner;
     private UUID run;
@@ -156,7 +158,8 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
             if (running()) {
                 if (legacyCandidate != null && run != null)
                     TrialApollyonOwnership.get(server).rememberOld(legacyCandidate, run, worldPosition);
-                fail(server, "restart"); return;
+                fail(server, "restart");
+                return;
             }
         }
         if (!running()) return;
@@ -173,8 +176,11 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
                 Entity entity = server.getEntity(id);
                 if (entity == null) {
                     int missing = missingTicks.merge(id, 1, Integer::sum);
-                    if (missing >= 20) { fail(server, "tracked mob absent uuid=" + id + " trace=" + mobTrace.get(id)
-                            + " after=" + missing + " ticks wave=" + waveIndex); return; }
+                    if (missing >= 20) {
+                        fail(server, "tracked mob absent uuid=" + id + " trace=" + mobTrace.get(id)
+                                + " after=" + missing + " ticks wave=" + waveIndex);
+                        return;
+                    }
                     continue;
                 }
                 missingTicks.remove(id);
@@ -188,12 +194,16 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
                         || !entity.getPersistentData().getUUID(MOB_RUN).equals(run))) {
                     fail(server, "tracked mob invalid uuid=" + id + " type=" + entity.getType() + " pos=" + entity.blockPosition()
                             + " removed=" + entity.isRemoved() + " reason=" + entity.getRemovalReason()
-                            + " alive=" + entity.isAlive() + " runTag=" + entity.getPersistentData().getString(MOB_RUN)); return;
+                            + " alive=" + entity.isAlive() + " runTag=" + entity.getPersistentData().getString(MOB_RUN));
+                    return;
                 }
             }
         }
         updateBar(server);
-        if (--ticksLeft > 0) { if (server.getGameTime() % 20 == 0) setChanged(); return; }
+        if (--ticksLeft > 0) {
+            if (server.getGameTime() % 20 == 0) setChanged();
+            return;
+        }
         if (phase == Phase.PREPARE || phase == Phase.INTERMISSION) spawnWave(server);
         else if (phase == Phase.ACTIVE) fail(server, "timeout");
     }
@@ -203,21 +213,24 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         mobs.clear();
         for (TrialWaves.MobSpec spec : wave.mobs()) for (int i = 0; i < spec.count(); i++) {
             Mob created;
-            try { created = spec.apollyon() ? TrialApollyonFactory.create(server)
-                    : spec.type().create(server) instanceof Mob mob ? mob : null; }
-            catch (RuntimeException ex) {
+            try {
+                created = spec.apollyon() ? TrialApollyonFactory.create(server)
+                        : spec.type().create(server) instanceof Mob mob ? mob : null;
+            } catch (RuntimeException ex) {
                 until_eternity.LOGGER.error("Trial mob factory failed: type={} wave={}", spec.type(), waveIndex, ex);
                 fail(server, "mob factory exception type=" + spec.type());
                 return;
             }
             boolean spawned = false;
-            if (created != null) try { spawned = spawnOne(server, created, spec.apollyon()); }
-            catch (RuntimeException ex) {
+            if (created != null) try {
+                spawned = spawnOne(server, created, spec.apollyon());
+            } catch (RuntimeException ex) {
                 until_eternity.LOGGER.error("Trial mob initialization failed: type={} wave={}", spec.type(), waveIndex, ex);
             }
             if (!spawned) {
                 if (created != null) created.discard();
-                fail(server, "spawn failure entity=" + spec.type() + " index=" + i + " wave=" + waveIndex); return;
+                fail(server, "spawn failure entity=" + spec.type() + " index=" + i + " wave=" + waveIndex);
+                return;
             }
         }
         phase = Phase.ACTIVE;
@@ -238,12 +251,14 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
             if (!server.getWorldBorder().isWithinBounds(feet)) { invalidBorder++; continue; }
             if (Math.abs(feet.getY() - worldPosition.getY()) > 12
                     || !server.getBlockState(feet.below()).isFaceSturdy(server, feet.below(), Direction.UP)) {
-                invalidGround++; continue;
+                invalidGround++;
+                continue;
             }
             entity.moveTo(feet.getX() + 0.5, feet.getY(), feet.getZ() + 0.5, server.random.nextFloat() * 360, 0);
             if (!server.noCollision(entity, entity.getBoundingBox())
                     || !server.getEntities(entity, entity.getBoundingBox()).isEmpty()) {
-                collisions++; continue;
+                collisions++;
+                continue;
             }
             if (apollyon) {
                 TrialApollyonFactory.initialize((com.Polarice3.Goety.common.entities.boss.Apostle) entity, server);
@@ -259,8 +274,9 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
                 return false;
             }
             boolean added;
-            try { added = server.addFreshEntity(entity); }
-            catch (RuntimeException ex) {
+            try {
+                added = server.addFreshEntity(entity);
+            } catch (RuntimeException ex) {
                 if (ownership != null) ownership.forget(entity.getUUID());
                 throw ex;
             }
@@ -286,7 +302,7 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
                     warden.getBrain().setMemoryWithExpiry(MemoryModuleType.IS_EMERGING, Unit.INSTANCE, WardenAi.EMERGE_DURATION);
                 }
             }
-            if (!applyDifficultyHealth(entity)) return false;
+            if (!applyDifficultyAttributes(entity)) return false;
 
             server.sendParticles(ParticleTypes.REVERSE_PORTAL, entity.getX(), entity.getY() + 1, entity.getZ(),
                     20, 0.5, 0.7, 0.5, 0.05);
@@ -294,14 +310,18 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
             return true;
         }
         until_eternity.LOGGER.warn("Trial spawn exhausted: type={} attempts=32 border={} ground={} collision={} monument={}",
-                entity.getType(), invalidBorder, invalidGround, collisions, worldPosition);
+                entity.getType(), invalidGround, invalidBorder, collisions, worldPosition);
         return false;
     }
 
-    private boolean applyDifficultyHealth(Mob mob) {
+    private boolean applyDifficultyAttributes(Mob mob) {
         AttributeInstance health = mob.getAttribute(Attributes.MAX_HEALTH);
         if (health == null) return false;
         addDifficultyHealthModifier(health, difficulty);
+
+        AttributeInstance armor = mob.getAttribute(Attributes.ARMOR);
+        if (armor != null) addDifficultyArmorModifier(armor, difficulty);
+
         mob.setHealth(mob.getMaxHealth());
         return true;
     }
@@ -310,6 +330,12 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         if (health.getModifier(HEALTH_MODIFIER) == null)
             health.addTransientModifier(new AttributeModifier(HEALTH_MODIFIER, "Trial difficulty health",
                     difficulty.healthMultiplier() - 1.0, AttributeModifier.Operation.MULTIPLY_TOTAL));
+    }
+
+    static void addDifficultyArmorModifier(AttributeInstance armor, TrialDifficulty difficulty) {
+        if (armor.getModifier(ARMOR_MODIFIER) == null)
+            armor.addTransientModifier(new AttributeModifier(ARMOR_MODIFIER, "Trial difficulty armor",
+                    difficulty.armorMultiplier() - 1.0, AttributeModifier.Operation.MULTIPLY_TOTAL));
     }
 
     public void onMobDeath(UUID mobId, UUID runId) {
@@ -439,13 +465,15 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
     }
 
     private void updateBar(ServerLevel server) {
-        if (bar == null) bar = new ServerBossEvent(Component.empty(), BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS);
+        if (bar == null)
+            bar = new ServerBossEvent(Component.empty(), BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS);
         bar.setName(Component.translatable("bossbar.until_eternity.trial", waveIndex + 1, snapshot.waves().size(),
                 mobs.size(), Math.max(0, (ticksLeft + 19) / 20)));
         bar.setProgress(waveLimit == 0 ? 1f : Math.max(0f, Math.min(1f, (float) ticksLeft / waveLimit)));
         for (ServerPlayer player : server.players()) {
             boolean show = player.getUUID().equals(owner) || player.distanceToSqr(Vec3.atCenterOf(worldPosition)) <= 48 * 48;
-            if (show) bar.addPlayer(player); else bar.removePlayer(player);
+            if (show) bar.addPlayer(player);
+            else bar.removePlayer(player);
         }
     }
 
@@ -456,11 +484,18 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         rewardIssued = true;
     }
 
-    private boolean running() { return phase == Phase.PREPARE || phase == Phase.ACTIVE || phase == Phase.INTERMISSION; }
-    public boolean hasRun(UUID runId) { return running() && run != null && run.equals(runId); }
+    private boolean running() {
+        return phase == Phase.PREPARE || phase == Phase.ACTIVE || phase == Phase.INTERMISSION;
+    }
+
+    public boolean hasRun(UUID runId) {
+        return running() && run != null && run.equals(runId);
+    }
+
     public boolean tracksDamageSource(UUID mobId, UUID runId) {
         return phase == Phase.ACTIVE && run != null && run.equals(runId) && mobs.contains(mobId);
     }
+
     boolean ownsApollyon(ServerLevel server, Entity entity) {
         if (entity == null || entity.level() != server || server.getEntity(entity.getUUID()) != entity
                 || !tracksDamageSource(entity.getUUID(), run) || !apollyonMobs.contains(entity.getUUID())
@@ -468,18 +503,22 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         TrialApollyonOwnership.Entry entry = TrialApollyonOwnership.get(server).active(entity);
         return entry != null && entry.matches(run, worldPosition, entry.live == entity);
     }
+
     public TrialDifficulty difficulty() { return difficulty; }
     public UUID owner() { return owner; }
+
     private static void title(ServerPlayer player, String key) {
         player.connection.send(new ClientboundSetTitleTextPacket(Component.translatable(key)));
     }
 
-    @Override public void onChunkUnloaded() {
+    @Override
+    public void onChunkUnloaded() {
         if (level instanceof ServerLevel server && running()) fail(server, "chunk unloaded");
         super.onChunkUnloaded();
     }
 
-    @Override protected void saveAdditional(CompoundTag tag) {
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         if (owner != null) tag.putUUID("Owner", owner);
         if (run != null) tag.putUUID("Run", run);
@@ -488,17 +527,26 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         tag.putInt("TicksLeft", ticksLeft);
         tag.putInt("WaveLimit", waveLimit);
         ListTag tracked = new ListTag();
-        for (UUID id : mobs) { CompoundTag entry = new CompoundTag(); entry.putUUID("Id", id); tracked.add(entry); }
+        for (UUID id : mobs) {
+            CompoundTag entry = new CompoundTag();
+            entry.putUUID("Id", id);
+            tracked.add(entry);
+        }
         tag.put("Mobs", tracked);
         ListTag apollyons = new ListTag();
-        for (UUID id : apollyonMobs) { CompoundTag entry = new CompoundTag(); entry.putUUID("Id", id); apollyons.add(entry); }
+        for (UUID id : apollyonMobs) {
+            CompoundTag entry = new CompoundTag();
+            entry.putUUID("Id", id);
+            apollyons.add(entry);
+        }
         tag.put("ApollyonMobs", apollyons);
         tag.putBoolean("PendingRock", pendingRock);
         tag.putBoolean("RewardIssued", rewardIssued);
         tag.putString("TrialDifficulty", difficulty.name());
     }
 
-    @Override public void load(CompoundTag tag) {
+    @Override
+    public void load(CompoundTag tag) {
         super.load(tag);
         owner = tag.hasUUID("Owner") ? tag.getUUID("Owner") : null;
         run = tag.hasUUID("Run") ? tag.getUUID("Run") : null;
@@ -508,7 +556,8 @@ public final class TrialMonumentBlockEntity extends BlockEntity {
         ticksLeft = tag.getInt("TicksLeft");
         waveLimit = tag.getInt("WaveLimit");
         mobs.clear();
-        for (Tag entry : tag.getList("Mobs", Tag.TAG_COMPOUND)) if (((CompoundTag) entry).hasUUID("Id")) mobs.add(((CompoundTag) entry).getUUID("Id"));
+        for (Tag entry : tag.getList("Mobs", Tag.TAG_COMPOUND))
+            if (((CompoundTag) entry).hasUUID("Id")) mobs.add(((CompoundTag) entry).getUUID("Id"));
         apollyonMobs.clear();
         for (Tag entry : tag.getList("ApollyonMobs", Tag.TAG_COMPOUND))
             if (((CompoundTag) entry).hasUUID("Id")) apollyonMobs.add(((CompoundTag) entry).getUUID("Id"));
