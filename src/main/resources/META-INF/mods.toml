@@ -188,6 +188,13 @@ description='''${mod_description}'''
     versionRange="[1.7.0,)"
     ordering="AFTER"
     side="CLIENT"
+
+[[dependencies.until_eternity]]
+    modId="geckolib"
+    mandatory=true
+    versionRange="[4.8.2,)"
+    ordering="AFTER"
+    side="BOTH"
     
 # Here's another dependency
 [[dependencies.${mod_id}]]
