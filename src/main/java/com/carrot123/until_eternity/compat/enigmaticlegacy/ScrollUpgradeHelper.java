@@ -28,6 +28,18 @@ public final class ScrollUpgradeHelper {
         return false;
     }
 
+    public static boolean tryUpgrade(
+            Player player,
+            ItemStack scroll,
+            ItemStack material
+    ) {
+        if (!matches(scroll, material)) {
+            return false;
+        }
+
+        return upgrade(player, scroll, material);
+    }
+
     private static boolean matches(ItemStack scroll, ItemStack material) {
         return (CursedScrollDamageCap.isCursedScroll(scroll)
                 && CursedScrollDamageCap.getUpgradeTier(material) >= 0)
@@ -46,10 +58,13 @@ public final class ScrollUpgradeHelper {
         int unlimitedTier = cursed
                 ? CursedScrollDamageCap.UNLIMITED_TIER
                 : BlessingScrollDamageCap.UNLIMITED_TIER;
+
         if (player.level().isClientSide) {
             return true;
         }
+
         String prefix = cursed ? "cursed_scroll" : "blessing_scroll";
+
         if (cursed ? targetTier <= currentTier
                 : !BlessingScrollDamageCap.canUpgrade(currentTier, targetTier)) {
             player.displayClientMessage(Component.translatable(
@@ -57,21 +72,27 @@ public final class ScrollUpgradeHelper {
             ).withStyle(ChatFormatting.RED), true);
             return true;
         }
+
         if (cursed) {
             CursedScrollDamageCap.setTier(scroll, targetTier);
         } else {
             BlessingScrollDamageCap.setTier(scroll, targetTier);
         }
+
         if (!player.getAbilities().instabuild) {
             material.shrink(1);
         }
+
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS,
                 1.0F, targetTier == unlimitedTier ? 1.25F : 1.0F + targetTier * 0.05F);
+
         String key = "message.until_eternity." + prefix + ".upgraded";
+
         Component message = targetTier == unlimitedTier
                 ? Component.translatable(key + "_unlimited")
                 : Component.translatable(key, capText(cursed, targetTier));
+
         player.displayClientMessage(message.copy().withStyle(ChatFormatting.GOLD), true);
         return true;
     }
@@ -84,6 +105,7 @@ public final class ScrollUpgradeHelper {
                 default -> "200%";
             };
         }
+
         return switch (tier) {
             case CursedScrollDamageCap.ABYSSAL_TIER -> "400%";
             case CursedScrollDamageCap.DIVINE_TIER -> "600%";

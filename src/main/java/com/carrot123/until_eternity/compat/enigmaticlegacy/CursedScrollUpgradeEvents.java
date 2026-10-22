@@ -8,13 +8,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.List;
@@ -28,26 +25,6 @@ public final class CursedScrollUpgradeEvents {
         MinecraftForge.EVENT_BUS.register(
                 CursedScrollUpgradeEvents.class
         );
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onRightClickItem(
-            PlayerInteractEvent.RightClickItem event
-    ) {
-        if (ScrollUpgradeHelper.tryUpgrade(event.getEntity(), event.getHand())) {
-            event.setCanceled(true);
-            event.setCancellationResult(InteractionResult.sidedSuccess(
-                    event.getEntity().level().isClientSide));
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        if (ScrollUpgradeHelper.tryUpgrade(event.getEntity(), event.getHand())) {
-            event.setCanceled(true);
-            event.setCancellationResult(InteractionResult.sidedSuccess(
-                    event.getEntity().level().isClientSide));
-        }
     }
 
     @SubscribeEvent

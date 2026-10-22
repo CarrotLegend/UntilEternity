@@ -486,5 +486,12 @@
   "whip_upgrade.until_eternity.sculk": "幽匿",
   "whip_upgrade.until_eternity.ender": "末影",
   "whip_upgrade.until_eternity.void": "虚空",
-  "whip_upgrade.until_eternity.unholy": "不洁"
+  "whip_upgrade.until_eternity.unholy": "不洁",
+  "entity.until_eternity.storm_priestess": "神女",
+  "gui.until_eternity.priestess.greeting": "你好，我是风暴女神座下的神女之一，你有什么需要帮助的吗？",
+  "gui.until_eternity.priestess.exchange_altar": "兑换风暴祭坛（消耗1风暴精华）",
+  "gui.until_eternity.priestess.insufficient": "你的物品好像不太够哦~",
+  "gui.until_eternity.priestess.exit": "退出",
+  "message.until_eternity.priestess.already_summoned": "这座雕像已经召唤过神女了。",
+  "message.until_eternity.priestess.no_space": "雕像附近没有足够的空间召唤神女。"
 }

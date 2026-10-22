@@ -26,7 +26,7 @@ public final class BloodSplashDaggerItem extends SwordItem {
     public static final float SACRIFICE_DAMAGE = Float.MAX_VALUE;
 
     public BloodSplashDaggerItem(Properties properties) {
-        super(Tiers.STONE, 3, -2.4F, properties);
+        super(Tiers.STONE, 23, -2.4F, properties);
     }
 
     @Override

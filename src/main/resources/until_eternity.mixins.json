@@ -29,6 +29,7 @@
     "BaseSpawnerMixin",
     "AquamiraeSmithingCompatMixin",
     "EnderManProjectileMixin",
+    "EnderDragonCombatMixin",
     "compat.curios.CurioStacksHandlerShrinkFixMixin",
     "compat.curios.CurioInventoryInvalidStackProtectionMixin",
     "compat.curios.CuriosItemStackHandlerBoundsMixin",

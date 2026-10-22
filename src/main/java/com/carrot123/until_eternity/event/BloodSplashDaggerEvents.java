@@ -5,15 +5,19 @@ import com.carrot123.until_eternity.item.ModItems;
 import com.carrot123.until_eternity.registry.ModPotions;
 import com.carrot123.until_eternity.registry.ModTags;
 import com.carrot123.until_eternity.until_eternity;
+import net.minecraft.world.damagesource.CombatRules;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -53,6 +57,49 @@ public final class BloodSplashDaggerEvents {
                 player.level().getGameTime(),
                 target.getHealth(),
                 false));
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onLivingHurt(LivingHurtEvent event) {
+        float amount = event.getAmount();
+        LivingEntity target = event.getEntity();
+        if (target.level().isClientSide
+                || !Float.isFinite(amount)
+                || amount <= 0.0F
+                || amount > Float.MAX_VALUE / 5.0F
+                || target.getArmorValue() <= 0
+                || !(event.getSource().getEntity() instanceof Player player)
+                || event.getSource().getDirectEntity() != player
+                || !event.getSource().is(DamageTypes.PLAYER_ATTACK)
+                || target == player
+                || !player.getMainHandItem().is(ModItems.BLOOD_SPLASH_DAGGER.get())) {
+            return;
+        }
+
+        PendingAttack pending = PENDING_ATTACKS.get(player.getUUID());
+        if (pending == null
+                || pending.targetEntityId() != target.getId()
+                || pending.gameTime() != player.level().getGameTime()) {
+            return;
+        }
+
+        float toughness = (float) target.getAttributeValue(Attributes.ARMOR_TOUGHNESS);
+        if (!Float.isFinite(toughness)) {
+            return;
+        }
+
+        float armor = target.getArmorValue();
+        float lower = amount;
+        float upper = amount * 5.0F;
+        for (int i = 0; i < 28; i++) {
+            float midpoint = lower + (upper - lower) * 0.5F;
+            if (CombatRules.getDamageAfterAbsorb(midpoint, armor, toughness) < amount) {
+                lower = midpoint;
+            } else {
+                upper = midpoint;
+            }
+        }
+        event.setAmount(upper);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
