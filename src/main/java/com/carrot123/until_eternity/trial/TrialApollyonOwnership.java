@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/** Durable provenance for trial Apollyon; entity persistent data is only a compatibility hint. */
 final class TrialApollyonOwnership extends SavedData {
     private static final String NAME = "until_eternity_trial_apollyon";
     private static final ResourceLocation APOSTLE_ID = new ResourceLocation("goety", "apostle");
@@ -51,6 +50,30 @@ final class TrialApollyonOwnership extends SavedData {
         return true;
     }
 
+    boolean restore(Entity entity, UUID run, BlockPos monument) {
+        if (entity == null || run == null || monument == null || !isApostle(entity)) return false;
+
+        Entry entry = entries.get(entity.getUUID());
+        if (entry == null) {
+            entries.put(entity.getUUID(), new Entry(run, monument, entity, false));
+            setDirty();
+            return true;
+        }
+
+        if (!entry.run.equals(run) || !entry.monument.equals(monument)
+                || entry.live != null && entry.live != entity) {
+            return false;
+        }
+
+        if (entry.cleanup || entry.live != entity) {
+            entry.cleanup = false;
+            entry.live = entity;
+            setDirty();
+        }
+
+        return true;
+    }
+
     void rememberOld(UUID id, UUID run, BlockPos monument) {
         if (!entries.containsKey(id)) {
             entries.put(id, new Entry(run, monument, null, true));
@@ -58,12 +81,18 @@ final class TrialApollyonOwnership extends SavedData {
         }
     }
 
+    Entry entry(UUID id) {
+        return entries.get(id);
+    }
+
     Entry active(Entity entity) {
         Entry entry = entries.get(entity.getUUID());
         return entry != null && !entry.cleanup && entry.live == entity ? entry : null;
     }
 
-    boolean knows(UUID id) { return entries.containsKey(id); }
+    boolean knows(UUID id) {
+        return entries.containsKey(id);
+    }
 
     boolean pendingCleanup(UUID id) {
         Entry entry = entries.get(id);
@@ -72,7 +101,8 @@ final class TrialApollyonOwnership extends SavedData {
 
     boolean shouldCancelJoin(Entity entity) {
         Entry entry = entries.get(entity.getUUID());
-        return entry != null && (entry.cleanup || entry.live != entity)
+        return entry != null && (entry.cleanup
+                || entry.live != null && entry.live != entity)
                 && isApostle(entity);
     }
 
@@ -83,6 +113,7 @@ final class TrialApollyonOwnership extends SavedData {
     void cleanup(ServerLevel level, UUID id) {
         Entry entry = entries.get(id);
         if (entry == null) return;
+
         Entity entity = level.getEntity(id);
         if (entity != null && entity.level() == level && isApostle(entity)) {
             entity.discard();
@@ -100,25 +131,41 @@ final class TrialApollyonOwnership extends SavedData {
 
     static TrialApollyonOwnership load(CompoundTag root) {
         TrialApollyonOwnership data = new TrialApollyonOwnership();
+
         for (Tag raw : root.getList("Entries", Tag.TAG_COMPOUND)) {
             CompoundTag tag = (CompoundTag) raw;
-            if (tag.hasUUID("Entity") && tag.hasUUID("Run") && tag.contains("Monument", Tag.TAG_LONG))
-                // An unfinished run is never resumed after a server restart.
-                data.entries.put(tag.getUUID("Entity"),
-                        new Entry(tag.getUUID("Run"), BlockPos.of(tag.getLong("Monument")), null, true));
+
+            if (tag.hasUUID("Entity")
+                    && tag.hasUUID("Run")
+                    && tag.contains("Monument", Tag.TAG_LONG)) {
+                data.entries.put(
+                        tag.getUUID("Entity"),
+                        new Entry(
+                                tag.getUUID("Run"),
+                                BlockPos.of(tag.getLong("Monument")),
+                                null,
+                                tag.getBoolean("Cleanup")
+                        )
+                );
+            }
         }
+
         return data;
     }
 
-    @Override public CompoundTag save(CompoundTag root) {
+    @Override
+    public CompoundTag save(CompoundTag root) {
         ListTag list = new ListTag();
+
         entries.forEach((id, entry) -> {
             CompoundTag tag = new CompoundTag();
             tag.putUUID("Entity", id);
             tag.putUUID("Run", entry.run);
             tag.putLong("Monument", entry.monument.asLong());
+            tag.putBoolean("Cleanup", entry.cleanup);
             list.add(tag);
         });
+
         root.put("Entries", list);
         return root;
     }

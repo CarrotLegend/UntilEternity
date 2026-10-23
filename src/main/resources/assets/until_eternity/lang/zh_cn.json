@@ -493,5 +493,17 @@
   "gui.until_eternity.priestess.insufficient": "你的物品好像不太够哦~",
   "gui.until_eternity.priestess.exit": "退出",
   "message.until_eternity.priestess.already_summoned": "这座雕像已经召唤过神女了。",
-  "message.until_eternity.priestess.no_space": "雕像附近没有足够的空间召唤神女。"
+  "message.until_eternity.priestess.no_space": "雕像附近没有足够的空间召唤神女。",
+  "message.until_eternity.trial.paused": "当前试炼已暂停，难度：%s。",
+  "message.until_eternity.trial.resumed": "试炼已恢复，继续挑战！",
+  "message.until_eternity.trial.failure.death": "你已死亡，试炼失败！",
+  "message.until_eternity.trial.failure.distance": "距离石碑过远！",
+  "message.until_eternity.trial.failure.timeout": "挑战时间耗尽，试炼失败！",
+  "message.until_eternity.trial.failure.peaceful": "世界难度已变为和平，试炼失败！",
+  "message.until_eternity.trial.failure.spawn": "试炼怪物生成异常，试炼失败！",
+  "message.until_eternity.trial.failure.missing": "试炼怪物异常消失且无法恢复，试炼失败！",
+  "message.until_eternity.trial.failure.identity": "试炼怪物归属异常且无法恢复，试炼失败！",
+  "message.until_eternity.trial.failure.monument": "试炼石碑被破坏，试炼失败！",
+  "message.until_eternity.trial.failure.restore": "试炼数据恢复失败，试炼已终止！",
+  "message.until_eternity.trial.failure.unknown": "试炼发生未知异常，挑战失败！"
 }

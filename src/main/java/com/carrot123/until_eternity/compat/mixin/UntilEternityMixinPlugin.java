@@ -38,6 +38,9 @@ public final class UntilEternityMixinPlugin
     private static final String ENIGMATIC_ADDONS_COMPAT =
             "com.carrot123.until_eternity.mixin.compat.enigmaticaddons.";
 
+    private static final String EXPLORERS_COMPASS_COMPAT =
+            "com.carrot123.until_eternity.mixin.compat.explorerscompass.";
+
     private static final String NIGHT_SCROLL_CLASS =
             "auviotre.enigmatic.addon.contents.items.NightScroll";
 
@@ -103,7 +106,6 @@ public final class UntilEternityMixinPlugin
             );
         }
 
-
         if (mixinClassName.startsWith(
                 MOWZIES_MOBS_COMPAT
         )) {
@@ -136,6 +138,14 @@ public final class UntilEternityMixinPlugin
         )) {
             return isModLoaded(
                     "enigmaticaddons"
+            );
+        }
+
+        if (mixinClassName.startsWith(
+                EXPLORERS_COMPASS_COMPAT
+        )) {
+            return isModLoaded(
+                    "explorerscompass"
             );
         }
 

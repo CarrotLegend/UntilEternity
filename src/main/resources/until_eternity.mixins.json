@@ -48,6 +48,7 @@
     "compat.soulcurse.DynamicStackHandlerSoulReloadMixin",
     "compat.enigmaticdelicacy.InfinimealCompatMixin",
     "compat.enigmaticaddons.InsigniaMiningRestrictionMixin",
+    "compat.explorerscompass.ExplorersCompassTeleportPermissionMixin",
     "compat.goety.ApostleTrueChefsKnifeMixin",
     "compat.goety.EnderKeeperTrueChefsKnifeMixin",
     "compat.goety.SkullLordPithosUnlockMixin",

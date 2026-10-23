@@ -5,29 +5,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public final class ScrollUpgradeHelper {
     private ScrollUpgradeHelper() {
     }
-
-    public static boolean tryUpgrade(Player player, InteractionHand usedHand) {
-        InteractionHand otherHand = usedHand == InteractionHand.MAIN_HAND
-                ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
-        ItemStack used = player.getItemInHand(usedHand);
-        ItemStack other = player.getItemInHand(otherHand);
-
-        if (matches(used, other)) {
-            return upgrade(player, used, other);
-        }
-        if (matches(other, used)) {
-            return upgrade(player, other, used);
-        }
-        return false;
-    }
-
     public static boolean tryUpgrade(
             Player player,
             ItemStack scroll,
