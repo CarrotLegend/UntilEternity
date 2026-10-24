@@ -171,8 +171,7 @@ public final class UntilEternityMixinPlugin
 
     @Override
     public List<String> getMixins() {
-        MixinSquaredBootstrap.reOrderExtensions();
-
+        // 扩展排序交给 MixinSquared 自己的 Forge 初始化插件。
         if (!isModLoaded(
                 "enigmaticaddons"
         )) {
